@@ -1,0 +1,2902 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="narrative">
+  <meta name="design-style" content="carbon">
+  <title>CS50 Computer Science — Textbook Notes &amp; Interactive Companion</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Carbon palette */
+      --background: #ffffff;
+      --surface-container-low: #f4f4f4;
+      --surface-container: #f4f4f4;
+      --surface-container-high: #e0e0e0;
+
+      /* Ink */
+      --on-surface: #161616;
+      --on-surface-variant: #525252;
+
+      /* Rules */
+      --outline: #8d8d8d;
+      --outline-variant: #e0e0e0;
+
+      /* Accents */
+      --primary: #0f62fe;
+      --on-primary: #ffffff;
+      --primary-hover: #0353e9;
+      --primary-container: #d0e2ff;
+      --on-primary-container: #161616;
+      --secondary: #6f6f6f;
+      --tertiary: #198038;
+      --tertiary-container: #defbe6;
+      --error: #da1e28;
+      --error-container: #fff1f1;
+      --on-error: #ffffff;
+
+      /* Data series */
+      --data-1: #0f62fe;
+      --data-2: #6929c4;
+      --data-3: #005d5d;
+      --data-4: #9f1853;
+      --data-context: #8d8d8d;
+
+      /* Fonts */
+      --font-headline: 'IBM Plex Sans', sans-serif;
+      --font-body: 'IBM Plex Sans', sans-serif;
+      --font-label: 'IBM Plex Mono', monospace;
+
+      /* Shape */
+      --rounded: 0.125rem;
+      --rounded-lg: 0.25rem;
+      --rounded-full: 0.75rem;
+
+      /* Style effects */
+      --shadow-1: 0 2px 6px rgb(0 0 0 / 0.1);
+      --shadow-2: 0 4px 12px rgb(0 0 0 / 0.12);
+      --rule: 1px solid var(--outline-variant);
+      --field-rule: 1px solid var(--outline);
+      --indicator: 2px solid var(--primary);
+      --state-bar-blue: 3px solid var(--primary);
+      --state-bar-green: 3px solid var(--tertiary);
+      --state-bar-red: 3px solid var(--error);
+
+      /* Shared semantic & focus tokens */
+      --positive: #198038;
+      --warning: #8e6a00;
+      --warning-container: #fcf4d6;
+      --focus: #0f62fe;
+
+      /* Narrative type scale */
+      --display-size: clamp(2.125rem, 1.4rem + 2.8vw, 3.375rem);
+      --headline-size: clamp(1.5rem, 1.15rem + 1.2vw, 2rem);
+      --subhead-size: clamp(1.125rem, 1.02rem + 0.4vw, 1.3125rem);
+      --body-size: clamp(1rem, 0.96rem + 0.15vw, 1.0625rem);
+      --label-size: 0.75rem;
+
+      /* Spacing scale */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+      --space-3xl: 5.5rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
+    }
+
+    /* Base reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { position: static !important; }
+
+    /* Focus rings */
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Layout Grid */
+    .page-grid {
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr);
+      gap: var(--space-xl);
+      padding: var(--space-lg);
+      max-width: 1280px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .page-grid * { min-width: 0; }
+
+    /* Side Navigation Rail */
+    .side-rail {
+      position: sticky;
+      top: var(--space-lg);
+      align-self: start;
+      border-right: var(--rule);
+      padding-right: var(--space-md);
+      max-height: calc(100vh - 3rem);
+      overflow-y: auto;
+    }
+    .side-nav-list {
+      list-style: none;
+      margin: var(--space-md) 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .side-nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-sm);
+      text-decoration: none;
+      color: var(--on-surface-variant);
+      font-size: 0.875rem;
+      border-left: 2px solid transparent;
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+    }
+    .side-nav-link:hover {
+      background: var(--surface-container);
+      color: var(--on-surface);
+    }
+    .side-nav-link.is-active {
+      border-left: var(--indicator);
+      background: var(--surface-container);
+      color: var(--on-surface);
+      font-weight: 600;
+    }
+    .side-nav-status {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+      flex-shrink: 0;
+    }
+    .side-nav-status.is-done {
+      color: var(--tertiary);
+      font-weight: 600;
+    }
+
+    /* Typography helpers */
+    .label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--on-surface-variant);
+      display: block;
+    }
+    .headline {
+      font-family: var(--font-headline);
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: 1.18;
+      margin: 0;
+      color: var(--on-surface);
+    }
+    .headline strong { font-weight: 600; }
+    .display-title {
+      font-size: var(--display-size);
+      margin-top: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+    .section-title {
+      font-size: var(--headline-size);
+      margin-top: var(--space-xs);
+    }
+    h3 {
+      font-family: var(--font-headline);
+      font-size: var(--subhead-size);
+      font-weight: 600;
+      line-height: 1.3;
+      margin: var(--space-lg) 0 var(--space-sm) 0;
+      color: var(--on-surface);
+    }
+    h4 {
+      font-family: var(--font-headline);
+      font-size: 1rem;
+      font-weight: 600;
+      margin: var(--space-md) 0 var(--space-xs) 0;
+      color: var(--on-surface);
+    }
+    p {
+      margin: 0 0 var(--space-md) 0;
+      max-width: 68ch;
+      color: var(--on-surface);
+    }
+    .helper-text {
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+      max-width: 68ch;
+    }
+
+    /* Carbon layers & tiles */
+    .layer {
+      background: var(--surface-container);
+      border-radius: 0;
+      padding: var(--space-md);
+    }
+    .layer .layer {
+      background: var(--surface-container-high);
+    }
+    .key-value {
+      font-family: var(--font-label);
+      font-weight: 300;
+      font-size: 2rem;
+      line-height: 1.15;
+      color: var(--on-surface);
+      margin: var(--space-xs) 0;
+    }
+    .key-tile {
+      border-bottom: var(--indicator);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: var(--space-md);
+      margin: var(--space-md) 0;
+    }
+    .asymmetric-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: var(--space-md);
+      margin: var(--space-md) 0;
+    }
+
+    /* Section structure */
+    .chapter {
+      padding-top: var(--space-2xl);
+      padding-bottom: var(--space-xl);
+      border-top: var(--rule);
+    }
+    .chapter:first-of-type {
+      border-top: none;
+      padding-top: var(--space-md);
+    }
+    .section-head {
+      border-bottom: var(--rule);
+      padding-bottom: var(--space-md);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-md);
+    }
+
+    /* Tags & badges (only tags use --rounded-full) */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 var(--space-sm);
+      border-radius: var(--rounded-full);
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-size: 0.75rem;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin: var(--space-sm) 0 var(--space-md) 0;
+    }
+
+    /* Buttons (square, Carbon heights & padding) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-lg) var(--space-sm) var(--space-md);
+      border-radius: 0;
+      border: 1px solid transparent;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 400;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+    }
+    .btn-compact {
+      min-height: 40px;
+      padding: var(--space-xs) var(--space-md);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .btn-ghost {
+      background: var(--surface-container);
+      color: var(--on-surface);
+      border-color: var(--outline-variant);
+    }
+    .btn-ghost:hover:not(:disabled) {
+      background: var(--surface-container-high);
+    }
+    .btn-ghost.is-selected {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      border-bottom: var(--indicator);
+      font-weight: 600;
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: end;
+      margin: var(--space-md) 0;
+    }
+
+    /* Inputs & Labels */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .field-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--on-surface-variant);
+      font-family: var(--font-label);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .input-field, .select-field {
+      height: 40px;
+      background: var(--surface-container-low);
+      border: 0;
+      border-bottom: var(--field-rule);
+      border-radius: var(--rounded);
+      padding: 0 var(--space-md);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+      width: 100%;
+    }
+    .select-field {
+      padding-right: var(--space-xl);
+    }
+    .input-field:focus, .select-field:focus {
+      outline: 2px solid var(--focus);
+      outline-offset: -2px;
+    }
+
+    /* Tables (Carbon zebra striping, no vertical borders) */
+    .table-wrap {
+      overflow-x: auto;
+      margin: var(--space-md) 0;
+      border-bottom: var(--rule);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9375rem;
+      text-align: left;
+    }
+    thead th {
+      background: var(--surface-container-high);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--on-surface);
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: var(--rule);
+    }
+    tbody td {
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: var(--rule);
+      vertical-align: top;
+    }
+    tbody tr:nth-child(even) {
+      background: var(--surface-container-low);
+    }
+    tbody tr.is-highlighted {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .num {
+      font-family: var(--font-label);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    code, pre {
+      font-family: var(--font-label);
+    }
+    code {
+      background: var(--surface-container-high);
+      padding: 0.1rem 0.35rem;
+      font-size: 0.875em;
+    }
+    pre.code-block {
+      background: var(--surface-container);
+      border-left: var(--state-bar-blue);
+      padding: var(--space-md);
+      margin: var(--space-md) 0;
+      overflow-x: auto;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: var(--on-surface);
+    }
+
+    /* Notifications / Callout strips */
+    .notice {
+      background: var(--surface-container);
+      border-left: var(--state-bar-blue);
+      padding: var(--space-md);
+      margin: var(--space-md) 0;
+      display: flex;
+      gap: var(--space-md);
+      align-items: flex-start;
+    }
+    .notice.is-positive {
+      border-left: var(--state-bar-green);
+      background: var(--tertiary-container);
+    }
+    .notice.is-error {
+      border-left: var(--state-bar-red);
+      background: var(--error-container);
+    }
+
+    /* Collapsible details */
+    details.drawer {
+      background: var(--surface-container);
+      border-top: var(--rule);
+      border-bottom: var(--rule);
+      margin: var(--space-md) 0;
+    }
+    details.drawer summary {
+      padding: var(--space-md);
+      cursor: pointer;
+      font-weight: 600;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 44px;
+    }
+    details.drawer summary::-webkit-details-marker { display: none; }
+    details.drawer[open] summary {
+      border-bottom: var(--rule);
+      background: var(--surface-container-high);
+    }
+    .drawer-body {
+      padding: var(--space-md);
+    }
+
+    /* Interactive Lab Panels */
+    .lab-panel {
+      background: var(--surface-container);
+      padding: var(--space-lg);
+      margin: var(--space-lg) 0;
+      border-top: var(--indicator);
+    }
+    .lab-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-sm);
+      border-bottom: var(--rule);
+      padding-bottom: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    /* Bit toggles */
+    .bit-row {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: var(--space-xs);
+      margin: var(--space-md) 0;
+    }
+    .bit-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 64px;
+      padding: var(--space-xs);
+      border: 1px solid var(--outline);
+      background: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-label);
+      cursor: pointer;
+    }
+    .bit-btn.is-on {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+    .bit-btn.is-bit32 {
+      border-bottom: 3px solid var(--tertiary);
+    }
+    .bit-val {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .bit-weight {
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+
+    /* Array & argv visualiser boxes */
+    .mem-cells {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin: var(--space-sm) 0;
+    }
+    .mem-cell {
+      min-width: 56px;
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-xs) var(--space-sm);
+      text-align: center;
+    }
+    .mem-cell.is-null {
+      background: var(--primary-container);
+      border-color: var(--primary);
+    }
+    .mem-cell.is-active {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+    .mem-cell.is-discarded {
+      opacity: 0.35;
+    }
+    .mem-idx {
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+      display: block;
+    }
+    .mem-cell.is-active .mem-idx {
+      color: var(--on-primary);
+    }
+    .mem-data {
+      font-family: var(--font-label);
+      font-weight: 600;
+      font-size: 0.9375rem;
+    }
+
+    /* 8x8 Pixel Bitmap Grid */
+    .pixel-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 32px);
+      gap: 2px;
+      margin: var(--space-sm) 0;
+    }
+    .pixel-cell {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--outline);
+      background: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .pixel-cell.is-dark {
+      background: var(--on-surface);
+      color: var(--background);
+    }
+
+    /* Stack & Queue visualisers */
+    .ds-track {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: var(--space-xs);
+      min-height: 150px;
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-sm);
+      justify-content: flex-start;
+    }
+    .queue-track {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      min-height: 64px;
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-sm);
+      align-items: center;
+    }
+    .ds-node {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      padding: var(--space-xs) var(--space-md);
+      font-family: var(--font-label);
+      font-weight: 600;
+      border-left: var(--state-bar-blue);
+      text-align: center;
+    }
+
+    /* Chart container */
+    .chart-box {
+      position: relative;
+      min-height: 320px;
+      width: 100%;
+      background: var(--background);
+      padding: var(--space-md);
+      border: var(--rule);
+    }
+
+    /* Tabs for interactive lab sub-views */
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      border-bottom: var(--rule);
+      gap: var(--space-xs);
+      margin-bottom: var(--space-md);
+    }
+    .tab-btn {
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      padding: var(--space-sm) var(--space-md);
+      min-height: 44px;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+    }
+    .tab-btn:hover { color: var(--on-surface); }
+    .tab-btn.is-active {
+      color: var(--on-surface);
+      font-weight: 600;
+      border-bottom: var(--indicator);
+    }
+
+    /* Quiz styles */
+    .quiz-card {
+      background: var(--surface-container);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-md);
+      border-left: 3px solid var(--outline-variant);
+    }
+    .quiz-card.is-correct {
+      border-left: var(--state-bar-green);
+    }
+    .quiz-card.is-incorrect {
+      border-left: var(--state-bar-red);
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xs);
+      margin: var(--space-md) 0;
+    }
+    .quiz-opt {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      text-align: left;
+      cursor: pointer;
+    }
+    .quiz-opt:hover:not(:disabled) {
+      background: var(--surface-container-high);
+    }
+    .quiz-opt.is-chosen-correct {
+      background: var(--tertiary-container);
+      border-color: var(--tertiary);
+      font-weight: 600;
+    }
+    .quiz-opt.is-chosen-wrong {
+      background: var(--error-container);
+      border-color: var(--error);
+      font-weight: 600;
+    }
+    .quiz-opt.is-reveal-correct {
+      border: 2px solid var(--tertiary);
+    }
+    .quiz-opt-letter {
+      font-family: var(--font-label);
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      min-width: 22px;
+    }
+    .quiz-feedback {
+      margin-top: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--background);
+      font-size: 0.9375rem;
+      border-top: var(--rule);
+    }
+
+    /* Mobile quick jump nav (visible when sidebar hides) */
+    .mobile-jump {
+      display: none;
+      background: var(--surface-container);
+      padding: var(--space-md);
+      margin-bottom: var(--space-lg);
+      border-bottom: var(--indicator);
+    }
+
+    /* Progress bar */
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--surface-container-high);
+      margin: var(--space-xs) 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      transition: width var(--dur-short) var(--ease-out);
+    }
+
+    /* List separators */
+    .ruled-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .ruled-list > li {
+      padding: var(--space-sm) 0;
+    }
+    .ruled-list > li + li {
+      border-top: var(--rule);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .page-grid {
+        grid-template-columns: 1fr;
+        padding: var(--space-md);
+      }
+      .side-rail {
+        display: none;
+      }
+      .mobile-jump {
+        display: block;
+      }
+      .asymmetric-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page-grid { grid-template-columns: 1fr; padding: var(--space-sm); }
+      aside { display: none; }
+      body { padding: var(--space-xs); }
+      .bit-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .pixel-grid { grid-template-columns: repeat(8, 28px); }
+      .pixel-cell { width: 28px; height: 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-grid">
+  <!-- LEFT NAVIGATION RAIL -->
+  <aside class="side-rail" aria-label="Course curriculum navigation">
+    <span class="label">CS50 Textbook Index</span>
+    <div style="margin-top: var(--space-sm);">
+      <div class="label" id="rail-progress-label">0 of 9 modules marked read</div>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-fill" id="rail-progress-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <ul class="side-nav-list" id="side-nav-list">
+      <li><a class="side-nav-link is-active" href="#sec-overview"><span>0. Curriculum Map</span><span class="side-nav-status" id="nav-st-overview"></span></a></li>
+      <li><a class="side-nav-link" href="#sec-week0"><span>1. Week 0: Scratch &amp; Bits</span><span class="side-nav-status" id="nav-st-week0"></span></a></li>
+      <li><a class="side-nav-link" href="#sec-week1"><span>2. Week 1: C Language</span><span class="side-nav-status" id="nav-st-week1"></span></a></li>
+      <li><a class="side-nav-link" href="#sec-week2"><span>3. Week 2: Arrays &amp; Debug</span><span class="side-nav-status" id="nav-st-week2"></span></a></li>
+      <li><a class="side-nav-link" href="#sec-week3"><span>4. Week 3: Algorithms</span><span class="side-nav-status" id="nav-st-week3"></span></a></li>
+      <li><a class="side-nav-link" href="#sec-week4-5"><span>5. Weeks 4–5: Memory &amp; Data</span><span class="side-nav-status" id="nav-st-week4-5"></span></a></li>
+      <li><a class="side-nav-link" href="#sec-week6-7"><span>6. Weeks 6–7: Python &amp; SQL</span><span class="side-nav-status" id="nav-st-week6-7"></span></a></li>
+      <li><a class="side-nav-link" href="#sec-week8-9"><span>7. Weeks 8–9: Web &amp; Flask</span><span class="side-nav-status" id="nav-st-week8-9"></span></a></li>
+      <li><a class="side-nav-link" href="#sec-week11-14"><span>8. Weeks 11–14: Systems</span><span class="side-nav-status" id="nav-st-week11-14"></span></a></li>
+      <li><a class="side-nav-link" href="#sec-quiz"><span>9. Comprehension Quiz</span><span class="side-nav-status" id="nav-st-quiz">0/21</span></a></li>
+    </ul>
+
+    <div class="layer" style="margin-top: var(--space-md);">
+      <span class="label">Quiz Score</span>
+      <div class="key-value" id="rail-quiz-score">0 / 21</div>
+      <div class="helper-text" id="rail-quiz-pct">0% accuracy across answered items</div>
+      <div class="btn-row" style="margin-bottom: 0;">
+        <button type="button" class="btn btn-secondary btn-compact" onclick="exportStudyReport()">Export report</button>
+        <button type="button" class="btn btn-ghost btn-compact" id="btn-reset-rail" onclick="resetAllProgress(this)">Reset</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT COLUMN -->
+  <main>
+    <!-- Mobile Jump Navigation -->
+    <nav class="mobile-jump" aria-label="Section jump menu">
+      <div class="field-group">
+        <label class="field-label" for="mobile-section-select">Jump to Textbook Section</label>
+        <select id="mobile-section-select" class="select-field" onchange="jumpToSection(this.value)">
+          <option value="#sec-overview">0. Curriculum Map (Weeks 0–14)</option>
+          <option value="#sec-week0">1. Week 0: Scratch, Binary, ASCII &amp; Pseudocode</option>
+          <option value="#sec-week1">2. Week 1: C Syntax, Types, Loops &amp; Design</option>
+          <option value="#sec-week2">3. Week 2: Arrays, Debugging, CLI &amp; Compiling</option>
+          <option value="#sec-week3">4. Week 3: Searching, Sorting, Big O &amp; Halting</option>
+          <option value="#sec-week4-5">5. Weeks 4–5: Hex, Bitmaps, Stacks, Queues &amp; Tries</option>
+          <option value="#sec-week6-7">6. Weeks 6–7: Python 3 &amp; Relational SQL</option>
+          <option value="#sec-week8-9">7. Weeks 8–9: TCP/IP, HTTP, HTML/CSS/JS, Ajax, MVC &amp; Flask</option>
+          <option value="#sec-week11-14">8. Weeks 11–14: Hardware, Logic Gates, Routers, VR &amp; Security</option>
+          <option value="#sec-quiz">9. Comprehensive Comprehension Quiz (21 Questions)</option>
+        </select>
+      </div>
+    </nav>
+
+    <!-- HERO HEADER -->
+    <header id="sec-overview" class="chapter">
+      <span class="label">Harvard CS50 Textbook Reference &amp; Study Companion</span>
+      <h1 class="headline display-title">CS50 Computer Science: <strong>From Binary Logic to Full-Stack Systems</strong></h1>
+      <p>
+        This structured study companion distils the complete Harvard CS50 textbook syllabus—spanning foundational computational thinking in Scratch, low-level programming in C, algorithmic complexity, memory structures, Python, SQL databases, web architecture (HTML, CSS, JavaScript, Ajax, MVC, and Flask), hardware logic, internet routing, and cybersecurity—paired with hands-on simulators and a 21-question comprehension assessment.
+      </p>
+
+      <div class="card-grid" style="margin-top: var(--space-lg);">
+        <div class="layer key-tile">
+          <span class="label">Syllabus Scope</span>
+          <div class="key-value">14 Weeks</div>
+          <div class="helper-text">Weeks 0–9 core programming &amp; Weeks 11–14 systems</div>
+        </div>
+        <div class="layer">
+          <span class="label">Interactive Labs</span>
+          <div class="key-value">8 Tools</div>
+          <div class="helper-text">Bit decoder, Big-O chart, SQL engine, logic gates &amp; more</div>
+        </div>
+        <div class="layer">
+          <span class="label">Modules Read</span>
+          <div class="key-value" id="hero-modules-read">0 / 9</div>
+          <div class="helper-text">Tick off sections as you complete your revision</div>
+        </div>
+        <div class="layer">
+          <span class="label">Quiz Mastery</span>
+          <div class="key-value" id="hero-quiz-score">0 / 21</div>
+          <div class="helper-text">Immediate textbook-grounded explanations</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <a href="#sec-week0" class="btn btn-primary" style="text-decoration: none;">Start reading from Week 0</a>
+        <a href="#sec-quiz" class="btn btn-secondary" style="text-decoration: none;">Jump to comprehension quiz</a>
+      </div>
+
+      <details class="drawer">
+        <summary>
+          <span>Full CS50 Textbook Contents Map (Chapters 0.0 to 14.1)</span>
+          <span class="label" style="margin: 0;">Expand index</span>
+        </summary>
+        <div class="drawer-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Module</th>
+                  <th>Chapters Included in CS50 Textbook</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Week 0 — Scratch</strong></td><td>0.0 Algorithms · 0.1 ASCII · 0.2 Binary · 0.3 Pseudocode · 0.4 Scratch · 0.5 ASCII Table</td></tr>
+                <tr><td><strong>Week 1 — C</strong></td><td>1.0 Boolean Expressions · 1.1 Data Types · 1.2 Functions · 1.3 Libraries · 1.4 Loops · 1.5 Operators · 1.6 Principles of Good Design · 1.7 Syntax · 1.8 Variables</td></tr>
+                <tr><td><strong>Week 2 — Arrays</strong></td><td>2.0 Arrays and Strings · 2.1 Bugs and Debugging · 2.2 Command-Line Interaction · 2.3 Compiling · 2.4 Exit Codes · 2.5 Typecasting</td></tr>
+                <tr><td><strong>Week 3 — Algorithms</strong></td><td>3.0 Algorithms · 3.1 Binary Search · 3.2 Bubble Sort · 3.3 Computational Complexity · 3.4 Insertion Sort · 3.5 Linear Search · 3.6 Merge Sort · 3.7 Recursion · 3.8 Selection Sort · Unsolvable Problems</td></tr>
+                <tr><td><strong>Week 4 — Memory</strong></td><td>4.0 File I/O · 4.1 Hexadecimal · 4.2 Images · 4.3 Structures and Encapsulation · 4.4 Color Cheat Sheet</td></tr>
+                <tr><td><strong>Week 5 — Data Structures</strong></td><td>5.0 Data Structures Cheat Sheet (Stack, Queue, HashTable, Graphs/Trees) · 5.1 Tries 1 · 5.2 Tries 2</td></tr>
+                <tr><td><strong>Week 6 — Python</strong></td><td>6.0 Python · 6.1 Python 3 Cheat Sheet</td></tr>
+                <tr><td><strong>Week 7 — SQL</strong></td><td>7.0 SQL (Tables, Fields, Records, Primary Keys, Persistence)</td></tr>
+                <tr><td><strong>Week 8 — Web (HTML/CSS/JS)</strong></td><td>8.0 Internet Basics · 8.1 TCP/IP · 8.2 TCP/IP Cheat Sheet · 8.3 IP Addresses · 8.4 IPv4 Cheat Sheet · 8.5 DNS &amp; DHCP · 8.6 How DNS Works · 8.7 HTTP · 8.8 HTTP Cheat Sheet · 8.9–8.10 HTML · 8.11–8.12 CSS · 8.13–8.14 JavaScript &amp; DOM · 8.15 Ajax · 8.16 MVC</td></tr>
+                <tr><td><strong>Week 9 — Flask</strong></td><td>9.0 Python for Web Programming (Jinja) · 9.1 Flask: The Cheat Sheet</td></tr>
+                <tr><td><strong>Weeks 11–14 — Systems</strong></td><td>11.0 Computers &amp; Computing · 11.1 CPU &amp; SoC · 11.2 How Computers Work · 11.3 Memory · 11.4 Transistors &amp; Logic · 12.0 Routers · 13.0 VR &amp; AR · 14.0 Cybersecurity · 14.1 Trust Models</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <button type="button" class="btn btn-ghost btn-compact" onclick="toggleSectionDone('overview', this)">Mark Curriculum Map reviewed</button>
+        </div>
+      </details>
+    </header>
+
+    <!-- SECTION 1: WEEK 0 -->
+    <section id="sec-week0" class="chapter">
+      <div class="section-head">
+        <div>
+          <span class="label">Section 01 · Week 0 · Foundations</span>
+          <h2 class="headline section-title">Scratch, Binary Representation, <strong>ASCII &amp; Pseudocode</strong></h2>
+        </div>
+        <button type="button" class="btn btn-ghost btn-compact" id="btn-done-week0" onclick="toggleSectionDone('week0', this)">Mark section complete</button>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">0.0 Algorithms</span>
+        <span class="tag">0.1 ASCII</span>
+        <span class="tag">0.2 Binary</span>
+        <span class="tag">0.3 Pseudocode</span>
+        <span class="tag">0.4 Scratch</span>
+        <span class="tag">0.5 ASCII Table</span>
+      </div>
+
+      <h3>0.0 Algorithms: Correctness Versus Efficiency</h3>
+      <p>
+        Computing takes an <strong>input</strong> and processes it through an <strong>algorithm</strong>—a finite, step-by-step sequence of instructions—to produce an <strong>output</strong>. Multiple algorithms can solve the same problem, so computer scientists evaluate them on two axes: <strong>correctness</strong> (does it reliably yield the right result?) and <strong>efficiency</strong> (how well does it minimise time and effort?).
+      </p>
+
+      <div class="two-col-grid">
+        <div class="layer">
+          <span class="label">Approach A · Page-by-Page (Linear)</span>
+          <pre class="code-block">1  pick up phone book
+2  open to first page of phone book
+3  look at names
+4  if "Smith" is among names
+5      call Mike
+6  else if not at end of book
+7      flip to next page
+8      go to line 3
+9  else
+10     give up</pre>
+          <p class="helper-text">Correct, yet slow: doubling a 500-page book adds up to 500 extra steps (even flipping two pages at a time remains linear).</p>
+        </div>
+        <div class="layer">
+          <span class="label">Approach B · Halving the Book (Binary)</span>
+          <pre class="code-block">1  pick up phone book
+2  open to middle of phone book
+3  look at names
+4  if "Smith" is among names
+5      call Mike
+6  else if "Smith" is earlier in book
+7      open to middle of left half
+8      go to line 3
+9  else if "Smith" is later in book
+10     open to middle of right half
+11     go to line 3
+12 else
+13     give up</pre>
+          <p class="helper-text">Doubling a 500-page sorted phone book adds only <strong>1 single step</strong> because each check eliminates half of the remaining pages.</p>
+        </div>
+      </div>
+
+      <h3>0.1 &amp; 0.2 Binary Numbers and ASCII Character Encoding</h3>
+      <p>
+        Every number system has a <strong>base</strong>—the count of possible values per digit. Humans commonly use <strong>decimal</strong> (base 10, digits 0–9, place values $10^0, 10^1, 10^2$). Computers store data as <strong>bits</strong> (binary digits, base 2, values <code>0</code> and <code>1</code>), where each column represents a power of 2 ($1, 2, 4, 8, 16, 32, \dots$). For instance, binary <code>110</code> equals $(1 \times 4) + (1 \times 2) + (0 \times 1) = 6$.
+      </p>
+      <p>
+        To store text, computers rely on a consistent <strong>character encoding</strong> standard called <strong>ASCII</strong>. Original 7-bit ASCII encodes $2^7 = 128$ characters (extended 8-bit ASCII encodes 256). Capital <code>'A'</code> is 65 (<code>1000001</code>) and lowercase <code>'a'</code> is 97 (<code>1100001</code>). Notice that lowercase letters are always <strong>32 greater</strong> than their uppercase counterparts—switching case requires flipping only the single bit in the <strong>32s place</strong>! Because 256 values cannot capture mathematical symbols or global scripts, <strong>Unicode</strong> extends the standard to over 1 million characters whilst keeping its first 128 codes identical to ASCII.
+      </p>
+
+      <!-- INTERACTIVE LAB 1: 8-BIT BINARY & ASCII DECODER -->
+      <div class="lab-panel" aria-labelledby="lab-binary-title">
+        <div class="lab-header">
+          <div>
+            <span class="label">Interactive Lab 01 · Binary &amp; ASCII</span>
+            <h3 id="lab-binary-title" style="margin: var(--space-xs) 0 0 0;">8-Bit Binary, Hexadecimal &amp; ASCII Decoder</h3>
+          </div>
+          <div class="btn-row" style="margin: 0;">
+            <button type="button" class="btn btn-ghost btn-compact" onclick="setBinaryValue(65)">Load 'A' (65)</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="setBinaryValue(97)">Load 'a' (97)</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="setBinaryValue(48)">Load '0' (48)</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="toggleBit32()">Flip 32s bit (case)</button>
+          </div>
+        </div>
+        <p class="helper-text">Click any bit below to toggle between <code>0</code> and <code>1</code>. Watch how flipping the 32s bit (highlighted with a green base rule) switches ASCII letters between uppercase and lowercase.</p>
+
+        <div class="bit-row" id="bit-row">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="card-grid">
+          <div class="layer">
+            <span class="label">Decimal (Base 10)</span>
+            <div class="key-value" id="out-dec">65</div>
+          </div>
+          <div class="layer">
+            <span class="label">Binary (Base 2)</span>
+            <div class="key-value" id="out-bin">01000001</div>
+          </div>
+          <div class="layer">
+            <span class="label">Hex &amp; Octal</span>
+            <div class="key-value" id="out-hex">0x41 · 101</div>
+          </div>
+          <div class="layer key-tile">
+            <span class="label">ASCII Output</span>
+            <div class="key-value" id="out-ascii">'A'</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>0.3 &amp; 0.4 Pseudocode and Visual Programming in Scratch</h3>
+      <p>
+        Before writing formal syntax, computer scientists express logic in <strong>pseudocode</strong>—structured natural language using <strong>assignment</strong> (e.g., <code>let n = 0</code>) and <strong>indentation</strong> to bind statements inside loops and conditions. <strong>Scratch</strong> translates these exact constructs into snap-together graphical blocks without syntax errors: programs begin on <em>"When green flag clicked"</em>, act upon objects called <strong>sprites</strong>, evaluate hexagonal sensing or boolean conditions (<code>if ... then</code>, <code>and</code>, <code>or</code>), and repeat instructions via <code>repeat</code>, <code>repeat until</code>, or <code>forever</code> loops.
+      </p>
+
+      <details class="drawer">
+        <summary>
+          <span>0.5 Reference: Standard ASCII Conversion Chart (Printable Characters 32–126 &amp; Control Codes)</span>
+          <span class="label" style="margin: 0;">Toggle table</span>
+        </summary>
+        <div class="drawer-body">
+          <div class="field-group" style="max-width: 320px; margin-bottom: var(--space-md);">
+            <label class="field-label" for="ascii-filter">Filter ASCII Table (char, decimal, or hex)</label>
+            <input type="text" id="ascii-filter" class="input-field" placeholder="e.g. A, 65, 41, CS50..." oninput="filterAsciiTable(this.value)">
+          </div>
+          <div class="table-wrap" style="max-height: 300px; overflow-y: auto;">
+            <table>
+              <thead>
+                <tr><th>Dec</th><th>Binary</th><th>Octal</th><th>Hex</th><th>ASCII</th></tr>
+              </thead>
+              <tbody id="ascii-table-body">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- SECTION 2: WEEK 1 (C PROGRAMMING) -->
+    <section id="sec-week1" class="chapter">
+      <div class="section-head">
+        <div>
+          <span class="label">Section 02 · Week 1 · C Programming</span>
+          <h2 class="headline section-title">Syntax, Data Types, Loops, <strong>Functions &amp; Good Design</strong></h2>
+        </div>
+        <button type="button" class="btn btn-ghost btn-compact" id="btn-done-week1" onclick="toggleSectionDone('week1', this)">Mark section complete</button>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">1.0 Boolean Expressions</span>
+        <span class="tag">1.1 Data Types</span>
+        <span class="tag">1.2 Functions</span>
+        <span class="tag">1.3 Libraries</span>
+        <span class="tag">1.4 Loops</span>
+        <span class="tag">1.5 Operators</span>
+        <span class="tag">1.6 Good Design</span>
+        <span class="tag">1.7 Syntax</span>
+        <span class="tag">1.8 Variables</span>
+      </div>
+
+      <h3>1.7 &amp; 1.8 C Syntax, Compilation, and Variables</h3>
+      <p>
+        C requires strict <strong>syntax</strong>: statements end with semicolons (<code>;</code>), blocks sit inside curly braces (<code>{ }</code>), and execution begins at <code>int main(void)</code>. Preprocessor directives such as <code>#include &lt;stdio.h&gt;</code> import header files so functions like <code>printf()</code> are available. Because CPUs execute only 0s and 1s, source files (<code>hello.c</code>) must be <strong>compiled</strong> into machine object code using <code>make hello</code> (which invokes <code>clang</code>) and run via <code>./hello</code>.
+      </p>
+      <p>
+        A <strong>variable</strong> is a typed storage container declared with a type and name (e.g., <code>int count = 2;</code>). Using <code>#include &lt;cs50.h&gt;</code> provides input helpers like <code>get_int("Integer please: ")</code>, whose value can be formatted into strings via placeholders such as <code>%i</code>.
+      </p>
+
+      <h3>1.1 Native and CS50 Library Data Types</h3>
+      <p>
+        Unlike <strong>dynamically-typed</strong> languages that infer types at runtime, C is <strong>statically-typed</strong>: every variable's type must be declared up front. Type <strong>qualifiers</strong> modify storage bounds: <code>unsigned</code> removes negative values (shifting an <code>int</code> from $[-2^{31}, 2^{31}-1]$ to $[0, 2^{32}-1]$), while <code>long long</code> expands capacity to 8 bytes ($[-2^{63}, 2^{63}-1]$).
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data Type</th>
+              <th>Native to C?</th>
+              <th>Sample Values</th>
+              <th class="num">Memory Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>int</code></td><td>Yes</td><td><code>5, 28, -3, 0</code></td><td class="num">4 bytes</td></tr>
+            <tr><td><code>char</code></td><td>Yes</td><td><code>'a', 'Z', '?', '\n'</code></td><td class="num">1 byte</td></tr>
+            <tr><td><code>float</code></td><td>Yes</td><td><code>3.14, 0.0, -28.56</code></td><td class="num">4 bytes</td></tr>
+            <tr><td><code>double</code></td><td>Yes</td><td><code>3.14, 0.0, -28.56</code></td><td class="num">8 bytes</td></tr>
+            <tr><td><code>long long</code></td><td>Yes</td><td><code>5, 28, -3, 0</code></td><td class="num">8 bytes</td></tr>
+            <tr><td><code>bool</code></td><td>No (<code>cs50.h</code>)</td><td><code>true, false</code></td><td class="num">1 byte</td></tr>
+            <tr><td><code>string</code></td><td>No (<code>cs50.h</code>)</td><td><code>"Hi", "This is CS50"</code></td><td class="num">4 or 8 bytes</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>1.0, 1.4 &amp; 1.5 Boolean Expressions, Operators, and Loops</h3>
+      <p>
+        C evaluates conditions using comparison operators (<code>&lt;</code>, <code>&gt;</code>, <code>==</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>!=</code>) and logical operators (<code>&amp;&amp;</code> AND, <code>||</code> OR, <code>!</code> NOT) across <code>if / else if / else</code> branches, <code>switch</code> statements (requiring <code>break;</code> between cases), and the ternary operator <code>(x &gt; 3) ? 2 : 1</code>.
+      </p>
+      <p>
+        Arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, and modulus <code>%</code> for remainder) follow strict type rules: dividing two integers (<code>10 / 3</code>) truncates the decimal to <code>3</code>, whereas <code>10.0 / 3.0</code> yields a floating-point result. Assignment shorthands include <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>++</code>, and <code>--</code>.
+      </p>
+
+      <div class="asymmetric-grid">
+        <div class="layer">
+          <span class="label">Loops in C · For, While &amp; Do-While</span>
+          <pre class="code-block">// For loop: known iteration count
+for (int i = 0; i &lt; 10; i++)
+{
+    printf("hello!\n");
+}
+
+// While loop: condition checked first
+int k = 0;
+while (k &lt; 10)
+{
+    printf("%i\n", k);
+    k++;
+}
+
+// Do-while: runs at least once (input validation)
+int j;
+do
+{
+    j = get_int("Positive Number: ");
+}
+while (j &lt;= 0);</pre>
+        </div>
+        <div class="layer">
+          <span class="label">1.2 &amp; 1.3 Functions, Scope &amp; Libraries</span>
+          <p class="helper-text" style="margin-top: var(--space-sm);">
+            Functions provide <strong>abstraction</strong>: callers specify inputs and receive a <strong>return value</strong> (or <code>void</code> with a printed <strong>side-effect</strong>) without needing internal details. Variables inside functions have <strong>local scope</strong>; variables outside all functions have <strong>global scope</strong> (accessible everywhere, yet harder to track).
+          </p>
+          <ul class="ruled-list" style="font-size: 0.875rem;">
+            <li><code>&lt;ctype.h&gt;</code>: <code>isalpha()</code>, <code>isdigit()</code>, <code>islower()</code>, <code>isupper()</code>, <code>tolower()</code>, <code>toupper()</code></li>
+            <li><code>&lt;math.h&gt;</code>: <code>ceil()</code>, <code>floor()</code>, <code>pow()</code>, <code>lround()</code>, <code>log2()</code></li>
+            <li><code>&lt;string.h&gt;</code>: <code>strlen()</code>, <code>strcmp()</code>, <code>strstr()</code></li>
+            <li><code>&lt;stdlib.h&gt;</code>: <code>atoi()</code>, <code>rand()</code>, <code>srand()</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>1.6 Principles of Good Design</h3>
+      <p>
+        Well-designed code is robust, consistent, modular, and non-repetitive. Avoid <strong>magic numbers</strong> (unexplained hard-coded constants) by naming them with <code>#define</code> at the top of the file. Replace chained standalone <code>if</code> statements with <code>else if</code> or <code>switch</code> so the computer stops checking once a match is found. Finally, remember that design involves <strong>tradeoffs</strong>: a compact <code>for</code> loop over an array <code>int boxes[] = {12, 10, 3, 1}</code> avoids repetition compared with writing four sequential division/modulo blocks, though programmers may debate readability versus conciseness.
+      </p>
+
+      <!-- INTERACTIVE LAB 2: C OPERATORS & CONDITIONALS SANDBOX -->
+      <div class="lab-panel">
+        <div class="lab-header">
+          <div>
+            <span class="label">Interactive Lab 02 · C Semantics</span>
+            <h3 style="margin: var(--space-xs) 0 0 0;">Integer Division Truncation, Modulo &amp; Conditional Evaluator</h3>
+          </div>
+        </div>
+        <div class="two-col-grid">
+          <div class="field-group">
+            <label class="field-label" for="c-num-a">Integer Operand A (dividend / test x)</label>
+            <input type="number" id="c-num-a" class="input-field" value="10" oninput="updateCLab()">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="c-num-b">Integer Operand B (divisor)</label>
+            <input type="number" id="c-num-b" class="input-field" value="3" oninput="updateCLab()">
+          </div>
+        </div>
+        <div class="card-grid" style="margin-top: var(--space-md);">
+          <div class="layer">
+            <span class="label">int div = A / B</span>
+            <div class="key-value" id="c-out-intdiv">3</div>
+            <div class="helper-text">Truncates decimal part</div>
+          </div>
+          <div class="layer">
+            <span class="label">float fdiv = (float) A / B</span>
+            <div class="key-value" id="c-out-fdiv">3.333</div>
+            <div class="helper-text">Explicit cast preserves fraction</div>
+          </div>
+          <div class="layer">
+            <span class="label">int rem = A % B</span>
+            <div class="key-value" id="c-out-mod">1</div>
+            <div class="helper-text">Modulus remainder</div>
+          </div>
+          <div class="layer key-tile">
+            <span class="label">(A &gt; 3) ? 2 : 1</span>
+            <div class="key-value" id="c-out-tern">2</div>
+            <div class="helper-text" id="c-out-sign">if branch: positive</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: WEEK 2 (ARRAYS, DEBUGGING, CLI, COMPILING) -->
+    <section id="sec-week2" class="chapter">
+      <div class="section-head">
+        <div>
+          <span class="label">Section 03 · Week 2 · Arrays &amp; Tooling</span>
+          <h2 class="headline section-title">Arrays, Strings, <code>debug50</code>, <strong>CLI Arguments &amp; Linking</strong></h2>
+        </div>
+        <button type="button" class="btn btn-ghost btn-compact" id="btn-done-week2" onclick="toggleSectionDone('week2', this)">Mark section complete</button>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">2.0 Arrays &amp; Strings</span>
+        <span class="tag">2.1 Debugging</span>
+        <span class="tag">2.2 Command-Line Interaction</span>
+        <span class="tag">2.3 Compiling</span>
+        <span class="tag">2.4 Exit Codes</span>
+        <span class="tag">2.5 Typecasting</span>
+      </div>
+
+      <p>
+        An <strong>array</strong> stores multiple values of the same data type contiguously in memory, indexed from <code>0</code> up to <code>size - 1</code> (e.g., <code>int ages[5]; ages[0] = 28;</code>). In C, a <strong>string</strong> is simply an array of <code>char</code> values ending with the <strong>null-terminator</strong> <code>'\0'</code> so functions like <code>strlen()</code> know where the text ends.
+      </p>
+
+      <div class="two-col-grid">
+        <div class="layer">
+          <span class="label">2.1 Bugs &amp; debug50</span>
+          <p class="helper-text" style="margin-top: var(--space-xs);">
+            When programs exhibit unexpected behaviour (<strong>bugs</strong>), a graphical <strong>debugger</strong> (<code>debug50 ./program_name</code>) pauses execution at a red-dot <strong>breakpoint</strong> so you can step over blocks, step into functions line by line, step out, or clear breakpoints.
+          </p>
+        </div>
+        <div class="layer">
+          <span class="label">2.3–2.5 Compiling, Exit Codes &amp; Typecasting</span>
+          <p class="helper-text" style="margin-top: var(--space-xs);">
+            <code>make</code> orchestrates <code>clang</code> and the <strong>linker</strong>, combining object code from multiple files and libraries (such as <code>cs50.h</code>) into one executable. Returning <code>0</code> from <code>main</code> signals success; non-zero <strong>exit codes</strong> (<code>1</code>, <code>-1</code>) denote validation errors. <strong>Typecasting</strong> converts types (e.g., implicit cast <code>float d = 28.523; int e = d;</code> becomes <code>28</code>).
+          </p>
+        </div>
+      </div>
+
+      <h3>2.2 Command-Line Interaction: <code>argc</code> and <code>argv</code></h3>
+      <p>
+        Instead of prompting mid-run, C programs can accept <strong>command-line arguments</strong> via <code>int main(int argc, string argv[])</code>. <strong><code>argc</code></strong> (argument count) counts space-separated tokens including the invocation itself, while <strong><code>argv</code></strong> (argument vector) is the zero-indexed array of argument strings.
+      </p>
+
+      <!-- INTERACTIVE LAB 3: ARGC / ARGV & STRING NULL-TERMINATOR INSPECTOR -->
+      <div class="lab-panel">
+        <div class="lab-header">
+          <div>
+            <span class="label">Interactive Lab 03 · Memory &amp; CLI</span>
+            <h3 style="margin: var(--space-xs) 0 0 0;"><code>argc</code> / <code>argv</code> Parser &amp; C String Null-Terminator Inspector</h3>
+          </div>
+          <div class="btn-row" style="margin: 0;">
+            <button type="button" class="btn btn-ghost btn-compact" onclick="setCliPreset('./hello')">./hello</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="setCliPreset('mkdir src')">mkdir src</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="setCliPreset('clang -o hello hello.c')">clang -o hello hello.c</button>
+          </div>
+        </div>
+
+        <div class="two-col-grid">
+          <div class="field-group">
+            <label class="field-label" for="cli-input">Command-line invocation</label>
+            <input type="text" id="cli-input" class="input-field" value="clang -o hello hello.c" oninput="updateCliLab()">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="cstr-input">C String char array (max 14 chars)</label>
+            <input type="text" id="cstr-input" class="input-field" maxlength="14" value="CS50" oninput="updateCliLab()">
+          </div>
+        </div>
+
+        <div class="two-col-grid" style="margin-top: var(--space-md);">
+          <div class="layer" style="background: var(--background);">
+            <span class="label">argc = <span id="cli-argc-val">4</span> · argv[] vector</span>
+            <div class="mem-cells" id="cli-argv-cells"></div>
+          </div>
+          <div class="layer" style="background: var(--background);">
+            <span class="label">strlen(s) = <span id="cstr-len">4</span> · bytes allocated = <span id="cstr-bytes">5</span></span>
+            <div class="mem-cells" id="cstr-cells"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: WEEK 3 (ALGORITHMS & COMPLEXITY) -->
+    <section id="sec-week3" class="chapter">
+      <div class="section-head">
+        <div>
+          <span class="label">Section 04 · Week 3 · Algorithms &amp; Theory</span>
+          <h2 class="headline section-title">Searching, Sorting, Recursion, <strong>Big O &amp; Unsolvable Problems</strong></h2>
+        </div>
+        <button type="button" class="btn btn-ghost btn-compact" id="btn-done-week3" onclick="toggleSectionDone('week3', this)">Mark section complete</button>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">3.0 Algorithms</span>
+        <span class="tag">3.1 Binary Search</span>
+        <span class="tag">3.2 Bubble Sort</span>
+        <span class="tag">3.3 Complexity</span>
+        <span class="tag">3.4 Insertion Sort</span>
+        <span class="tag">3.5 Linear Search</span>
+        <span class="tag">3.6 Merge Sort</span>
+        <span class="tag">3.7 Recursion</span>
+        <span class="tag">3.8 Selection Sort</span>
+      </div>
+
+      <p>
+        <strong>Computational complexity</strong> measures how an algorithm's runtime or memory scales as input size $n$ grows. <strong>Big $O$</strong> captures the upper bound (worst-case order of growth, dropping constants and lower-order terms), while <strong>Big $\Omega$</strong> captures the lower bound (best-case runtime).
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Algorithm</th>
+              <th>Core Mechanism</th>
+              <th>Big $O$ (Worst)</th>
+              <th>Big $\Omega$ (Best)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Linear Search</strong></td><td>Checks every element sequentially from index <code>0</code>; works on unsorted lists.</td><td><code>O(n)</code></td><td><code>Ω(1)</code></td></tr>
+            <tr><td><strong>Binary Search</strong></td><td>Halves a <em>sorted</em> array using <code>min</code>, <code>middle</code>, and <code>max</code> indices.</td><td><code>O(log n)</code></td><td><code>Ω(1)</code></td></tr>
+            <tr><td><strong>Bubble Sort</strong></td><td>Compares adjacent pairs and swaps out-of-order elements so large values bubble up.</td><td><code>O(n²)</code></td><td><code>Ω(n)</code></td></tr>
+            <tr><td><strong>Insertion Sort</strong></td><td>Splits array into sorted/unsorted parts; inserts elements into place (fast if nearly sorted).</td><td><code>O(n²)</code></td><td><code>Ω(n)</code></td></tr>
+            <tr><td><strong>Selection Sort</strong></td><td>Repeatedly finds the minimum element to minimise total swaps (still $O(n^2)$ comparisons).</td><td><code>O(n²)</code></td><td><code>Ω(n²)</code></td></tr>
+            <tr><td><strong>Merge Sort</strong></td><td>Uses <strong>recursion</strong> to split subarrays and merge them in sorted order.</td><td><code>O(n log n)</code></td><td><code>Ω(n log n)</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- INTERACTIVE LAB 4: SEARCH STEPPER + BIG-O CHART -->
+      <div class="lab-panel">
+        <div class="lab-header">
+          <div>
+            <span class="label">Interactive Lab 04 · Search &amp; Complexity</span>
+            <h3 style="margin: var(--space-xs) 0 0 0;">Linear vs Binary Search Stepper &amp; Big-O Scaling Curve</h3>
+          </div>
+        </div>
+
+        <div class="asymmetric-grid">
+          <div class="layer" style="background: var(--background);">
+            <span class="label">Sorted Textbook Array (n = 8)</span>
+            <div class="mem-cells" id="search-array-cells"></div>
+            <div class="btn-row" style="margin-top: var(--space-md);">
+              <div class="field-group" style="width: 140px;">
+                <label class="field-label" for="search-target">Target k</label>
+                <select id="search-target" class="select-field" onchange="resetSearchDemo()">
+                  <option value="50" selected>50 (in list)</option>
+                  <option value="1">1 (first)</option>
+                  <option value="63">63 (last)</option>
+                  <option value="29">29 (mid)</option>
+                  <option value="40">40 (absent)</option>
+                </select>
+              </div>
+              <button type="button" class="btn btn-primary btn-compact" onclick="stepSearchDemo()">Next step</button>
+              <button type="button" class="btn btn-ghost btn-compact" onclick="resetSearchDemo()">Reset</button>
+            </div>
+            <div class="notice" id="search-status-box" style="margin-bottom: 0;">
+              <div>
+                <strong id="search-mode-label">Ready to compare</strong>
+                <div class="helper-text" id="search-step-msg">Click "Next step" to trace Linear Search and Binary Search side by side for target k = 50.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-box">
+            <span class="label">Steps required as input size n grows</span>
+            <canvas id="bigo-chart" aria-label="Chart comparing Big O growth rates" style="margin-top: var(--space-sm);"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <h3>3.7 Recursion &amp; Unsolvable Problems (The Halting Problem)</h3>
+      <p>
+        In a <strong>recursive solution</strong>, a function invokes a slightly modified instance of itself ("passing the buck") until reaching a <strong>base case</strong>, yielding elegant algorithms such as Merge Sort. Even so, some tasks are provably <strong>unsolvable problems</strong>. By contradiction (the <strong>Halting Problem</strong>), no universal programme can accept any arbitrary programme and sample input and definitively determine whether that programme will halt or get stuck in an infinite loop—because a wrapping function could always negate the detector's answer.
+      </p>
+    </section>
+
+    <!-- SECTION 5: WEEKS 4 & 5 (MEMORY & DATA STRUCTURES) -->
+    <section id="sec-week4-5" class="chapter">
+      <div class="section-head">
+        <div>
+          <span class="label">Section 05 · Weeks 4 &amp; 5 · Memory &amp; Data Structures</span>
+          <h2 class="headline section-title">Hexadecimal, Bitmaps, File I/O, <strong>Stacks, Queues &amp; Tries</strong></h2>
+        </div>
+        <button type="button" class="btn btn-ghost btn-compact" id="btn-done-week4-5" onclick="toggleSectionDone('week4-5', this)">Mark section complete</button>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">4.0 File I/O</span>
+        <span class="tag">4.1 Hexadecimal</span>
+        <span class="tag">4.2 Images</span>
+        <span class="tag">4.3 Structs</span>
+        <span class="tag">5.0 Data Structures</span>
+        <span class="tag">5.1–5.2 Tries</span>
+      </div>
+
+      <div class="two-col-grid">
+        <div>
+          <h3>4.0–4.3 Hexadecimal, Images, and File I/O</h3>
+          <p>
+            Long strings of binary bits are cumbersome, so computer scientists group 4 bits at a time into <strong>hexadecimal</strong> (base 16, digits <code>0–9</code> and <code>A–F</code>; e.g., binary <code>1111</code> = decimal 15 = hex <code>F</code>). Images are files of bytes representing grids of <strong>pixels</strong> across formats such as <code>.bmp</code>, <code>.jpg</code> (lossy), and <code>.png</code> (lossless).
+          </p>
+          <p>
+            To persist data beyond a programme's execution, C uses <strong>File I/O</strong> via a <code>FILE *</code> pointer opened with <code>fopen(filename, mode)</code>, manipulated, and closed with <code>fclose()</code>. Related fields (such as a student's name, age, and GPA) can be encapsulated inside custom <strong>data structures</strong>.
+          </p>
+        </div>
+        <div>
+          <h3>5.0–5.2 Abstract Data Structures</h3>
+          <ul class="ruled-list">
+            <li><strong>Stack (LIFO):</strong> Last In, First Out—like a stack of kitchen plates. <code>push()</code> inserts at the head; <code>pop()</code> removes from the head; <code>top()</code> inspects it.</li>
+            <li><strong>Queue (FIFO):</strong> First In, First Out—like a grocery checkout line. <code>enqueue()</code> adds to the back; <code>dequeue()</code> removes from the front.</li>
+            <li><strong>Hash Table:</strong> Maps keys to buckets so key–value pairs can be accessed in average constant time $O(1)$.</li>
+            <li><strong>Graphs &amp; Tries:</strong> Nodes connected by edges (graphs/trees); <strong>Tries</strong> branch character-by-character for rapid dictionary lookup.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE LAB 5: STACK/QUEUE + 8X8 BITMAP -->
+      <div class="lab-panel">
+        <div class="lab-header">
+          <div>
+            <span class="label">Interactive Lab 05 · Memory &amp; Structures</span>
+            <h3 style="margin: var(--space-xs) 0 0 0;">Stack (LIFO) vs Queue (FIFO) &amp; 8×8 Bitmap Matrix</h3>
+          </div>
+        </div>
+
+        <div class="two-col-grid">
+          <div class="layer" style="background: var(--background);">
+            <span class="label">Stack (LIFO) &amp; Queue (FIFO) Operations</span>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary btn-compact" onclick="dsPush()">Push / Enqueue next</button>
+              <button type="button" class="btn btn-secondary btn-compact" onclick="dsPopStack()">Pop Stack (LIFO)</button>
+              <button type="button" class="btn btn-secondary btn-compact" onclick="dsDequeue()">Dequeue (FIFO)</button>
+            </div>
+            <div class="two-col-grid" style="margin-top: var(--space-sm);">
+              <div>
+                <span class="label">Stack (Head at Top)</span>
+                <div class="ds-track" id="stack-track"></div>
+              </div>
+              <div>
+                <span class="label">Queue (Front → End)</span>
+                <div class="queue-track" id="queue-track"></div>
+              </div>
+            </div>
+            <div class="helper-text" id="ds-log" style="margin-top: var(--space-sm);">Initial values loaded: 12, 2, 0.</div>
+          </div>
+
+          <div class="layer" style="background: var(--background);">
+            <span class="label">4.2 8×8 Binary Pixel Grid (Click cells to toggle 0/1)</span>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--space-md); align-items: start; margin-top: var(--space-sm);">
+              <div class="pixel-grid" id="bitmap-grid"></div>
+              <div style="flex: 1; min-width: 140px;">
+                <span class="label">Row Hex Bytes</span>
+                <pre class="code-block" id="bitmap-hex" style="margin-top: var(--space-xs);"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: WEEKS 6 & 7 (PYTHON & SQL) -->
+    <section id="sec-week6-7" class="chapter">
+      <div class="section-head">
+        <div>
+          <span class="label">Section 06 · Weeks 6 &amp; 7 · High-Level &amp; Persistence</span>
+          <h2 class="headline section-title">Python 3 Abstraction &amp; <strong>Relational SQL Databases</strong></h2>
+        </div>
+        <button type="button" class="btn btn-ghost btn-compact" id="btn-done-week6-7" onclick="toggleSectionDone('week6-7', this)">Mark section complete</button>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">6.0 Python</span>
+        <span class="tag">6.1 Python 3 Cheat Sheet</span>
+        <span class="tag">7.0 SQL</span>
+      </div>
+
+      <div class="two-col-grid">
+        <div class="layer">
+          <span class="label">6.0 Python vs C</span>
+          <p class="helper-text" style="margin-top: var(--space-sm);">
+            <strong>Python</strong> is a high-level, <strong>dynamically-typed</strong> language interpreted at runtime (<code>python hello.py</code>) that abstracts away manual memory management. Instead of curly braces and semicolons, Python uses colons (<code>:</code>) and indentation. <code>+</code> performs arithmetic addition on numbers or concatenation on strings; <code>input()</code> always returns a string.
+          </p>
+          <pre class="code-block">mylist = ["foo", "bar"]   # ordered, mutable
+mylist.append("baz")
+mytuple = ("foo", "bar")  # ordered, unchangeable
+fruit = {"apple": 3, "lime": 10}  # dict key-value
+for idx, val in enumerate(mylist):
+    print(idx, val)</pre>
+        </div>
+        <div class="layer">
+          <span class="label">7.0 Relational Databases &amp; SQL</span>
+          <p class="helper-text" style="margin-top: var(--space-sm);">
+            <strong>Databases</strong> store persistent data in spreadsheet-like tables composed of typed <strong>fields</strong> (columns: <code>INTEGER</code>, <code>TEXT</code>, <code>REAL</code>, <code>BLOB</code>, <code>DATETIME</code>, <code>NULL</code>, <code>NUMERIC</code>) and <strong>records</strong> (rows). Each table has one unique <strong>primary key</strong> (often <code>AUTOINCREMENT</code>) so tables can be linked cleanly.
+          </p>
+          <pre class="code-block">CREATE TABLE 'dogs' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'name' TEXT, 'age' INTEGER, 'favorite food' TEXT);
+INSERT INTO "dogs" ("name", "age", "favorite food") VALUES ("Willow", 4, "watermelon");
+SELECT * FROM "dogs";
+UPDATE "dogs" SET "age" = 2 WHERE id = 4;
+DELETE FROM "dogs" WHERE id = 4;</pre>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE LAB 6: SQL DOGS SANDBOX -->
+      <div class="lab-panel">
+        <div class="lab-header">
+          <div>
+            <span class="label">Interactive Lab 06 · SQL Execution</span>
+            <h3 style="margin: var(--space-xs) 0 0 0;">Live SQL Playground: Textbook <code>dogs</code> Table</h3>
+          </div>
+          <button type="button" class="btn btn-ghost btn-compact" onclick="resetSqlTable()">Reset table</button>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary btn-compact" onclick="runSqlPreset('insert')">INSERT Willow (age 4, watermelon)</button>
+          <button type="button" class="btn btn-secondary btn-compact" onclick="runSqlPreset('update')">UPDATE id=4 SET age = 2</button>
+          <button type="button" class="btn btn-secondary btn-compact" onclick="runSqlPreset('delete')">DELETE WHERE id = 4</button>
+          <button type="button" class="btn btn-ghost btn-compact" onclick="runSqlPreset('select_young')">SELECT WHERE age &lt;= 3</button>
+          <button type="button" class="btn btn-ghost btn-compact" onclick="runSqlPreset('select_all')">SELECT * FROM dogs</button>
+        </div>
+
+        <pre class="code-block" id="sql-query-log">SELECT * FROM "dogs";</pre>
+
+        <div class="table-wrap" style="background: var(--background);">
+          <table>
+            <thead>
+              <tr><th>id (PRIMARY KEY)</th><th>name (TEXT)</th><th class="num">age (INTEGER)</th><th>favorite food (TEXT)</th></tr>
+            </thead>
+            <tbody id="sql-dogs-tbody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: WEEKS 8 & 9 (WEB, INTERNET PROTOCOLS, AJAX, MVC, FLASK) -->
+    <section id="sec-week8-9" class="chapter">
+      <div class="section-head">
+        <div>
+          <span class="label">Section 07 · Weeks 8 &amp; 9 · Web Architecture</span>
+          <h2 class="headline section-title">TCP/IP, DNS, HTTP, HTML/CSS/JS, <strong>Ajax, MVC &amp; Flask</strong></h2>
+        </div>
+        <button type="button" class="btn btn-ghost btn-compact" id="btn-done-week8-9" onclick="toggleSectionDone('week8-9', this)">Mark section complete</button>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">8.0–8.6 TCP/IP, DNS &amp; DHCP</span>
+        <span class="tag">8.7–8.8 HTTP</span>
+        <span class="tag">8.9–8.14 HTML, CSS &amp; JS</span>
+        <span class="tag">8.15 Ajax</span>
+        <span class="tag">8.16 MVC</span>
+        <span class="tag">9.0–9.1 Flask &amp; Jinja</span>
+      </div>
+
+      <h3>8.0–8.8 Internet Protocols &amp; HTTP</h3>
+      <p>
+        Devices communicate online using layered protocols: <strong>DHCP</strong> assigns each device an IP address; <strong>DNS</strong> translates human-readable domain names into IP addresses; and <strong>TCP/IP</strong> splits messages into packets and guarantees reliable delivery. On top of TCP/IP, web browsers (<strong>clients</strong>) exchange messages with web <strong>servers</strong> using <strong>HTTP</strong>: <code>GET</code> requests retrieve pages, while <code>POST</code> requests transmit form payloads. Servers answer with a numeric <strong>status code</strong>.
+      </p>
+
+      <div class="two-col-grid">
+        <div class="layer">
+          <span class="label">8.9–8.14 Client-Side Trio: HTML, CSS &amp; JS</span>
+          <ul class="ruled-list" style="font-size: 0.9375rem; margin-top: var(--space-xs);">
+            <li><strong>HTML:</strong> Markup language organising nested tags (<code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code>, <code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code>, <code>&lt;p&gt;</code>) into a tree known as the <strong>DOM</strong>. Unique <code>id</code> and shared <code>class</code> attributes identify elements.</li>
+            <li><strong>CSS:</strong> Controls visual presentation (<code>color</code>, <code>font-size</code>, <code>text-align</code>, box spacing) inline, via <code>&lt;style&gt;</code>, or via an external <code>&lt;link rel="stylesheet"&gt;</code>.</li>
+            <li><strong>JavaScript:</strong> Event-driven browser programming manipulating the DOM (<code>document.getElementById</code>, <code>getAttribute</code>, <code>setAttribute</code>) and handling clicks or keystrokes (often simplified by libraries such as jQuery <code>$</code>).</li>
+          </ul>
+        </div>
+        <div class="layer">
+          <span class="label">8.15–9.1 Ajax, MVC &amp; Flask with Jinja</span>
+          <ul class="ruled-list" style="font-size: 0.9375rem; margin-top: var(--space-xs);">
+            <li><strong>Ajax &amp; JSON:</strong> Asynchronous JavaScript via <code>XMLHttpRequest</code> sends background HTTP requests through an Ajax engine and receives compact <strong>JSON</strong> data to update part of a page without a full reload.</li>
+            <li><strong>MVC Architecture:</strong> Splits web apps into <strong>Model</strong> (data/database), <strong>View</strong> (HTML/CSS/JS UI), and <strong>Controller</strong> (Python/SQL logic), enabling encapsulation and parallel team development.</li>
+            <li><strong>Flask &amp; Jinja:</strong> Python micro web framework mapping URLs with <code>@app.route("/")</code>, inspecting <code>request.args</code> (GET) and <code>request.form</code> (POST), managing <code>session</code>, and inheriting HTML layouts via <strong>Jinja</strong> (<code>{% extends "layout.html" %}</code>).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE LAB 7: HTTP STATUS & AJAX/MVC EXPLORER -->
+      <div class="lab-panel">
+        <div class="lab-header">
+          <div>
+            <span class="label">Interactive Lab 07 · Web Request Inspector</span>
+            <h3 style="margin: var(--space-xs) 0 0 0;">HTTP Status Codes, Ajax vs Full-Reload &amp; MVC Flow</h3>
+          </div>
+        </div>
+
+        <div class="tab-bar" role="tablist">
+          <button type="button" class="tab-btn is-active" id="tab-http" onclick="switchWebTab('http')">HTTP Status Explorer</button>
+          <button type="button" class="tab-btn" id="tab-ajax" onclick="switchWebTab('ajax')">With vs Without Ajax</button>
+          <button type="button" class="tab-btn" id="tab-mvc" onclick="switchWebTab('mvc')">MVC Request Cycle</button>
+        </div>
+
+        <div id="panel-http">
+          <div class="btn-row" style="margin-top: 0;">
+            <button type="button" class="btn btn-ghost btn-compact is-selected" onclick="inspectHttp(200, this)">200 OK</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="inspectHttp(301, this)">301 Moved</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="inspectHttp(302, this)">302 Found</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="inspectHttp(403, this)">403 Forbidden</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="inspectHttp(404, this)">404 Not Found</button>
+            <button type="button" class="btn btn-ghost btn-compact" onclick="inspectHttp(500, this)">500 Server Error</button>
+          </div>
+          <div class="notice is-positive" id="http-detail-box" style="margin-bottom: 0;">
+            <div>
+              <strong id="http-detail-title">HTTP/1.1 200 OK</strong>
+              <p class="helper-text" id="http-detail-desc" style="margin: var(--space-xs) 0 0 0;">The server located the requested resource and successfully returned the page contents (for example, Content-Type: text/html).</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-ajax" style="display: none;">
+          <div class="two-col-grid" style="margin: 0;">
+            <div class="layer" style="background: var(--background);">
+              <span class="label">Without Ajax (Synchronous)</span>
+              <p class="helper-text" style="margin-top: var(--space-xs);">Browser sends HTTP request → Server replies with complete HTML &amp; CSS → Entire browser window refreshes and reloads.</p>
+            </div>
+            <div class="layer" style="background: var(--background); border-left: var(--state-bar-blue);">
+              <span class="label">With Ajax (Asynchronous)</span>
+              <p class="helper-text" style="margin-top: var(--space-xs);">User triggers JS call → <strong>Ajax engine</strong> (XHR) sends HTTP request in background → Server returns small <strong>JSON</strong>/HTML snippet → Browser updates only the targeted DOM node.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-mvc" style="display: none;">
+          <div class="card-grid" style="margin: 0;">
+            <div class="layer" style="background: var(--background); border-left: var(--state-bar-blue);">
+              <span class="label">1. View (HTML / CSS / JS)</span>
+              <p class="helper-text" style="margin-top: var(--space-xs);">Collects user input (e.g., location) and renders processed output back to the user.</p>
+            </div>
+            <div class="layer" style="background: var(--background); border-left: var(--state-bar-blue);">
+              <span class="label">2. Controller (Python / SQL)</span>
+              <p class="helper-text" style="margin-top: var(--space-xs);">Mastermind connecting View and Model: validates input, queries Model, and formats output.</p>
+            </div>
+            <div class="layer" style="background: var(--background); border-left: var(--state-bar-blue);">
+              <span class="label">3. Model (Database)</span>
+              <p class="helper-text" style="margin-top: var(--space-xs);">Stores and manages persistent application data; responds to Controller queries.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 8: WEEKS 11-14 (HARDWARE, LOGIC, ROUTERS, VR, SECURITY) -->
+    <section id="sec-week11-14" class="chapter">
+      <div class="section-head">
+        <div>
+          <span class="label">Section 08 · Weeks 11–14 · Systems &amp; Architecture</span>
+          <h2 class="headline section-title">Hardware, Transistors, Routers, <strong>VR/AR &amp; Cybersecurity</strong></h2>
+        </div>
+        <button type="button" class="btn btn-ghost btn-compact" id="btn-done-week11-14" onclick="toggleSectionDone('week11-14', this)">Mark section complete</button>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">11.0–11.3 CPU &amp; Memory</span>
+        <span class="tag">11.4 Transistors &amp; Logic</span>
+        <span class="tag">12.0 Routers</span>
+        <span class="tag">13.0 VR &amp; AR</span>
+        <span class="tag">14.0–14.1 Cybersecurity</span>
+      </div>
+
+      <div class="two-col-grid">
+        <div>
+          <h3>11.0–11.3 Computers, CPU Cycle, and Memory Hierarchy</h3>
+          <p>
+            A computer combines physical <strong>hardware</strong> and virtual <strong>software</strong> (applications communicating with the operating system). Its central processing unit (<strong>CPU</strong>) contains billions of microscopic <strong>transistors</strong> executing four repeating phases: <strong>fetch</strong> instructions from memory, <strong>decode</strong> them, <strong>execute</strong> the calculation, and <strong>store</strong> the result. Computers balance speed and capacity across fast volatile <strong>RAM</strong> and persistent storage (<strong>HDD</strong> / <strong>SSD</strong>).
+          </p>
+        </div>
+        <div>
+          <h3>12.0–14.1 Routers, Multimedia, and Cybersecurity</h3>
+          <p>
+            Across the Internet, <strong>routers</strong> consult <strong>routing tables</strong> to direct packets of data across interconnected networks to their destinations. In multimedia, <strong>Virtual Reality (VR)</strong> and <strong>Augmented Reality (AR)</strong> immerse or overlay digital graphics onto the physical world. Finally, <strong>cybersecurity</strong> and <strong>trust models</strong> establish how systems authenticate users, verify integrity, and protect data against adversaries.
+          </p>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE LAB 8: TRANSISTOR LOGIC GATES & TRUTH TABLE -->
+      <div class="lab-panel">
+        <div class="lab-header">
+          <div>
+            <span class="label">Interactive Lab 08 · 11.4 Digital Logic</span>
+            <h3 style="margin: var(--space-xs) 0 0 0;">Boolean Logic Gate &amp; Truth Table Explorer</h3>
+          </div>
+        </div>
+
+        <div class="btn-row" style="margin-top: 0;">
+          <button type="button" class="btn btn-ghost btn-compact is-selected" onclick="selectGate('AND', this)">AND</button>
+          <button type="button" class="btn btn-ghost btn-compact" onclick="selectGate('OR', this)">OR</button>
+          <button type="button" class="btn btn-ghost btn-compact" onclick="selectGate('NAND', this)">NAND</button>
+          <button type="button" class="btn btn-ghost btn-compact" onclick="selectGate('NOR', this)">NOR</button>
+          <button type="button" class="btn btn-ghost btn-compact" onclick="selectGate('XOR', this)">XOR</button>
+        </div>
+
+        <div class="asymmetric-grid">
+          <div class="layer" style="background: var(--background);">
+            <span class="label">Toggle Transistor Inputs</span>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary btn-compact" id="gate-btn-a" onclick="toggleGateInput('A')">Input A: true (1)</button>
+              <button type="button" class="btn btn-primary btn-compact" id="gate-btn-b" onclick="toggleGateInput('B')">Input B: true (1)</button>
+            </div>
+            <div class="layer key-tile" style="margin-top: var(--space-sm);">
+              <span class="label" id="gate-result-label">A AND B Output</span>
+              <div class="key-value" id="gate-result-val">true (1)</div>
+            </div>
+          </div>
+
+          <div class="table-wrap" style="margin: 0; background: var(--background);">
+            <table>
+              <thead>
+                <tr><th>Input A</th><th>Input B</th><th id="gate-col-title">A AND B</th></tr>
+              </thead>
+              <tbody id="gate-truth-body">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 9: COMPREHENSIVE INTERACTIVE QUIZ -->
+    <section id="sec-quiz" class="chapter">
+      <div class="section-head">
+        <div>
+          <span class="label">Section 09 · Assessment · All Topics</span>
+          <h2 class="headline section-title">Comprehensive CS50 <strong>Comprehension Quiz</strong></h2>
+        </div>
+        <div class="btn-row" style="margin: 0;">
+          <button type="button" class="btn btn-secondary btn-compact" onclick="exportStudyReport()">Export study report</button>
+          <button type="button" class="btn btn-ghost btn-compact" id="btn-reset-quiz" onclick="resetAllProgress(this)">Reset quiz &amp; progress</button>
+        </div>
+      </div>
+
+      <p>
+        Test your grasp of every unit in the CS50 textbook—from binary encoding and C pointers/arrays to sorting complexity, SQL queries, HTTP status codes, Flask, CPU cycles, and cybersecurity. Select an option for immediate marking and textbook explanations; your progress saves automatically.
+      </p>
+
+      <!-- Scoreboard Summary -->
+      <div class="card-grid" style="margin-bottom: var(--space-lg);">
+        <div class="layer key-tile">
+          <span class="label">Total Correct</span>
+          <div class="key-value" id="quiz-total-score">0 / 21</div>
+        </div>
+        <div class="layer">
+          <span class="label">Answered</span>
+          <div class="key-value" id="quiz-answered-count">0 / 21</div>
+        </div>
+        <div class="layer">
+          <span class="label">Accuracy</span>
+          <div class="key-value" id="quiz-accuracy-pct">0%</div>
+        </div>
+        <div class="layer">
+          <span class="label">Status</span>
+          <div class="key-value" id="quiz-status-text" style="font-size: 1.25rem; padding-top: var(--space-xs);">Not started</div>
+        </div>
+      </div>
+
+      <!-- Topic Filter Bar -->
+      <div class="btn-row" role="group" aria-label="Filter quiz questions by topic">
+        <button type="button" class="btn btn-ghost btn-compact is-selected" onclick="setQuizFilter('all', this)">All Topics (21)</button>
+        <button type="button" class="btn btn-ghost btn-compact" onclick="setQuizFilter('w0-2', this)">Weeks 0–2: Scratch &amp; C (6)</button>
+        <button type="button" class="btn btn-ghost btn-compact" onclick="setQuizFilter('w3-5', this)">Weeks 3–5: Algorithms &amp; Data (5)</button>
+        <button type="button" class="btn btn-ghost btn-compact" onclick="setQuizFilter('w6-7', this)">Weeks 6–7: Python &amp; SQL (4)</button>
+        <button type="button" class="btn btn-ghost btn-compact" onclick="setQuizFilter('w8-9', this)">Weeks 8–9: Web &amp; Flask (3)</button>
+        <button type="button" class="btn btn-ghost btn-compact" onclick="setQuizFilter('w11-14', this)">Weeks 11–14: Systems (3)</button>
+      </div>
+
+      <div id="quiz-container">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- FOOTER / SOURCES -->
+    <footer class="chapter" style="padding-top: var(--space-lg);">
+      <span class="label">Sources &amp; Grounding</span>
+      <p class="helper-text" style="margin-top: var(--space-xs);">
+        Compiled and adapted into British English from the Harvard CS50 Textbook syllabus notes (Weeks 0–14), covering Scratch, C, Arrays, Algorithms, Memory, Data Structures, Python 3, SQL, Internet Protocols, HTML/CSS/JavaScript, Ajax, MVC, Flask, Hardware, Routers, VR/AR, and Cybersecurity.
+      </p>
+    </footer>
+  </main>
+</div>
+
+<api-shim></api-shim>
+
+<script>
+// =========================================================================
+// STATE & PERSISTENCE
+// =========================================================================
+const DEFAULT_DOGS = [
+  { id: 1, name: `Elphie`, age: 2, food: `vanilla ice cream` },
+  { id: 2, name: `Milo`, age: 6, food: `duck dog treat` },
+  { id: 3, name: `Mochi`, age: 3, food: `mochi` }
+];
+
+const appState = {
+  completedSections: [],
+  quizAnswers: {},
+  quizFilter: `all`,
+  binaryValue: 65,
+  dogsRows: DEFAULT_DOGS.map(function (r) { return Object.assign({}, r); }),
+  dogsNextId: 4
+};
+
+async function persistState() {
+  try {
+    if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === `function`) {
+      await window.notebookAppApi.setAppState(appState);
+    }
+  } catch (err) {
+    // Graceful no-op outside sandbox host
+  }
+}
+
+function getCssVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+// =========================================================================
+// SECTION COMPLETION & NAVIGATION
+// =========================================================================
+const SECTION_IDS = [`overview`, `week0`, `week1`, `week2`, `week3`, `week4-5`, `week6-7`, `week8-9`, `week11-14`];
+
+function toggleSectionDone(secId, btn) {
+  const idx = appState.completedSections.indexOf(secId);
+  if (idx === -1) {
+    appState.completedSections.push(secId);
+  } else {
+    appState.completedSections.splice(idx, 1);
+  }
+  updateSectionProgressUI();
+  persistState();
+}
+
+function updateSectionProgressUI() {
+  const count = appState.completedSections.length;
+  const pct = Math.round((count / SECTION_IDS.length) * 100);
+
+  const railLabel = document.getElementById(`rail-progress-label`);
+  const railFill = document.getElementById(`rail-progress-fill`);
+  const heroRead = document.getElementById(`hero-modules-read`);
+  if (railLabel) railLabel.textContent = `${count} of ${SECTION_IDS.length} modules marked read`;
+  if (railFill) railFill.style.width = `${pct}%`;
+  if (heroRead) heroRead.textContent = `${count} / ${SECTION_IDS.length}`;
+
+  SECTION_IDS.forEach(function (id) {
+    const done = appState.completedSections.indexOf(id) !== -1;
+    const navSt = document.getElementById(`nav-st-${id}`);
+    if (navSt) {
+      navSt.textContent = done ? `DONE` : ``;
+      if (done) navSt.classList.add(`is-done`);
+      else navSt.classList.remove(`is-done`);
+    }
+    const btn = document.getElementById(`btn-done-${id}`);
+    if (btn) {
+      btn.textContent = done ? `Completed (undo)` : `Mark section complete`;
+      if (done) btn.classList.add(`is-selected`);
+      else btn.classList.remove(`is-selected`);
+    }
+  });
+}
+
+function jumpToSection(hash) {
+  const target = document.querySelector(hash);
+  if (target) target.scrollIntoView({ behavior: `smooth` });
+}
+
+function setupScrollSpy() {
+  const links = document.querySelectorAll(`.side-nav-link`);
+  const sections = document.querySelectorAll(`.chapter`);
+  if (!(`IntersectionObserver` in window) || sections.length === 0) return;
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute(`id`);
+        links.forEach(function (lnk) {
+          if (lnk.getAttribute(`href`) === `#${id}`) lnk.classList.add(`is-active`);
+          else lnk.classList.remove(`is-active`);
+        });
+      }
+    });
+  }, { rootMargin: `-15% 0px -70% 0px`, threshold: 0 });
+
+  sections.forEach(function (sec) { observer.observe(sec); });
+}
+
+// =========================================================================
+// LAB 1: BINARY, HEX & ASCII DECODER + ASCII TABLE
+// =========================================================================
+const ASCII_CONTROLS = [
+  `NUL`, `SOH`, `STX`, `ETX`, `EOT`, `ENQ`, `ACK`, `BEL`,
+  `BS`, `HT`, `LF`, `VT`, `FF`, `CR`, `SO`, `SI`,
+  `DLE`, `DC1`, `DC2`, `DC3`, `DC4`, `NAK`, `SYN`, `ETB`,
+  `CAN`, `EM`, `SUB`, `ESC`, `FS`, `GS`, `RS`, `US`
+];
+
+function getAsciiLabel(code) {
+  if (code < 32) return ASCII_CONTROLS[code];
+  if (code === 32) return `SP (Space)`;
+  if (code === 127) return `DEL`;
+  return `'${String.fromCharCode(code)}'`;
+}
+
+function renderBinaryLab() {
+  const val = Math.max(0, Math.min(255, appState.binaryValue));
+  const row = document.getElementById(`bit-row`);
+  if (!row) return;
+
+  const weights = [128, 64, 32, 16, 8, 4, 2, 1];
+  let html = ``;
+  weights.forEach(function (w) {
+    const isOn = (val & w) !== 0;
+    const cls = `bit-btn${isOn ? ` is-on` : ``}${w === 32 ? ` is-bit32` : ``}`;
+    html += `<button type="button" class="${cls}" onclick="toggleBit(${w})" aria-pressed="${isOn ? `true` : `false`}">`;
+    html += `<span class="bit-val">${isOn ? `1` : `0`}</span>`;
+    html += `<span class="bit-weight">${w}s</span>`;
+    html += `</button>`;
+  });
+  row.innerHTML = html;
+
+  const binStr = val.toString(2).padStart(8, `0`);
+  const hexStr = val.toString(16).toUpperCase().padStart(2, `0`);
+  const octStr = val.toString(8).padStart(3, `0`);
+  const asciiStr = val <= 127 ? getAsciiLabel(val) : `Extended (${val})`;
+
+  const decEl = document.getElementById(`out-dec`);
+  const binEl = document.getElementById(`out-bin`);
+  const hexEl = document.getElementById(`out-hex`);
+  const ascEl = document.getElementById(`out-ascii`);
+  if (decEl) decEl.textContent = String(val);
+  if (binEl) binEl.textContent = binStr;
+  if (hexEl) hexEl.textContent = `0x${hexStr} · ${octStr}`;
+  if (ascEl) ascEl.textContent = asciiStr;
+}
+
+function toggleBit(weight) {
+  appState.binaryValue = appState.binaryValue ^ weight;
+  renderBinaryLab();
+  persistState();
+}
+
+function setBinaryValue(num) {
+  appState.binaryValue = num;
+  renderBinaryLab();
+  persistState();
+}
+
+function toggleBit32() {
+  appState.binaryValue = appState.binaryValue ^ 32;
+  renderBinaryLab();
+  persistState();
+}
+
+function renderAsciiTable(filterText) {
+  const tbody = document.getElementById(`ascii-table-body`);
+  if (!tbody) return;
+  const q = (filterText || ``).trim().toLowerCase();
+  let html = ``;
+  for (let i = 0; i <= 127; i++) {
+    const bin = i.toString(2).padStart(8, `0`);
+    const oct = i.toString(8).padStart(3, `0`);
+    const hex = i.toString(16).toUpperCase().padStart(2, `0`);
+    const asc = i < 32 ? ASCII_CONTROLS[i] : (i === 32 ? `SP` : (i === 127 ? `DEL` : String.fromCharCode(i)));
+    const rowStr = `${i} ${bin} ${oct} ${hex} ${asc}`.toLowerCase();
+    if (q && rowStr.indexOf(q) === -1) continue;
+    html += `<tr><td class="num">${i}</td><td><code>${bin}</code></td><td><code>${oct}</code></td><td><code>${hex}</code></td><td><strong>${escapeHtml(asc)}</strong></td></tr>`;
+  }
+  tbody.innerHTML = html || `<tr><td colspan="5">No matching ASCII entries found.</td></tr>`;
+}
+
+function filterAsciiTable(val) {
+  renderAsciiTable(val);
+}
+
+// =========================================================================
+// LAB 2: C OPERATORS & CONDITIONALS
+// =========================================================================
+function updateCLab() {
+  const aEl = document.getElementById(`c-num-a`);
+  const bEl = document.getElementById(`c-num-b`);
+  if (!aEl || !bEl) return;
+  const a = parseInt(aEl.value, 10) || 0;
+  const b = parseInt(bEl.value, 10) || 0;
+
+  const intDivEl = document.getElementById(`c-out-intdiv`);
+  const fDivEl = document.getElementById(`c-out-fdiv`);
+  const modEl = document.getElementById(`c-out-mod`);
+  const ternEl = document.getElementById(`c-out-tern`);
+  const signEl = document.getElementById(`c-out-sign`);
+
+  if (b === 0) {
+    if (intDivEl) intDivEl.textContent = `Err (÷0)`;
+    if (fDivEl) fDivEl.textContent = `Err (÷0)`;
+    if (modEl) modEl.textContent = `Err (÷0)`;
+  } else {
+    if (intDivEl) intDivEl.textContent = String(Math.trunc(a / b));
+    if (fDivEl) fDivEl.textContent = (a / b).toFixed(3);
+    if (modEl) modEl.textContent = String(a % b);
+  }
+  if (ternEl) ternEl.textContent = a > 3 ? `2` : `1`;
+  if (signEl) {
+    const branch = a > 0 ? `positive` : (a < 0 ? `negative` : `zero`);
+    signEl.textContent = `if branch: "${branch}"`;
+  }
+}
+
+// =========================================================================
+// LAB 3: ARGC / ARGV & C STRING INSPECTOR
+// =========================================================================
+function setCliPreset(cmd) {
+  const el = document.getElementById(`cli-input`);
+  if (el) {
+    el.value = cmd;
+    updateCliLab();
+  }
+}
+
+function updateCliLab() {
+  const cliEl = document.getElementById(`cli-input`);
+  const cstrEl = document.getElementById(`cstr-input`);
+  if (!cliEl || !cstrEl) return;
+
+  const tokens = cliEl.value.trim().split(/\s+/).filter(function (t) { return t.length > 0; });
+  const argcVal = document.getElementById(`cli-argc-val`);
+  const argvCells = document.getElementById(`cli-argv-cells`);
+  if (argcVal) argcVal.textContent = String(tokens.length);
+  if (argvCells) {
+    if (tokens.length === 0) {
+      argvCells.innerHTML = `<span class="helper-text">Enter a command above to inspect argv[].</span>`;
+    } else {
+      argvCells.innerHTML = tokens.map(function (tok, idx) {
+        return `<div class="mem-cell"><span class="mem-idx">argv[${idx}]</span><span class="mem-data">"${escapeHtml(tok)}"</span></div>`;
+      }).join(``);
+    }
+  }
+
+  const txt = cstrEl.value;
+  const lenEl = document.getElementById(`cstr-len`);
+  const bytesEl = document.getElementById(`cstr-bytes`);
+  const cellsEl = document.getElementById(`cstr-cells`);
+  if (lenEl) lenEl.textContent = String(txt.length);
+  if (bytesEl) bytesEl.textContent = String(txt.length + 1);
+  if (cellsEl) {
+    let html = ``;
+    for (let i = 0; i < txt.length; i++) {
+      html += `<div class="mem-cell"><span class="mem-idx">s[${i}]</span><span class="mem-data">'${escapeHtml(txt[i])}'</span></div>`;
+    }
+    html += `<div class="mem-cell is-null"><span class="mem-idx">s[${txt.length}]</span><span class="mem-data">'\\0'</span></div>`;
+    cellsEl.innerHTML = html;
+  }
+}
+
+// =========================================================================
+// LAB 4: SEARCH STEPPER & BIG-O CHART
+// =========================================================================
+const SEARCH_DATA = [1, 7, 13, 29, 38, 42, 50, 63];
+let searchState = {
+  linIdx: 0,
+  linDone: false,
+  binMin: 0,
+  binMax: SEARCH_DATA.length - 1,
+  binDone: false,
+  steps: 0
+};
+
+function resetSearchDemo() {
+  searchState = {
+    linIdx: 0,
+    linDone: false,
+    binMin: 0,
+    binMax: SEARCH_DATA.length - 1,
+    binDone: false,
+    steps: 0
+  };
+  renderSearchArray();
+  const lbl = document.getElementById(`search-mode-label`);
+  const msg = document.getElementById(`search-step-msg`);
+  const target = parseInt((document.getElementById(`search-target`) || { value: 50 }).value, 10);
+  if (lbl) lbl.textContent = `Ready to search for ${target}`;
+  if (msg) msg.textContent = `Click "Next step" to advance both Linear Search (left-to-right) and Binary Search (midpoint halving).`;
+}
+
+function stepSearchDemo() {
+  const target = parseInt((document.getElementById(`search-target`) || { value: 50 }).value, 10);
+  if (searchState.linDone && searchState.binDone) {
+    resetSearchDemo();
+    return;
+  }
+  searchState.steps += 1;
+
+  let linReport = ``;
+  if (!searchState.linDone) {
+    if (searchState.linIdx >= SEARCH_DATA.length) {
+      searchState.linDone = true;
+      linReport = `Linear: reached end (not found).`;
+    } else if (SEARCH_DATA[searchState.linIdx] === target) {
+      searchState.linDone = true;
+      linReport = `Linear: checked index ${searchState.linIdx} (${SEARCH_DATA[searchState.linIdx]}) — Found in ${searchState.steps} step(s)!`;
+    } else {
+      linReport = `Linear: index ${searchState.linIdx} is ${SEARCH_DATA[searchState.linIdx]} ≠ ${target}.`;
+      searchState.linIdx += 1;
+      if (searchState.linIdx >= SEARCH_DATA.length) searchState.linDone = true;
+    }
+  } else {
+    linReport = `Linear: finished.`;
+  }
+
+  let binReport = ``;
+  if (!searchState.binDone) {
+    if (searchState.binMin > searchState.binMax) {
+      searchState.binDone = true;
+      binReport = `Binary: bounds crossed (not found).`;
+    } else {
+      const mid = Math.floor((searchState.binMin + searchState.binMax) / 2);
+      const val = SEARCH_DATA[mid];
+      if (val === target) {
+        searchState.binDone = true;
+        binReport = `Binary: mid index ${mid} is ${val} — Found in ${searchState.steps} step(s)!`;
+      } else if (target < val) {
+        binReport = `Binary: mid index ${mid} (${val}) > ${target}, narrow max to ${mid - 1}.`;
+        searchState.binMax = mid - 1;
+      } else {
+        binReport = `Binary: mid index ${mid} (${val}) < ${target}, narrow min to ${mid + 1}.`;
+        searchState.binMin = mid + 1;
+      }
+      if (searchState.binMin > searchState.binMax && !searchState.binDone) {
+        searchState.binDone = true;
+      }
+    }
+  } else {
+    binReport = `Binary: finished.`;
+  }
+
+  renderSearchArray();
+  const lbl = document.getElementById(`search-mode-label`);
+  const msg = document.getElementById(`search-step-msg`);
+  if (lbl) lbl.textContent = `Step ${searchState.steps} comparison (target k = ${target})`;
+  if (msg) msg.textContent = `${linReport} | ${binReport}`;
+}
+
+function renderSearchArray() {
+  const box = document.getElementById(`search-array-cells`);
+  if (!box) return;
+  const mid = searchState.binMin <= searchState.binMax ? Math.floor((searchState.binMin + searchState.binMax) / 2) : -1;
+
+  box.innerHTML = SEARCH_DATA.map(function (val, idx) {
+    const inBinRange = idx >= searchState.binMin && idx <= searchState.binMax;
+    const isMid = idx === mid && searchState.steps > 0;
+    const cls = `mem-cell${isMid ? ` is-active` : ``}${!inBinRange ? ` is-discarded` : ``}`;
+    return `<div class="${cls}"><span class="mem-idx">[${idx}]</span><span class="mem-data">${val}</span></div>`;
+  }).join(``);
+}
+
+let bigOChart = null;
+function initBigOChart() {
+  const canvas = document.getElementById(`bigo-chart`);
+  if (!canvas || typeof Chart === `undefined`) return;
+  const ns = [4, 8, 16, 32, 64];
+  const c1 = getCssVar(`--data-1`);
+  const c2 = getCssVar(`--data-2`);
+  const c3 = getCssVar(`--data-3`);
+  const c4 = getCssVar(`--data-4`);
+  const ctxColor = getCssVar(`--on-surface-variant`);
+  const gridColor = getCssVar(`--outline-variant`);
+
+  bigOChart = new Chart(canvas, {
+    type: `line`,
+    data: {
+      labels: ns.map(function (n) { return `n=${n}`; }),
+      datasets: [
+        {
+          label: `O(log n) Binary Search`,
+          data: ns.map(function (n) { return Number(Math.log2(n).toFixed(1)); }),
+          borderColor: c3,
+          backgroundColor: c3,
+          borderWidth: 2,
+          tension: 0
+        },
+        {
+          label: `O(n) Linear Search`,
+          data: ns,
+          borderColor: c1,
+          backgroundColor: c1,
+          borderWidth: 2,
+          tension: 0
+        },
+        {
+          label: `O(n log n) Merge Sort`,
+          data: ns.map(function (n) { return Math.round(n * Math.log2(n)); }),
+          borderColor: c2,
+          backgroundColor: c2,
+          borderWidth: 2,
+          tension: 0
+        },
+        {
+          label: `O(n²) Bubble/Sel/Ins Sort (scaled ÷4)`,
+          data: ns.map(function (n) { return Math.round((n * n) / 4); }),
+          borderColor: c4,
+          backgroundColor: c4,
+          borderWidth: 2,
+          borderDash: [4, 4],
+          tension: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: `bottom`,
+          labels: { color: ctxColor, boxWidth: 12, font: { family: `IBM Plex Mono`, size: 11 } }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: ctxColor, font: { family: `IBM Plex Mono`, size: 11 } }
+        },
+        y: {
+          grid: { color: gridColor },
+          ticks: { color: ctxColor, font: { family: `IBM Plex Mono`, size: 11 } }
+        }
+      }
+    }
+  });
+}
+
+// =========================================================================
+// LAB 5: STACK / QUEUE & 8x8 BITMAP
+// =========================================================================
+let stackItems = [12, 2, 0];
+let queueItems = [12, 2, 0];
+let nextDsVal = 6;
+const BITMAP_PRESET = [
+  1,1,0,0,0,0,1,1,
+  1,0,1,1,1,1,0,1,
+  0,1,0,1,1,0,1,0,
+  0,1,1,1,1,1,1,0,
+  0,1,0,1,1,0,1,0,
+  0,1,1,0,0,1,1,0,
+  1,0,1,1,1,1,0,1,
+  1,1,0,0,0,0,1,1
+];
+let bitmapBits = BITMAP_PRESET.slice();
+
+function renderDsLab() {
+  const sEl = document.getElementById(`stack-track`);
+  const qEl = document.getElementById(`queue-track`);
+  if (sEl) {
+    sEl.innerHTML = stackItems.length === 0
+      ? `<span class="helper-text">Empty stack</span>`
+      : stackItems.map(function (v) { return `<div class="ds-node">${v}</div>`; }).join(``);
+  }
+  if (qEl) {
+    qEl.innerHTML = queueItems.length === 0
+      ? `<span class="helper-text">Empty queue</span>`
+      : queueItems.map(function (v) { return `<div class="ds-node">${v}</div>`; }).join(``);
+  }
+}
+
+function dsPush() {
+  if (stackItems.length >= 6) {
+    setDsLog(`Capacity limit reached (6 items) for display.`);
+    return;
+  }
+  stackItems.push(nextDsVal);
+  queueItems.push(nextDsVal);
+  setDsLog(`Inserted ${nextDsVal}: pushed to Stack top and enqueued at Queue end.`);
+  nextDsVal += 6;
+  renderDsLab();
+}
+
+function dsPopStack() {
+  if (stackItems.length === 0) {
+    setDsLog(`Stack underflow: nothing left to pop().`);
+    return;
+  }
+  const removed = stackItems.pop();
+  setDsLog(`Stack pop() removed ${removed} (Last In, First Out).`);
+  renderDsLab();
+}
+
+function dsDequeue() {
+  if (queueItems.length === 0) {
+    setDsLog(`Queue empty: nothing left to dequeue().`);
+    return;
+  }
+  const removed = queueItems.shift();
+  setDsLog(`Queue dequeue() removed ${removed} (First In, First Out).`);
+  renderDsLab();
+}
+
+function setDsLog(msg) {
+  const el = document.getElementById(`ds-log`);
+  if (el) el.textContent = msg;
+}
+
+function renderBitmapGrid() {
+  const grid = document.getElementById(`bitmap-grid`);
+  const hexPre = document.getElementById(`bitmap-hex`);
+  if (!grid || !hexPre) return;
+
+  let html = ``;
+  for (let i = 0; i < 64; i++) {
+    const bit = bitmapBits[i];
+    html += `<button type="button" class="pixel-cell${bit ? ` is-dark` : ``}" onclick="toggleBitmapCell(${i})" aria-label="Pixel ${i}">${bit}</button>`;
+  }
+  grid.innerHTML = html;
+
+  let hexLines = [];
+  for (let r = 0; r < 8; r++) {
+    let val = 0;
+    for (let c = 0; c < 8; c++) {
+      val = (val << 1) | bitmapBits[r * 8 + c];
+    }
+    hexLines.push(`Row ${r}: 0x${val.toString(16).toUpperCase().padStart(2, `0`)}`);
+  }
+  hexPre.textContent = hexLines.join(`\n`);
+}
+
+function toggleBitmapCell(idx) {
+  bitmapBits[idx] = bitmapBits[idx] ? 0 : 1;
+  renderBitmapGrid();
+}
+
+// =========================================================================
+// LAB 6: SQL DOGS SANDBOX
+// =========================================================================
+function renderSqlTable(rows, queryText) {
+  const tbody = document.getElementById(`sql-dogs-tbody`);
+  const logEl = document.getElementById(`sql-query-log`);
+  if (logEl && queryText) logEl.textContent = queryText;
+  if (!tbody) return;
+
+  if (rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4">No matching records returned.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(function (r) {
+    return `<tr><td class="num" style="text-align:left;">${r.id}</td><td><strong>${escapeHtml(r.name)}</strong></td><td class="num">${r.age}</td><td>${escapeHtml(r.food)}</td></tr>`;
+  }).join(``);
+}
+
+function runSqlPreset(action) {
+  let q = ``;
+  let viewRows = appState.dogsRows;
+  if (action === `insert`) {
+    const exists = appState.dogsRows.some(function (r) { return r.name === `Willow`; });
+    if (!exists) {
+      appState.dogsRows.push({ id: appState.dogsNextId++, name: `Willow`, age: 4, food: `watermelon` });
+    }
+    q = `INSERT INTO "dogs" ("name", "age", "favorite food") VALUES ("Willow", 4, "watermelon");`;
+  } else if (action === `update`) {
+    appState.dogsRows.forEach(function (r) { if (r.id === 4) r.age = 2; });
+    q = `UPDATE "dogs" SET "age" = 2 WHERE id = 4;`;
+  } else if (action === `delete`) {
+    appState.dogsRows = appState.dogsRows.filter(function (r) { return r.id !== 4; });
+    viewRows = appState.dogsRows;
+    q = `DELETE FROM "dogs" WHERE id = 4;`;
+  } else if (action === `select_young`) {
+    viewRows = appState.dogsRows.filter(function (r) { return r.age <= 3; });
+    q = `SELECT * FROM "dogs" WHERE age <= 3;`;
+  } else {
+    q = `SELECT * FROM "dogs";`;
+  }
+  renderSqlTable(viewRows, q);
+  persistState();
+}
+
+function resetSqlTable() {
+  appState.dogsRows = DEFAULT_DOGS.map(function (r) { return Object.assign({}, r); });
+  appState.dogsNextId = 4;
+  renderSqlTable(appState.dogsRows, `SELECT * FROM "dogs";`);
+  persistState();
+}
+
+// =========================================================================
+// LAB 7: WEB PROTOCOLS (HTTP, AJAX, MVC)
+// =========================================================================
+const HTTP_STATUS_MAP = {
+  200: { cls: `is-positive`, title: `HTTP/1.1 200 OK`, desc: `The server located the requested resource and successfully returned the page contents (Content-Type: text/html).` },
+  301: { cls: ``, title: `HTTP/1.1 301 Moved Permanently`, desc: `The requested resource has permanently moved to a new URL; browsers redirect automatically.` },
+  302: { cls: ``, title: `HTTP/1.1 302 Found`, desc: `Temporary redirect to an alternate URI while preserving the original address for future visits.` },
+  403: { cls: `is-error`, title: `HTTP/1.1 403 Forbidden`, desc: `The server understood the request but refuses access because the client lacks authorisation permissions.` },
+  404: { cls: `is-error`, title: `HTTP/1.1 404 Not Found`, desc: `The requested webpage or endpoint does not exist on the web server.` },
+  500: { cls: `is-error`, title: `HTTP/1.1 500 Internal Server Error`, desc: `An unexpected failure occurred on the web server while attempting to process the request.` }
+};
+
+function switchWebTab(tab) {
+  [`http`, `ajax`, `mvc`].forEach(function (t) {
+    const btn = document.getElementById(`tab-${t}`);
+    const panel = document.getElementById(`panel-${t}`);
+    if (btn) {
+      if (t === tab) btn.classList.add(`is-active`);
+      else btn.classList.remove(`is-active`);
+    }
+    if (panel) panel.style.display = t === tab ? `block` : `none`;
+  });
+}
+
+function inspectHttp(code, btn) {
+  const row = btn.parentElement;
+  if (row) {
+    row.querySelectorAll(`.btn`).forEach(function (b) { b.classList.remove(`is-selected`); });
+  }
+  btn.classList.add(`is-selected`);
+
+  const info = HTTP_STATUS_MAP[code];
+  const box = document.getElementById(`http-detail-box`);
+  const titleEl = document.getElementById(`http-detail-title`);
+  const descEl = document.getElementById(`http-detail-desc`);
+  if (!info || !box || !titleEl || !descEl) return;
+
+  box.classList.remove(`is-positive`, `is-error`);
+  if (info.cls) box.classList.add(info.cls);
+  titleEl.textContent = info.title;
+  descEl.textContent = info.desc;
+}
+
+// =========================================================================
+// LAB 8: LOGIC GATES & TRUTH TABLE
+// =========================================================================
+let gateState = { type: `AND`, a: true, b: true };
+
+function evalGate(type, a, b) {
+  if (type === `AND`) return a && b;
+  if (type === `OR`) return a || b;
+  if (type === `NAND`) return !(a && b);
+  if (type === `NOR`) return !(a || b);
+  if (type === `XOR`) return a !== b;
+  return false;
+}
+
+function selectGate(type, btn) {
+  gateState.type = type;
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll(`.btn`).forEach(function (b) { b.classList.remove(`is-selected`); });
+    btn.classList.add(`is-selected`);
+  }
+  renderGateLab();
+}
+
+function toggleGateInput(which) {
+  if (which === `A`) gateState.a = !gateState.a;
+  else gateState.b = !gateState.b;
+  renderGateLab();
+}
+
+function renderGateLab() {
+  const btnA = document.getElementById(`gate-btn-a`);
+  const btnB = document.getElementById(`gate-btn-b`);
+  const resLbl = document.getElementById(`gate-result-label`);
+  const resVal = document.getElementById(`gate-result-val`);
+  const colTitle = document.getElementById(`gate-col-title`);
+  const tbody = document.getElementById(`gate-truth-body`);
+
+  if (btnA) {
+    btnA.textContent = `Input A: ${gateState.a ? `true (1)` : `false (0)`}`;
+    btnA.className = `btn btn-compact ${gateState.a ? `btn-primary` : `btn-ghost`}`;
+  }
+  if (btnB) {
+    btnB.textContent = `Input B: ${gateState.b ? `true (1)` : `false (0)`}`;
+    btnB.className = `btn btn-compact ${gateState.b ? `btn-primary` : `btn-ghost`}`;
+  }
+  const out = evalGate(gateState.type, gateState.a, gateState.b);
+  if (resLbl) resLbl.textContent = `A ${gateState.type} B Output`;
+  if (resVal) resVal.textContent = out ? `true (1)` : `false (0)`;
+  if (colTitle) colTitle.textContent = `A ${gateState.type} B`;
+
+  if (tbody) {
+    const rows = [[true, true], [true, false], [false, true], [false, false]];
+    tbody.innerHTML = rows.map(function (pair) {
+      const active = pair[0] === gateState.a && pair[1] === gateState.b;
+      const rOut = evalGate(gateState.type, pair[0], pair[1]);
+      return `<tr class="${active ? `is-highlighted` : ``}"><td><code>${pair[0]}</code></td><td><code>${pair[1]}</code></td><td><strong><code>${rOut}</code></strong></td></tr>`;
+    }).join(``);
+  }
+}
+
+// =========================================================================
+// COMPREHENSIVE 21-QUESTION QUIZ ENGINE
+// =========================================================================
+const QUIZ_QUESTIONS = [
+  // Weeks 0-2 (6)
+  {
+    id: `q1`, group: `w0-2`, topic: `Week 0 · Binary & ASCII`,
+    q: `In the ASCII encoding standard, what single binary bit distinguishes uppercase 'A' (65) from lowercase 'a' (97)?`,
+    options: [`The 1s bit`, `The 16s bit`, `The 32s bit`, `The 64s bit`],
+    answer: 2,
+    explain: `Lowercase ASCII letters are 32 greater than uppercase letters (97 - 65 = 32), so toggling the bit in the 32s place switches case directly.`
+  },
+  {
+    id: `q2`, group: `w0-2`, topic: `Week 0 · Algorithms & Efficiency`,
+    q: `If a sorted 500-page phone book doubles to 1,000 pages, how many extra steps does the halving (binary) search algorithm require at most?`,
+    options: [`500 extra steps`, `250 extra steps`, `10 extra steps`, `1 extra step`],
+    answer: 3,
+    explain: `Because each comparison eliminates half of the remaining book, doubling the input size adds only 1 additional halving step.`
+  },
+  {
+    id: `q3`, group: `w0-2`, topic: `Week 0 · Scratch`,
+    q: `Which Scratch block repeats a sequence of statements until a specified hexagonal condition becomes true?`,
+    options: [`repeat`, `repeat until`, `forever`, `if ... then`],
+    answer: 1,
+    explain: `The "repeat until" control block continues executing its inner blocks repeatedly until its hexagonal condition evaluates to true.`
+  },
+  {
+    id: `q4`, group: `w0-2`, topic: `Week 1 · C Operators & Types`,
+    q: `In C, what value is stored in variable e after executing: int e = 10 / 3;`,
+    options: [`3.333`, `3`, `4`, `1`],
+    answer: 1,
+    explain: `Dividing two ints in C performs integer division, truncating everything after the decimal point so e becomes 3.`
+  },
+  {
+    id: `q5`, group: `w0-2`, topic: `Week 1 · Loops`,
+    q: `Which C loop guarantees that its body will execute at least once regardless of whether the condition initially holds?`,
+    options: [`for loop`, `while loop`, `do-while loop`, `switch statement`],
+    answer: 2,
+    explain: `A do-while loop runs its block first and evaluates the condition at the bottom, making it ideal for prompting user input at least once.`
+  },
+  {
+    id: `q6`, group: `w0-2`, topic: `Week 2 · Arrays, Strings & CLI`,
+    q: `How many bytes are required to store the C string "CS50", and what occupies its final index?`,
+    options: [`4 bytes ending with '0'`, `5 bytes ending with '\\0'`, `5 bytes ending with '\\n'`, `8 bytes ending with EOF`],
+    answer: 1,
+    explain: `A C string is a char array terminated by the null-terminator '\\0', so "CS50" uses 5 indices: 'C', 'S', '5', '0', '\\0'.`
+  },
+  // Weeks 3-5 (5)
+  {
+    id: `q7`, group: `w3-5`, topic: `Week 3 · Searching`,
+    q: `What precondition must hold before you can safely apply Binary Search to an array?`,
+    options: [`The array length must be a power of 2`, `The array must contain only integers`, `The array must already be sorted`, `The array must have no duplicate values`],
+    answer: 2,
+    explain: `Binary search relies on knowing which half of the array can be discarded, which is only valid when the data is already sorted.`
+  },
+  {
+    id: `q8`, group: `w3-5`, topic: `Week 3 · Complexity`,
+    q: `Which sorting algorithm uses recursion to divide an array into subarrays and achieves O(n log n) worst-case runtime?`,
+    options: [`Bubble Sort`, `Selection Sort`, `Insertion Sort`, `Merge Sort`],
+    answer: 3,
+    explain: `Merge Sort leverages recursion to split arrays and merge sorted halves in O(n log n) time, unlike the O(n²) worst case of bubble, selection, and insertion sort.`
+  },
+  {
+    id: `q9`, group: `w3-5`, topic: `Week 3 · Unsolvable Problems`,
+    q: `What does the Halting Problem demonstrate about computing?`,
+    options: [`Recursive functions are always slower than loops`, `No general programme can decide whether any arbitrary programme halts or loops forever`, `Binary search cannot terminate on odd-sized lists`, `Compilers cannot link multiple header files`],
+    answer: 1,
+    explain: `Through proof by contradiction, the Halting Problem shows that determining whether an arbitrary programme gets stuck on arbitrary input is unsolvable.`
+  },
+  {
+    id: `q10`, group: `w3-5`, topic: `Week 4 · Hexadecimal & Files`,
+    q: `How many binary digits correspond to a single hexadecimal (base 16) digit?`,
+    options: [`2 bits`, `4 bits`, `8 bits`, `16 bits`],
+    answer: 1,
+    explain: `Four binary bits represent 2⁴ = 16 distinct values (0–15), mapping cleanly onto one hexadecimal digit (0–9, A–F).`
+  },
+  {
+    id: `q11`, group: `w3-5`, topic: `Week 5 · Data Structures`,
+    q: `Which abstract data structure follows First In, First Out (FIFO) order using enqueue() at the end and dequeue() at the front?`,
+    options: [`Stack`, `Queue`, `Trie`, `Hash Table`],
+    answer: 1,
+    explain: `A Queue enforces FIFO order (like a checkout line), whereas a Stack uses LIFO order with push() and pop() at the head.`
+  },
+  // Weeks 6-7 (4)
+  {
+    id: `q12`, group: `w6-7`, topic: `Week 6 · Python`,
+    q: `Which built-in Python data structure stores an ordered, unchangeable (immutable) collection of items?`,
+    options: [`list`, `dict`, `tuple`, `set`],
+    answer: 2,
+    explain: `A tuple is ordered and unchangeable, whereas a list is ordered and mutable and a dict stores key–value pairs.`
+  },
+  {
+    id: `q13`, group: `w6-7`, topic: `Week 6 · Python Input & Typing`,
+    q: `What data type does Python's built-in input() function always return?`,
+    options: [`int`, `bool`, `str (string)`, `tuple`],
+    answer: 2,
+    explain: `In Python, input() always returns a string, so numeric inputs must be explicitly converted when arithmetic is needed.`
+  },
+  {
+    id: `q14`, group: `w6-7`, topic: `Week 7 · SQL Concepts`,
+    q: `Why does a relational SQL table designate one column (such as id) as its primary key?`,
+    options: [`To allow duplicate rows to merge automatically`, `To provide a unique identifier for every record in the table`, `To delete the table automatically when the programme exits`, `To convert TEXT fields into INTEGER values`],
+    answer: 1,
+    explain: `A primary key uniquely identifies each record (row) in a table; each table can have only one primary key.`
+  },
+  {
+    id: `q15`, group: `w6-7`, topic: `Week 7 · SQL Commands`,
+    q: `Which SQL statement modifies the age of an existing dog record whose id equals 4?`,
+    options: [`INSERT INTO "dogs" SET "age" = 2 WHERE id = 4`, `SELECT "age" = 2 FROM "dogs" WHERE id = 4`, `UPDATE "dogs" SET "age" = 2 WHERE id = 4`, `CREATE TABLE "dogs" ("age" = 2)`],
+    answer: 2,
+    explain: `UPDATE ... SET ... WHERE updates fields of existing records matching the WHERE condition.`
+  },
+  // Weeks 8-9 (3)
+  {
+    id: `q16`, group: `w8-9`, topic: `Week 8 · DNS, DHCP & HTTP`,
+    q: `What is the primary role of DNS (Domain Name System) on the Internet?`,
+    options: [`Assigning temporary local IP addresses to new laptops`, `Converting domain names typed into a browser into corresponding IP addresses`, `Encrypting POST form submissions on web servers`, `Sorting TCP packets by priority`],
+    answer: 1,
+    explain: `DNS translates human-readable domain names into IP addresses, whereas DHCP assigns IP addresses to devices.`
+  },
+  {
+    id: `q17`, group: `w8-9`, topic: `Week 8 · HTTP & Ajax`,
+    q: `Which HTTP status code indicates that a client lacks permission to access a resource, and how does Ajax avoid full page reloads?`,
+    options: [`404; Ajax uses C pointers`, `403; Ajax sends asynchronous background requests via XMLHttpRequest and updates partial DOM content using JSON`, `500; Ajax reloads the entire HTML stylesheet`, `301; Ajax replaces HTTP with SQL`],
+    answer: 1,
+    explain: `HTTP 403 means "Forbidden". Ajax uses XMLHttpRequest/JSON through an Ajax engine to update sections of the DOM asynchronously without refreshing the entire page.`
+  },
+  {
+    id: `q18`, group: `w8-9`, topic: `Week 8–9 · MVC & Flask`,
+    q: `In the MVC architectural pattern (commonly implemented with Flask and Jinja), which component connects user input from the View to data stored in the Model?`,
+    options: [`The CSS stylesheet`, `The Controller`, `The DOM parser`, `The DHCP server`],
+    answer: 1,
+    explain: `The Controller (often Python/SQL logic in Flask) receives input from the View, queries or updates the Model, and passes processed output back to the View.`
+  },
+  // Weeks 11-14 (3)
+  {
+    id: `q19`, group: `w11-14`, topic: `Week 11 · CPU & Memory`,
+    q: `What are the four repeating steps performed by a CPU when executing machine code instructions?`,
+    options: [`Compile, Link, Run, Exit`, `Fetch, Decode, Execute, Store`, `Input, Hash, Encrypt, Output`, `Push, Pop, Enqueue, Dequeue`],
+    answer: 1,
+    explain: `A CPU repeatedly fetches instructions from memory, decodes them into control signals, executes the operation, and stores the result.`
+  },
+  {
+    id: `q20`, group: `w11-14`, topic: `Week 11 · Transistors & Logic`,
+    q: `When Input A is true and Input B is true, what does a NAND (NOT AND) logic gate output?`,
+    options: [`true`, `false`, `undefined`, `It alternates every cycle`],
+    answer: 1,
+    explain: `NAND negates AND: since true AND true is true, true NAND true evaluates to false.`
+  },
+  {
+    id: `q21`, group: `w11-14`, topic: `Weeks 12–14 · Routers & Security`,
+    q: `How do Internet routers ensure packets reach their destination across networks?`,
+    options: [`By converting C code into Python bytecode`, `By consulting routing tables to direct data packets across interconnected networks`, `By storing every webpage locally inside RAM`, `By replacing IP addresses with ASCII tables`],
+    answer: 1,
+    explain: `Routers inspect destination addresses and follow routing tables to forward packets hop by hop across networks.`
+  }
+];
+
+function setQuizFilter(filter, btn) {
+  appState.quizFilter = filter;
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll(`.btn`).forEach(function (b) { b.classList.remove(`is-selected`); });
+    btn.classList.add(`is-selected`);
+  }
+  renderQuiz();
+  persistState();
+}
+
+function answerQuizQuestion(qId, optIdx) {
+  appState.quizAnswers[qId] = optIdx;
+  renderQuiz();
+  updateQuizScoreUI();
+  persistState();
+}
+
+function renderQuiz() {
+  const container = document.getElementById(`quiz-container`);
+  if (!container) return;
+
+  const list = QUIZ_QUESTIONS.filter(function (q) {
+    return appState.quizFilter === `all` || q.group === appState.quizFilter;
+  });
+
+  const letters = [`A`, `B`, `C`, `D`];
+  container.innerHTML = list.map(function (item, idx) {
+    const chosen = appState.quizAnswers[item.id];
+    const hasAnswered = typeof chosen === `number`;
+    const isCorrect = hasAnswered && chosen === item.answer;
+    const cardCls = `quiz-card${hasAnswered ? (isCorrect ? ` is-correct` : ` is-incorrect`) : ``}`;
+
+    let optsHtml = item.options.map(function (optText, oIdx) {
+      let optCls = `quiz-opt`;
+      if (hasAnswered) {
+        if (oIdx === chosen && isCorrect) optCls += ` is-chosen-correct`;
+        else if (oIdx === chosen && !isCorrect) optCls += ` is-chosen-wrong`;
+        else if (oIdx === item.answer) optCls += ` is-reveal-correct`;
+      }
+      return `<button type="button" class="${optCls}" onclick="answerQuizQuestion('${item.id}', ${oIdx})"><span class="quiz-opt-letter">${letters[oIdx]}</span><span>${escapeHtml(optText)}</span></button>`;
+    }).join(``);
+
+    let feedbackHtml = ``;
+    if (hasAnswered) {
+      feedbackHtml = `<div class="quiz-feedback"><strong>${isCorrect ? `Correct.` : `Incorrect — correct answer is ${letters[item.answer]}.`}</strong> ${escapeHtml(item.explain)}</div>`;
+    }
+
+    return `<article class="${cardCls}"><span class="label">Question ${idx + 1} · ${escapeHtml(item.topic)}</span><h4 style="margin-top: var(--space-xs);">${escapeHtml(item.q)}</h4><div class="quiz-options">${optsHtml}</div>${feedbackHtml}</article>`;
+  }).join(``);
+}
+
+function updateQuizScoreUI() {
+  let answered = 0;
+  let correct = 0;
+  QUIZ_QUESTIONS.forEach(function (q) {
+    if (typeof appState.quizAnswers[q.id] === `number`) {
+      answered += 1;
+      if (appState.quizAnswers[q.id] === q.answer) correct += 1;
+    }
+  });
+
+  const pct = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+  const total = QUIZ_QUESTIONS.length;
+
+  const setTxt = function (id, txt) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = txt;
+  };
+  setTxt(`quiz-total-score`, `${correct} / ${total}`);
+  setTxt(`quiz-answered-count`, `${answered} / ${total}`);
+  setTxt(`quiz-accuracy-pct`, `${pct}%`);
+  setTxt(`rail-quiz-score`, `${correct} / ${total}`);
+  setTxt(`rail-quiz-pct`, `${pct}% accuracy (${answered} answered)`);
+  setTxt(`hero-quiz-score`, `${correct} / ${total}`);
+  setTxt(`nav-st-quiz`, `${correct}/${total}`);
+
+  let status = `Not started`;
+  if (answered > 0 && answered < total) status = `In progress`;
+  else if (answered === total) status = pct >= 80 ? `Distinction` : `Completed`;
+  setTxt(`quiz-status-text`, status);
+}
+
+function resetAllProgress(btn) {
+  if (btn && btn.dataset.armed !== `true`) {
+    btn.dataset.armed = `true`;
+    btn.textContent = `Click again to confirm`;
+    return;
+  }
+  if (btn) {
+    btn.dataset.armed = `false`;
+    btn.textContent = btn.id === `btn-reset-rail` ? `Reset` : `Reset quiz & progress`;
+  }
+  appState.completedSections = [];
+  appState.quizAnswers = {};
+  appState.quizFilter = `all`;
+  appState.binaryValue = 65;
+  resetSqlTable();
+  renderBinaryLab();
+  updateSectionProgressUI();
+  renderQuiz();
+  updateQuizScoreUI();
+  persistState();
+}
+
+function exportStudyReport() {
+  let correct = 0;
+  let answered = 0;
+  const lines = [
+    `CS50 Textbook Companion — Revision & Quiz Report`,
+    `Modules marked complete: ${appState.completedSections.length} / ${SECTION_IDS.length}`,
+    ``
+  ];
+  QUIZ_QUESTIONS.forEach(function (q, idx) {
+    const chosen = appState.quizAnswers[q.id];
+    const hasAns = typeof chosen === `number`;
+    if (hasAns) answered += 1;
+    if (hasAns && chosen === q.answer) correct += 1;
+    const status = !hasAns ? `Unanswered` : (chosen === q.answer ? `Correct` : `Incorrect`);
+    lines.push(`${idx + 1}. [${q.topic}] ${status}`);
+  });
+  lines.push(``);
+  lines.push(`Total Score: ${correct} / ${QUIZ_QUESTIONS.length} (${answered} answered)`);
+
+  const content = lines.join(`\n`);
+  try {
+    if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === `function`) {
+      window.notebookAppApi.triggerFileDownload({
+        content: content,
+        contentType: `text/plain`,
+        encoding: `UTF-8`,
+        filename: `cs50-study-report.txt`
+      });
+      return;
+    }
+  } catch (err) {
+    // Fallback below
+  }
+  const blob = new Blob([content], { type: `text/plain;charset=utf-8` });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement(`a`);
+  a.href = url;
+  a.download = `cs50-study-report.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, `&amp;`)
+    .replace(/</g, `&lt;`)
+    .replace(/>/g, `&gt;`)
+    .replace(/"/g, `&quot;`)
+    .replace(/'/g, `&#39;`);
+}
+
+// =========================================================================
+// INITIALISATION
+// =========================================================================
+document.addEventListener(`DOMContentLoaded`, async function () {
+  try {
+    if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === `function`) {
+      const saved = await window.notebookAppApi.getAppState();
+      if (saved && typeof saved === `object`) {
+        if (Array.isArray(saved.completedSections)) appState.completedSections = saved.completedSections;
+        if (saved.quizAnswers && typeof saved.quizAnswers === `object`) appState.quizAnswers = saved.quizAnswers;
+        if (typeof saved.quizFilter === `string`) appState.quizFilter = saved.quizFilter;
+        if (typeof saved.binaryValue === `number`) appState.binaryValue = saved.binaryValue;
+        if (Array.isArray(saved.dogsRows) && saved.dogsRows.length > 0) appState.dogsRows = saved.dogsRows;
+        if (typeof saved.dogsNextId === `number`) appState.dogsNextId = saved.dogsNextId;
+      }
+    }
+  } catch (err) {
+    // Proceed with defaults
+  }
+
+  renderBinaryLab();
+  renderAsciiTable(``);
+  updateCLab();
+  updateCliLab();
+  resetSearchDemo();
+  initBigOChart();
+  renderDsLab();
+  renderBitmapGrid();
+  renderSqlTable(appState.dogsRows, `SELECT * FROM "dogs";`);
+  renderGateLab();
+  updateSectionProgressUI();
+  renderQuiz();
+  updateQuizScoreUI();
+  setupScrollSpy();
+
+  if (typeof lucide !== `undefined` && typeof lucide.createIcons === `function`) {
+    lucide.createIcons();
+  }
+
+  try {
+    if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === `function`) {
+      window.notebookAppApi.notifyAppReady();
+    }
+  } catch (err) {
+    // Ignore outside host
+  }
+});
+</script>
+</body>
+</html>

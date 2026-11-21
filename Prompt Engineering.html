@@ -1,0 +1,2593 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="narrative">
+  <meta name="design-style" content="briefing">
+  <title>Prompt Engineering: A Comprehensive Technical Briefing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces: warm stone-white paper */
+      --background: #faf9f5;
+      --surface-container-low: #ffffff;
+      --surface-container: #f1efe8;
+      --surface-container-high: #e6e2d6;
+
+      /* Ink */
+      --on-surface: #17181a;
+      --on-surface-variant: #56585c;
+
+      /* Rules */
+      --outline: #17181a;
+      --outline-variant: #dedad0;
+      --border-subtle: #c8c4b8;
+
+      /* Accents */
+      --primary: #17181a;
+      --on-primary: #faf9f5;
+      --primary-container: #f2b705;
+      --on-primary-container: #17181a;
+      --secondary: #1f4e5f;
+      --secondary-soft: #e7f0f3;
+      --tertiary: #785008;
+      --tertiary-soft: #f5e6c4;
+      --error: #b42318;
+      --error-soft: #fdeceb;
+      --on-error: #ffffff;
+
+      /* Semantic */
+      --positive: #1f6347;
+      --positive-soft: #e6f2ec;
+      --warning: #8f5600;
+      --focus: #1f4e5f;
+
+      /* Data series */
+      --data-1: #1f4e5f;
+      --data-2: #d99000;
+      --data-3: #2b6e52;
+      --data-4: #b84a39;
+      --data-context: #c4bfb2;
+
+      /* Fonts */
+      --font-headline: 'Source Serif 4', serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-label: 'Geist Mono', monospace;
+
+      /* Shape */
+      --rounded: 0.25rem;
+      --rounded-lg: 0.375rem;
+      --rounded-full: 0.25rem;
+
+      /* Style effects */
+      --section-rule: 1.5px solid var(--outline);
+      --card-border: 1px solid var(--outline-variant);
+      --badge-radius: 2px;
+      --heading-tracking: -0.02em;
+      --label-tracking: 0.08em;
+
+      /* Narrative type scale */
+      --display-size: clamp(2.5rem, 1.4rem + 3.8vw, 4.25rem);
+      --headline-size: clamp(1.75rem, 1.25rem + 1.8vw, 2.5rem);
+      --subhead-size: clamp(1.2rem, 1.05rem + 0.5vw, 1.45rem);
+      --body-size: clamp(1.02rem, 0.98rem + 0.2vw, 1.125rem);
+      --label-size: clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem);
+
+      /* Spacing scale */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+      --space-3xl: 5.5rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.62;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { position: static !important; }
+
+    .page-grid {
+      display: grid;
+      gap: var(--space-lg);
+      padding: var(--space-lg);
+      max-width: 1180px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .page-grid * { min-width: 0; }
+
+    a {
+      color: var(--secondary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    a:hover {
+      color: var(--primary);
+    }
+
+    :focus-visible {
+      outline: 2.5px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Dossier Header & Section Bars */
+    .dossier-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      border-bottom: var(--section-rule);
+      padding-bottom: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+    .dossier-bar-left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    .dossier-pill {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: var(--label-tracking);
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--badge-radius);
+      display: inline-block;
+    }
+    .dossier-meta {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .index-num {
+      font-family: var(--font-label);
+      font-weight: 600;
+      font-size: var(--label-size);
+      color: var(--secondary);
+      background: var(--surface-container);
+      padding: 0.18rem 0.45rem;
+      border-radius: var(--badge-radius);
+    }
+
+    /* Typography */
+    .hero-title {
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-size: var(--display-size);
+      letter-spacing: var(--heading-tracking);
+      line-height: 1.06;
+      margin: 0;
+      color: var(--on-surface);
+      max-width: 22ch;
+    }
+    .standfirst {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: clamp(1.1rem, 1rem + 0.45vw, 1.35rem);
+      color: var(--secondary);
+      margin-top: var(--space-md);
+      margin-bottom: var(--space-lg);
+      max-width: 62ch;
+      line-height: 1.45;
+    }
+    h2.section-heading {
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-size: var(--headline-size);
+      letter-spacing: var(--heading-tracking);
+      line-height: 1.12;
+      margin: 0 0 var(--space-xs) 0;
+      color: var(--on-surface);
+    }
+    h3.sub-heading {
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-size: var(--subhead-size);
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      margin: 0 0 var(--space-sm) 0;
+      color: var(--on-surface);
+    }
+    .section-deck {
+      font-family: var(--font-body);
+      font-weight: 600;
+      color: var(--secondary);
+      margin: 0 0 var(--space-lg) 0;
+      max-width: 65ch;
+      font-size: 1.05rem;
+    }
+    .prose {
+      max-width: 66ch;
+    }
+    .prose p {
+      margin: 0 0 var(--space-md) 0;
+    }
+
+    /* Layout Blocks */
+    .dossier-section {
+      padding-top: var(--space-xl);
+      padding-bottom: var(--space-lg);
+    }
+    .asymmetric-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+      gap: var(--space-xl);
+      align-items: start;
+    }
+    .equal-split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-lg);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+
+    /* Figures & Cards */
+    .figure-card {
+      background: var(--surface-container-low);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+    }
+    .figure-card .value {
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-size: clamp(1.85rem, 1.4rem + 1.4vw, 2.5rem);
+      line-height: 1.1;
+      color: var(--on-surface);
+      margin: var(--space-xs) 0;
+    }
+    .figure-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .figure-caption {
+      font-size: 0.92rem;
+      color: var(--on-surface-variant);
+      margin: var(--space-xs) 0 0 0;
+      line-height: 1.45;
+    }
+
+    .aside-box {
+      background: var(--surface-container);
+      border-top: var(--section-rule);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: 0 0 var(--rounded) var(--rounded);
+    }
+    .aside-title {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--secondary);
+      margin: 0 0 var(--space-sm) 0;
+    }
+
+    /* Tags, Badges, Buttons */
+    .tag {
+      display: inline-block;
+      background: var(--tertiary-soft);
+      color: var(--tertiary);
+      font-family: var(--font-label);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--rounded);
+    }
+    .tag-teal {
+      background: var(--secondary-soft);
+      color: var(--secondary);
+    }
+    .tag-positive {
+      background: var(--positive-soft);
+      color: var(--positive);
+    }
+    .tag-error {
+      background: var(--error-soft);
+      color: var(--error);
+    }
+
+    .btn {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.92rem;
+      border-radius: var(--rounded);
+      padding: 0.6rem 1.05rem;
+      min-height: 44px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      border: 1px solid var(--primary);
+      background: var(--primary);
+      color: var(--on-primary);
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+    }
+    .btn:hover:not(:disabled) {
+      background: var(--secondary);
+      border-color: var(--secondary);
+    }
+    .btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      border: 1px solid var(--border-subtle);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--surface-container-high);
+      border-color: var(--outline);
+      color: var(--on-surface);
+    }
+    .btn-secondary.is-active {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+    .btn-sm {
+      min-height: 36px;
+      padding: 0.38rem 0.75rem;
+      font-size: 0.84rem;
+    }
+
+    /* Form Controls */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .field-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--on-surface);
+    }
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      font-family: var(--font-body);
+      font-size: 0.96rem;
+      color: var(--on-surface);
+      background: var(--surface-container-low);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--rounded);
+      padding: 0.6rem 0.8rem;
+      width: 100%;
+      transition: border-color var(--dur-micro) var(--ease-out);
+    }
+    select {
+      padding-right: 2.2rem;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--outline);
+    }
+    textarea.mono-input {
+      font-family: var(--font-label);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: end;
+    }
+
+    /* Navigation Index Strip */
+    .dossier-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+    }
+    .nav-tile {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      background: var(--surface-container-low);
+      border: var(--card-border);
+      border-radius: var(--rounded);
+      padding: 0.65rem 0.85rem;
+      text-decoration: none;
+      color: var(--on-surface);
+      transition: background-color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+    }
+    .nav-tile:hover {
+      background: var(--surface-container);
+      border-color: var(--outline);
+      color: var(--on-surface);
+    }
+    .nav-tile-left {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-width: 0;
+    }
+    .nav-tile-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .nav-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--outline-variant);
+      flex-shrink: 0;
+    }
+    .nav-status-dot.reviewed {
+      background: var(--positive);
+    }
+
+    /* Progress Bar */
+    .progress-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+      background: var(--surface-container);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md) var(--space-lg);
+      margin-top: var(--space-md);
+    }
+    .progress-track {
+      flex: 1 1 220px;
+      height: 8px;
+      background: var(--surface-container-high);
+      border-radius: var(--rounded);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--secondary);
+      transition: width var(--dur-short) var(--ease-out);
+    }
+
+    /* Tables */
+    .data-table-wrap {
+      overflow-x: auto;
+      background: var(--surface-container-low);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+    }
+    table.dossier-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+      text-align: left;
+    }
+    table.dossier-table th {
+      font-family: var(--font-label);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--on-surface);
+      padding: 0.75rem 1rem;
+      border-bottom: var(--section-rule);
+      background: var(--surface-container);
+    }
+    table.dossier-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--outline-variant);
+      vertical-align: top;
+    }
+    table.dossier-table tr:last-child td {
+      border-bottom: none;
+    }
+    .num-cell {
+      font-family: var(--font-label);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    /* Interactive Tabs & Pills inside Labs */
+    .pill-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: var(--space-md);
+    }
+
+    /* Code / Prompt Blocks */
+    .prompt-box {
+      font-family: var(--font-label);
+      font-size: 0.86rem;
+      line-height: 1.55;
+      background: var(--surface-container);
+      border-left: 3px solid var(--secondary);
+      padding: var(--space-md);
+      border-radius: 0 var(--rounded) var(--rounded) 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .prompt-box.prompt-weak {
+      border-left-color: var(--data-4);
+      background: var(--error-soft);
+    }
+    .prompt-box.prompt-strong {
+      border-left-color: var(--positive);
+      background: var(--positive-soft);
+    }
+
+    /* Token Visualiser Chips */
+    .token-stream {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.28rem;
+      padding: var(--space-md);
+      background: var(--surface-container);
+      border: var(--card-border);
+      border-radius: var(--rounded);
+      min-height: 76px;
+      align-content: flex-start;
+    }
+    .token-chip {
+      font-family: var(--font-label);
+      font-size: 0.84rem;
+      padding: 0.18rem 0.42rem;
+      border-radius: var(--badge-radius);
+      border: 1px solid var(--outline-variant);
+    }
+    .token-chip.tok-a { background: var(--secondary-soft); color: var(--secondary); }
+    .token-chip.tok-b { background: var(--tertiary-soft); color: var(--tertiary); }
+    .token-chip.tok-c { background: var(--positive-soft); color: var(--positive); }
+    .token-chip.tok-d { background: var(--surface-container-low); color: var(--on-surface); }
+
+    /* ELIZA Chat Transcript */
+    .chat-log {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      max-height: 270px;
+      overflow-y: auto;
+      padding: var(--space-md);
+      background: var(--surface-container);
+      border: var(--card-border);
+      border-radius: var(--rounded);
+      margin-bottom: var(--space-md);
+    }
+    .chat-msg {
+      padding: 0.55rem 0.75rem;
+      border-radius: var(--rounded);
+      font-size: 0.9rem;
+      max-width: 88%;
+    }
+    .chat-msg.user {
+      align-self: flex-end;
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .chat-msg.bot {
+      align-self: flex-start;
+      background: var(--surface-container-low);
+      border: var(--card-border);
+      font-family: var(--font-label);
+      font-size: 0.84rem;
+    }
+
+    /* Timeline Selector */
+    .timeline-rail {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: var(--space-md);
+    }
+
+    /* Quiz Options */
+    .quiz-item {
+      background: var(--surface-container-low);
+      border: var(--card-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-md);
+    }
+    .quiz-options {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: var(--space-md);
+    }
+    .quiz-option-btn {
+      width: 100%;
+      text-align: left;
+      justify-content: flex-start;
+      padding: 0.7rem 0.95rem;
+      min-height: 44px;
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--rounded);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      transition: background-color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+    }
+    .quiz-option-btn:hover:not(:disabled) {
+      background: var(--surface-container);
+      border-color: var(--outline);
+    }
+    .quiz-option-btn.selected-correct {
+      background: var(--positive-soft);
+      border-color: var(--positive);
+      color: var(--on-surface);
+      font-weight: 600;
+    }
+    .quiz-option-btn.selected-wrong {
+      background: var(--error-soft);
+      border-color: var(--error);
+      color: var(--on-surface);
+    }
+    .quiz-option-btn.reveal-correct {
+      border-color: var(--positive);
+      background: var(--positive-soft);
+    }
+    .quiz-feedback {
+      margin-top: var(--space-md);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .quiz-feedback.correct {
+      background: var(--positive-soft);
+      border-left: 3px solid var(--positive);
+    }
+    .quiz-feedback.wrong {
+      background: var(--error-soft);
+      border-left: 3px solid var(--error);
+    }
+
+    /* Section Review Footer */
+    .section-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+      padding-top: var(--space-sm);
+      border-top: 1px solid var(--outline-variant);
+    }
+
+    /* Checkbox pills for Workbench */
+    .check-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.75rem;
+      min-height: 44px;
+      background: var(--surface-container-low);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--rounded);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      user-select: none;
+    }
+    .check-pill input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--secondary);
+    }
+
+    /* SVG Container */
+    .svg-box {
+      width: 100%;
+      overflow: hidden;
+    }
+    .svg-box svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Scroll reveal */
+    .reveal-section {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 860px) {
+      .asymmetric-split,
+      .equal-split {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      .page-grid {
+        padding: var(--space-md);
+        gap: var(--space-md);
+      }
+      .figure-card {
+        padding: var(--space-md);
+      }
+      .dossier-section {
+        padding-top: var(--space-lg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-grid">
+
+    <!-- MASTHEAD & OVERVIEW -->
+    <header>
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="dossier-pill">Briefing</span>
+          <span class="dossier-meta">Technical Curriculum &amp; Interactive Lab · UK English Edition</span>
+        </div>
+        <span class="dossier-meta">9 Modules · 12-Question Mastery Assessment</span>
+      </div>
+
+      <h1 class="hero-title">Prompt Engineering: From Linguistic Roots to Vector Space</h1>
+      <p class="standfirst">
+        A comprehensive guide to optimising large language model responses—synthesising Ania Kubów’s freeCodeCamp curriculum with industry prompt frameworks, token economics, and live interactive laboratories.
+      </p>
+
+      <div class="card-grid">
+        <div class="figure-card">
+          <div class="figure-label">Industry Compensation Ceiling</div>
+          <div class="value">Up to $335,000</div>
+          <p class="figure-caption">Reported annual salary benchmark for dedicated prompt engineers (Bloomberg), requiring structured thinking rather than a coding background.</p>
+        </div>
+        <div class="figure-card">
+          <div class="figure-label">Token Economics Rule of Thumb</div>
+          <div class="value">~0.75 Words</div>
+          <p class="figure-caption">Each English token equals roughly four characters. Every ambiguous prompt wastes paid tokens and compute time.</p>
+        </div>
+        <div class="figure-card">
+          <div class="figure-label">Scale Turning Point</div>
+          <div class="value">175B+ Params</div>
+          <p class="figure-caption">The 2020 arrival of GPT-3 shifted language models from small academic experiments to internet-scale generalists.</p>
+        </div>
+      </div>
+
+      <div class="progress-strip" aria-live="polite">
+        <div>
+          <div class="figure-label">Curriculum Mastery Tracker</div>
+          <div id="progress-summary" style="font-weight: 600; font-size: 0.96rem; margin-top: 2px;">0 of 9 modules reviewed · Quiz score: 0 / 12</div>
+        </div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar-role">
+          <div class="progress-fill" id="progress-fill-bar"></div>
+        </div>
+        <div class="controls-row">
+          <a href="#sec-quiz" class="btn btn-sm">Jump to Quiz</a>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-all" onclick="handleGlobalReset(this)">Reset Progress</button>
+        </div>
+      </div>
+
+      <nav aria-label="Curriculum modules" class="dossier-nav">
+        <a href="#sec-01" class="nav-tile"><span class="nav-tile-left"><span class="index-num">01</span><span class="nav-tile-title">Roles &amp; Scope</span></span><span class="nav-status-dot" id="dot-01"></span></a>
+        <a href="#sec-02" class="nav-tile"><span class="nav-tile-left"><span class="index-num">02</span><span class="nav-tile-title">AI &amp; ML Basics</span></span><span class="nav-status-dot" id="dot-02"></span></a>
+        <a href="#sec-03" class="nav-tile"><span class="nav-tile-left"><span class="index-num">03</span><span class="nav-tile-title">Linguistics</span></span><span class="nav-status-dot" id="dot-03"></span></a>
+        <a href="#sec-04" class="nav-tile"><span class="nav-tile-left"><span class="index-num">04</span><span class="nav-tile-title">ELIZA to GPT-4</span></span><span class="nav-status-dot" id="dot-04"></span></a>
+        <a href="#sec-05" class="nav-tile"><span class="nav-tile-left"><span class="index-num">05</span><span class="nav-tile-title">Tokens &amp; Mindset</span></span><span class="nav-status-dot" id="dot-05"></span></a>
+        <a href="#sec-06" class="nav-tile"><span class="nav-tile-left"><span class="index-num">06</span><span class="nav-tile-title">Best Practices</span></span><span class="nav-status-dot" id="dot-06"></span></a>
+        <a href="#sec-07" class="nav-tile"><span class="nav-tile-left"><span class="index-num">07</span><span class="nav-tile-title">Frameworks</span></span><span class="nav-status-dot" id="dot-07"></span></a>
+        <a href="#sec-08" class="nav-tile"><span class="nav-tile-left"><span class="index-num">08</span><span class="nav-tile-title">Advanced Concepts</span></span><span class="nav-status-dot" id="dot-08"></span></a>
+        <a href="#sec-quiz" class="nav-tile"><span class="nav-tile-left"><span class="index-num">09</span><span class="nav-tile-title">Mastery Quiz</span></span><span class="nav-status-dot" id="dot-09"></span></a>
+      </nav>
+    </header>
+
+    <!-- MODULE 01: INTRODUCTION & INDUSTRY ROLES -->
+    <section id="sec-01" class="dossier-section reveal-section">
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="index-num">01</span>
+          <span class="dossier-meta">Introduction &amp; Industry Roles</span>
+        </div>
+        <span class="tag">Core Foundation</span>
+      </div>
+      <h2 class="section-heading">Prompt engineering turns human intent into reliable machine behaviour</h2>
+      <p class="section-deck">Writing, refining, and maintaining structured prompts is an emerging discipline that bridges natural language and probabilistic software—with no coding prerequisite.</p>
+
+      <div class="asymmetric-split">
+        <div class="prose">
+          <p>
+            Prompt engineering emerged directly from the rapid rise of generative artificial intelligence. As software developer and educator Ania Kubów explains in her freeCodeCamp course, the discipline centres on <strong>writing, refining, and optimising prompts in a structured manner</strong> so that human–AI interaction reaches the highest possible precision.
+          </p>
+          <p>
+            Because large language models (LLMs) such as ChatGPT, text-to-image engines such as Midjourney, and emerging speech-to-text or text-to-audio systems can behave unpredictably—even to their own architects—organisations require specialists who can systematically govern model outputs.
+          </p>
+          <p>
+            Crucially, the role extends far beyond crafting a single clever sentence. A practising prompt engineer assumes ongoing operational responsibilities:
+          </p>
+          <ul>
+            <li><strong>Continuous prompt monitoring:</strong> auditing existing prompts over time to verify effectiveness as underlying AI models evolve and receive updates.</li>
+            <li><strong>Prompt library governance:</strong> building and maintaining an up-to-date, versioned repository of tested prompt templates across teams.</li>
+            <li><strong>Empirical reporting &amp; thought leadership:</strong> documenting performance findings, edge-case failures, and best practices to guide organisational adoption.</li>
+          </ul>
+        </div>
+
+        <aside class="aside-box">
+          <div class="aside-title">Role Comparison: Casual User vs Prompt Engineer</div>
+          <table class="dossier-table">
+            <thead>
+              <tr>
+                <th>Dimension</th>
+                <th>Ad-Hoc User</th>
+                <th>Prompt Engineer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Approach</strong></td>
+                <td>Trial-and-error sentences</td>
+                <td>Structured specification</td>
+              </tr>
+              <tr>
+                <td><strong>Iteration</strong></td>
+                <td>Discards chats after one use</td>
+                <td>Maintains prompt library</td>
+              </tr>
+              <tr>
+                <td><strong>Model Drift</strong></td>
+                <td>Surprised by output changes</td>
+                <td>Monitors across updates</td>
+              </tr>
+              <tr>
+                <td><strong>Background</strong></td>
+                <td>Any domain</td>
+                <td>No coding required; linguistic clarity essential</td>
+              </tr>
+            </tbody>
+          </table>
+        </aside>
+      </div>
+
+      <div class="section-footer">
+        <span class="dossier-meta">Modalities covered in curriculum: LLMs (Text) · Text-to-Image (Midjourney) · Text-to-Speech / Speech-to-Text</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="review-btn-01" onclick="toggleSectionReviewed('01')">Mark Module 01 Reviewed</button>
+      </div>
+    </section>
+
+    <!-- MODULE 02: AI & MACHINE LEARNING FUNDAMENTALS -->
+    <section id="sec-02" class="dossier-section reveal-section">
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="index-num">02</span>
+          <span class="dossier-meta">AI &amp; Machine Learning Fundamentals</span>
+        </div>
+        <span class="tag tag-teal">Interactive Lab</span>
+      </div>
+      <h2 class="section-heading">AI simulates intelligence through statistical pattern prediction, not sentience</h2>
+      <p class="section-deck">Understanding that ChatGPT is a machine-learning pattern predictor—not a thinking mind—explains both why standard phrasing succeeds and why context matters.</p>
+
+      <div class="asymmetric-split">
+        <div class="prose">
+          <p>
+            <strong>Artificial intelligence (AI)</strong> is the simulation of human intelligence processes by machines. As the lecture emphasises, AI is <em>not sentient</em>: however fluent its prose may appear, it does not possess consciousness or independent thought.
+          </p>
+          <p>
+            When people speak of tools such as ChatGPT, they are generally referring to <strong>machine learning (ML)</strong>. Machine learning ingests vast quantities of training data, analyses that corpus for statistical correlations and recurring patterns, and uses those learned patterns to predict outcomes on new inputs.
+          </p>
+          <p>
+            In a supervised classification example, an engineer feeds labelled paragraphs into a training pipeline—tagging one document style as <em>International Finance</em> and another as <em>Earnings Reports</em>. Once trained on sufficiently large datasets (far larger than five paragraphs), the model can reliably predict the category of unseen text. Modern generative AI applies this predictive machinery at massive scale to produce text, images, music, and audio.
+          </p>
+
+          <div class="aside-box" style="margin-top: var(--space-lg);">
+            <div class="aside-title">Why Deterministic vs Open-Ended Tasks Diverge</div>
+            <p style="margin: 0; font-size: 0.94rem;">
+              Asking an AI chatbot <code>What is 4 + 4?</code> yields an indisputable <code>8</code>. Asking it to help a young student improve an English diary entry—<em>“Today was great in the world for me. I went to a Disneyland with my mom.”</em>—has no single fixed answer. Without structured prompting, the model gives a minimal rewrite and leaves the learner stranded; with persona, word limits, grammar correction, and follow-up questions, the exact same model becomes an interactive tutor.
+            </p>
+          </div>
+        </div>
+
+        <!-- Interactive ML Classifier Simulator -->
+        <div class="figure-card">
+          <div class="figure-label">Interactive Simulator · Supervised Pattern Prediction</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Paragraph Category Predictor</h3>
+          <p style="font-size: 0.9rem; color: var(--on-surface-variant); margin-top: 0;">
+            Test how an ML classifier weighs training correlations across the lecture’s example categories. Select a sample or enter your own headline/paragraph.
+          </p>
+
+          <div class="pill-tabs">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="loadMlSample('finance')">International Finance</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="loadMlSample('earnings')">Earnings Reports</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="loadMlSample('mixed')">Ambiguous / Mixed</button>
+          </div>
+
+          <div class="field-group">
+            <label for="ml-input-text" class="field-label">Unseen Input Paragraph</label>
+            <textarea id="ml-input-text" rows="3" oninput="runMlClassifier()">Quarterly revenue rose 14% year-on-year as net operating margin beat analyst EPS forecasts.</textarea>
+          </div>
+
+          <div id="ml-results" style="margin-top: var(--space-md);">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span class="dossier-meta">Core Principle: Training data patterns govern output probabilities</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="review-btn-02" onclick="toggleSectionReviewed('02')">Mark Module 02 Reviewed</button>
+      </div>
+    </section>
+
+    <!-- MODULE 03: LINGUISTICS FOUNDATIONS -->
+    <section id="sec-03" class="dossier-section reveal-section">
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="index-num">03</span>
+          <span class="dossier-meta">Linguistics Foundations</span>
+        </div>
+        <span class="tag tag-teal">10 Branches Mapped</span>
+      </div>
+      <h2 class="section-heading">Linguistics is the operating manual for large language models</h2>
+      <p class="section-deck">Because LLMs are trained predominantly on standard, universally shared grammar and usage, aligning your prompt with linguistic norms yields sharper accuracy.</p>
+
+      <div class="equal-split" style="margin-bottom: var(--space-lg);">
+        <div class="prose">
+          <p>
+            Linguistics—the scientific study of human language—underpins effective prompt engineering. When you understand how meaning shifts across word structure, sentence arrangement, and social context, you avoid ambiguities that force a model to guess.
+          </p>
+          <p>
+            Equally important is <strong>standardisation</strong>: the internet-scale corpora used to train models overwhelmingly reflect conventional grammar and standard phrasing. Writing prompts in clear, standard syntax aligns directly with the statistical peaks of the model’s training distribution.
+          </p>
+        </div>
+
+        <div class="figure-card">
+          <div class="figure-label">Diagnostic Comparison · Why Structure Matters</div>
+          <div style="display: grid; gap: var(--space-sm); margin-top: var(--space-sm);">
+            <div class="prompt-box prompt-weak"><strong>Ambiguous Syntax &amp; Pragmatics:</strong>
+“Fix code filter age data fast no python”</div>
+            <div class="prompt-box prompt-strong"><strong>Standardised Grammar &amp; Clear Pragmatics:</strong>
+“Write a JavaScript function that accepts an array of objects, filters the ‘age’ property values into a new array, and explains each step.”</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive 10-Branch Linguistics Explorer -->
+      <div class="figure-card">
+        <div class="figure-label">Interactive Matrix · All 10 Branches from the Curriculum</div>
+        <h3 class="sub-heading" style="margin-top: var(--space-xs);">Click any linguistic discipline to inspect its focus and prompting impact</h3>
+
+        <div class="pill-tabs" id="ling-tabs">
+          <button type="button" class="btn btn-secondary btn-sm is-active" onclick="selectLinguistics('morphology', this)">Morphology</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="selectLinguistics('syntax', this)">Syntax</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="selectLinguistics('semantics', this)">Semantics</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="selectLinguistics('pragmatics', this)">Pragmatics</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="selectLinguistics('phonetics', this)">Phonetics</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="selectLinguistics('phonology', this)">Phonology</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="selectLinguistics('historical', this)">Historical</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="selectLinguistics('sociolinguistics', this)">Sociolinguistics</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="selectLinguistics('computational', this)">Computational</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="selectLinguistics('psycholinguistics', this)">Psycholinguistics</button>
+        </div>
+
+        <div id="ling-detail-panel" class="equal-split" style="padding-top: var(--space-sm); border-top: 1px solid var(--outline-variant);">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span class="dossier-meta">Note: The lecture also refers to psycholinguistics as physiolinguistics—the study of how humans acquire and use language.</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="review-btn-03" onclick="toggleSectionReviewed('03')">Mark Module 03 Reviewed</button>
+      </div>
+    </section>
+
+    <!-- MODULE 04: HISTORICAL EVOLUTION -->
+    <section id="sec-04" class="dossier-section reveal-section">
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="index-num">04</span>
+          <span class="dossier-meta">Historical Evolution: ELIZA to GPT-4</span>
+        </div>
+        <span class="tag tag-teal">Timeline &amp; Live ELIZA</span>
+      </div>
+      <h2 class="section-heading">Sixty years of conversational systems—from pattern-matching illusions to internet-scale transformers</h2>
+      <p class="section-deck">Tracing the lineage from Joseph Weizenbaum’s 1964 MIT psychotherapist script to SHRDLU, deep neural networks, BERT, and the GPT transformer lineage.</p>
+
+      <!-- Parameter Trajectory & Era Explorer -->
+      <div class="asymmetric-split" style="margin-bottom: var(--space-lg);">
+        <div class="figure-card">
+          <div class="figure-label">Interactive Chronology · 1964 – Present</div>
+          <div class="timeline-rail" id="timeline-buttons" style="margin-top: var(--space-sm);">
+            <button type="button" class="btn btn-secondary btn-sm is-active" onclick="selectEra('eliza', this)">1964–66 ELIZA</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectEra('shrdlu', this)">1970s SHRDLU</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectEra('dl2010', this)">2010 Deep Learning</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectEra('gpt1', this)">2018 GPT-1</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectEra('gpt2', this)">2019 GPT-2</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectEra('gpt3', this)">2020 GPT-3</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectEra('gpt4', this)">GPT-4 &amp; BERT</button>
+          </div>
+
+          <div id="era-detail">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Clean SVG Scale Visualisation -->
+          <div style="margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--outline-variant);">
+            <div class="figure-label" style="margin-bottom: var(--space-xs);">Model Architecture &amp; Parameter Magnitude (Log-Style Visual Comparison)</div>
+            <div class="svg-box">
+              <svg viewBox="0 0 600 185" role="img" aria-label="Comparison of GPT model scale from GPT-1 to GPT-3 and GPT-4">
+                <line x1="90" y1="150" x2="575" y2="150" stroke="var(--outline)" stroke-width="1.2"/>
+                <line x1="90" y1="30" x2="575" y2="30" stroke="var(--outline-variant)" stroke-dasharray="3 3"/>
+                <line x1="90" y1="70" x2="575" y2="70" stroke="var(--outline-variant)" stroke-dasharray="3 3"/>
+                <line x1="90" y1="110" x2="575" y2="110" stroke="var(--outline-variant)" stroke-dasharray="3 3"/>
+
+                <text x="82" y="34" text-anchor="end" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">Internet</text>
+                <text x="82" y="74" text-anchor="end" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">175B+</text>
+                <text x="82" y="114" text-anchor="end" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">1.5B</text>
+                <text x="82" y="152" text-anchor="end" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">Rules</text>
+
+                <!-- Bars -->
+                <rect x="115" y="140" width="54" height="10" fill="var(--data-context)"/>
+                <text x="142" y="168" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface)">ELIZA</text>
+
+                <rect x="205" y="128" width="54" height="22" fill="var(--data-context)"/>
+                <text x="232" y="168" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface)">GPT-1</text>
+
+                <rect x="295" y="106" width="54" height="44" fill="var(--data-2)"/>
+                <text x="322" y="168" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface)">GPT-2</text>
+
+                <rect x="385" y="64" width="54" height="86" fill="var(--data-1)"/>
+                <text x="412" y="56" text-anchor="middle" font-family="var(--font-label)" font-size="10" font-weight="600" fill="var(--secondary)">175B</text>
+                <text x="412" y="168" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface)">GPT-3</text>
+
+                <rect x="475" y="28" width="54" height="122" fill="var(--primary)"/>
+                <text x="502" y="20" text-anchor="middle" font-family="var(--font-label)" font-size="10" font-weight="600" fill="var(--on-surface)">Multimodal / Web</text>
+                <text x="502" y="168" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface)">GPT-4</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live ELIZA Simulator -->
+        <div class="figure-card">
+          <div class="figure-label">Pattern-Matching Demonstration · 1966 MIT</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Experience the ELIZA Illusion</h3>
+          <p style="font-size: 0.9rem; color: var(--on-surface-variant); margin-top: 0;">
+            Weizenbaum’s ELIZA mimicked a Rogerian psychotherapist using predefined keyword rules—holding up a conversational mirror without genuinely understanding a word. Try typing below:
+          </p>
+
+          <div class="chat-log" id="eliza-log" aria-live="polite">
+            <div class="chat-msg bot">ELIZA: Hello. I am ELIZA, a Rogerian pattern-matching script. How are you feeling today?</div>
+          </div>
+
+          <div class="pill-tabs" style="margin-bottom: var(--space-sm);">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="sendElizaPreset('I feel sad today.')">“I feel sad today.”</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="sendElizaPreset('My boss thinks I am slow.')">“My boss thinks I am slow.”</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="sendElizaPreset('Why do computers confuse me?')">“Why do computers confuse me?”</button>
+          </div>
+
+          <div class="controls-row">
+            <div class="field-group" style="flex: 1 1 180px;">
+              <label for="eliza-input" class="field-label">Your Statement</label>
+              <input type="text" id="eliza-input" placeholder="e.g. I feel anxious about work" onkeydown="if(event.key==='Enter'){submitEliza();}">
+            </div>
+            <button type="button" class="btn" onclick="submitEliza()">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span class="dossier-meta">Insight: Weizenbaum was shocked when even his secretary attributed human feelings to ELIZA’s rigid rules.</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="review-btn-04" onclick="toggleSectionReviewed('04')">Mark Module 04 Reviewed</button>
+      </div>
+    </section>
+
+    <!-- MODULE 05: TOKEN ECONOMICS & PROMPT MINDSET -->
+    <section id="sec-05" class="dossier-section reveal-section">
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="index-num">05</span>
+          <span class="dossier-meta">Token Economics &amp; Search Analogies</span>
+        </div>
+        <span class="tag tag-teal">Live Tokeniser Lab</span>
+      </div>
+      <h2 class="section-heading">Write one precise prompt the first time—because every wasted turn costs tokens</h2>
+      <p class="section-deck">Mihail Eric’s Google-search analogy meets OpenAI’s token billing model: clarity is both a UX discipline and a direct financial lever.</p>
+
+      <div class="asymmetric-split">
+        <div class="prose">
+          <p>
+            Consider how much faster you now formulate a Google query compared with five years ago. You intuitively specify the right terms up front to avoid sifting through irrelevant pages. As Mihail Eric of the <em>Infinite Machine Learning</em> podcast observes, prompting follows the same principle: because the underlying engine is opaque, query design creates huge variance in outcome quality.
+          </p>
+          <p>
+            In ChatGPT (GPT-4) and the OpenAI API, you can build iteratively on prior messages inside a conversation thread, or manage programmatic requests using an API key and account billing overview. Under the hood, GPT-4 processes all text in chunks called <strong>tokens</strong>:
+          </p>
+          <ul>
+            <li><strong>Token ratio:</strong> 1 token ≈ 4 characters of English text, or roughly <code>0.75</code> words (so 100 tokens ≈ 75 words).</li>
+            <li><strong>Example from the lecture:</strong> <code>What is 4 + 4?</code> consumes <strong>6 tokens</strong>—because spaces, digits, and punctuation map to separate sub-word pieces.</li>
+            <li><strong>Economic compounding:</strong> vague prompts force multi-turn clarifications, multiplying input and output token consumption across every user session.</li>
+          </ul>
+        </div>
+
+        <!-- Live Tokeniser & Cost Estimator -->
+        <div class="figure-card">
+          <div class="figure-label">Interactive Tokeniser &amp; Economics Simulator</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Inspect Sub-Word Chunks &amp; API Scale</h3>
+
+          <div class="pill-tabs">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="loadTokenPreset('math')">Lecture: “What is 4 + 4?”</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="loadTokenPreset('vague')">Vague Prompt (3 Turns)</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="loadTokenPreset('engineered')">Engineered Prompt (1 Turn)</button>
+          </div>
+
+          <div class="field-group">
+            <label for="token-input" class="field-label">Prompt Text to Tokenise</label>
+            <textarea id="token-input" rows="3" class="mono-input" oninput="updateTokeniser()">What is 4 + 4?</textarea>
+          </div>
+
+          <div class="card-grid" style="margin-top: var(--space-md); gap: var(--space-sm);">
+            <div class="aside-box" style="padding: var(--space-sm) var(--space-md);">
+              <div class="figure-label">Estimated Tokens</div>
+              <div id="tok-count" style="font-family: var(--font-headline); font-size: 1.65rem; font-weight: 600;">6</div>
+            </div>
+            <div class="aside-box" style="padding: var(--space-sm) var(--space-md);">
+              <div class="figure-label">Characters / Words</div>
+              <div id="tok-chars" style="font-family: var(--font-label); font-size: 1.05rem; font-weight: 600; margin-top: 4px;">14 chars · 5 words</div>
+            </div>
+          </div>
+
+          <div class="figure-label" style="margin-top: var(--space-md); margin-bottom: var(--space-xs);">Approximate Token Chunking</div>
+          <div class="token-stream" id="token-chips"></div>
+
+          <div class="field-group" style="margin-top: var(--space-md);">
+            <label for="scale-calls" class="field-label">Monthly Production Volume (API Calls): <span id="scale-calls-label">10,000</span></label>
+            <input type="range" id="scale-calls" min="1000" max="100000" step="1000" value="10000" oninput="updateTokenCost(this.value)">
+          </div>
+          <p id="tok-cost-note" class="figure-caption" style="margin-top: var(--space-xs);"></p>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span class="dossier-meta">OpenAI Platform Note: Monitor monthly spend under Account → Billing Overview before scaling API keys.</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="review-btn-05" onclick="toggleSectionReviewed('05')">Mark Module 05 Reviewed</button>
+      </div>
+    </section>
+
+    <!-- MODULE 06: CORE BEST PRACTICES & PERSONA PROMPTING -->
+    <section id="sec-06" class="dossier-section reveal-section">
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="index-num">06</span>
+          <span class="dossier-meta">Core Best Practices &amp; Persona Prompting</span>
+        </div>
+        <span class="tag tag-teal">Case Studies &amp; Builder</span>
+      </div>
+      <h2 class="section-heading">Six principles that separate generic output from expert-grade results</h2>
+      <p class="section-deck">From the Polish presidential election to Rupi Kaur-inspired graduation verse, small structural details transform how GPT-4 reasons and formats.</p>
+
+      <!-- Six Core Best Practices Grid -->
+      <div class="card-grid" style="margin-bottom: var(--space-xl);">
+        <div class="figure-card">
+          <div class="index-num">01 · Clarity</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Write Clear, Detailed Instructions</h3>
+          <p class="figure-caption">Never assume the AI knows your country, stack, or data shape. Specify “next presidential election for Poland” or “JavaScript array of objects”.</p>
+        </div>
+        <div class="figure-card">
+          <div class="index-num">02 · Persona</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Adopt a Persona</h3>
+          <p class="figure-caption">Assign a character, expertise level, and stylistic anchor—such as “Spoken English teacher” or “Helena, 25, writing in the style of Rupi Kaur”.</p>
+        </div>
+        <div class="figure-card">
+          <div class="index-num">03 · Format</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Specify the Exact Format</h3>
+          <p class="figure-caption">Constrain structure explicitly: bullet points under 10 words, a checklist, a numbered breakdown, or a concise conclusion.</p>
+        </div>
+        <div class="figure-card">
+          <div class="index-num">04 · Iteration</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Use Iterative Prompting</h3>
+          <p class="figure-caption">For multi-part tasks or insufficient first drafts, refine in context with targeted follow-ups rather than starting over blindly.</p>
+        </div>
+        <div class="figure-card">
+          <div class="index-num">05 · Neutrality</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Avoid Leading the Answer</h3>
+          <p class="figure-caption">Do not embed an expected conclusion in your question; leading phrasing biases the model toward confirming your premise.</p>
+        </div>
+        <div class="figure-card">
+          <div class="index-num">06 · Scope</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Limit Scope on Broad Topics</h3>
+          <p class="figure-caption">Break sweeping subjects into bounded sub-questions to prevent bloated, superficial essays.</p>
+        </div>
+      </div>
+
+      <!-- Lecture Case Studies Comparator + Live Prompt Workbench -->
+      <div class="equal-split">
+        <div class="figure-card">
+          <div class="figure-label">Lecture Case-Study Comparator</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Before &amp; After Prompt Transformations</h3>
+          <div class="pill-tabs" id="case-tabs">
+            <button type="button" class="btn btn-secondary btn-sm is-active" onclick="selectCaseStudy('teacher', this)">English Teacher</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectCaseStudy('election', this)">Election Query</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectCaseStudy('js', this)">JS vs Python</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectCaseStudy('essay', this)">Essay Summary</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectCaseStudy('poem', this)">Helena Persona</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectCaseStudy('checklist', this)">Checklist Format</button>
+          </div>
+          <div id="case-study-display"></div>
+        </div>
+
+        <div class="figure-card">
+          <div class="figure-label">Interactive Prompt Construction Workbench</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Assemble a Production-Grade Prompt</h3>
+
+          <div class="field-group" style="margin-bottom: var(--space-sm);">
+            <label for="wb-task" class="field-label">Core Objective</label>
+            <input type="text" id="wb-task" value="Explain quantum computing basics to a secondary school science class" oninput="buildWorkbenchPrompt()">
+          </div>
+
+          <div class="controls-row" style="margin-bottom: var(--space-sm);">
+            <label class="check-pill"><input type="checkbox" id="wb-persona" checked onchange="buildWorkbenchPrompt()"> Add Persona</label>
+            <label class="check-pill"><input type="checkbox" id="wb-format" checked onchange="buildWorkbenchPrompt()"> Enforce Format &amp; Word Cap</label>
+            <label class="check-pill"><input type="checkbox" id="wb-neutral" checked onchange="buildWorkbenchPrompt()"> Neutral / Unbiased</label>
+            <label class="check-pill"><input type="checkbox" id="wb-factual" onchange="buildWorkbenchPrompt()"> Verify &amp; Flag Uncertainties</label>
+          </div>
+
+          <div class="field-group" style="margin-bottom: var(--space-sm);">
+            <label for="wb-audience-format" class="field-label">Output Format</label>
+            <select id="wb-audience-format" onchange="buildWorkbenchPrompt()">
+              <option value="bullet">5 bullet points (max 12 words each) + 1 analogy</option>
+              <option value="checklist">Step-by-step study checklist with verification questions</option>
+              <option value="dialogue">Interactive tutor turn (correction + 1 follow-up question)</option>
+            </select>
+          </div>
+
+          <div class="figure-label" style="margin-bottom: var(--space-xs);">Generated Prompt Blueprint</div>
+          <div id="wb-output" class="prompt-box prompt-strong"></div>
+          <p id="wb-quality-score" class="figure-caption" style="margin-top: var(--space-sm); font-weight: 600; color: var(--positive);"></p>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span class="dossier-meta">Tip: Adding “strictly correct my factual errors too” elevates a tutor prompt from grammar-only to holistic coaching.</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="review-btn-06" onclick="toggleSectionReviewed('06')">Mark Module 06 Reviewed</button>
+      </div>
+    </section>
+
+    <!-- MODULE 07: BROADER FRAMEWORKS & INDUSTRY BEST PRACTICES -->
+    <section id="sec-07" class="dossier-section reveal-section">
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="index-num">07</span>
+          <span class="dossier-meta">Broader Frameworks &amp; Industry Practices</span>
+        </div>
+        <span class="tag">Industry Standard</span>
+      </div>
+      <h2 class="section-heading">Structured prompting frameworks used across modern AI engineering teams</h2>
+      <p class="section-deck">Beyond foundational best practices, the course syllabus highlights Chain-of-Thought reasoning—paired in industry with RTF, CO-STAR, RISEN, and systematic evaluation.</p>
+
+      <div class="asymmetric-split">
+        <div class="figure-card">
+          <div class="figure-label">Interactive Framework Explorer</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Select a Framework to Inspect its Anatomy</h3>
+
+          <div class="pill-tabs" id="fw-tabs">
+            <button type="button" class="btn btn-secondary btn-sm is-active" onclick="selectFramework('cot', this)">Chain-of-Thought (CoT)</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectFramework('rtf', this)">RTF (Role–Task–Format)</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectFramework('costar', this)">CO-STAR</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectFramework('risen', this)">RISEN</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectFramework('react', this)">ReAct &amp; Delimiters</button>
+          </div>
+
+          <div id="fw-detail"></div>
+        </div>
+
+        <aside class="aside-box">
+          <div class="aside-title">Production Engineering Controls</div>
+          <div style="display: grid; gap: var(--space-md);">
+            <div>
+              <strong>System vs User Prompt Separation</strong>
+              <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--on-surface-variant);">
+                Place immutable rules, persona, safety guardrails, and output schemas in the <code>system</code> message; keep dynamic inputs in the <code>user</code> message.
+              </p>
+            </div>
+            <div>
+              <strong>Temperature Calibration (0.0 – 1.0)</strong>
+              <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--on-surface-variant);">
+                Use low temperature (<code>0.0–0.2</code>) for factual extraction, SQL, and classification; raise it (<code>0.7–0.9</code>) for creative writing such as Helena’s graduation poem.
+              </p>
+            </div>
+            <div>
+              <strong>Delimiters &amp; Structured Schemas</strong>
+              <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--on-surface-variant);">
+                Wrap pasted essays or user records in triple quotes (<code>"""</code>) or XML-style tags (<code>&lt;essay&gt;...&lt;/essay&gt;</code>) to prevent instruction injection.
+              </p>
+            </div>
+            <div>
+              <strong>Golden-Set Regression Testing</strong>
+              <p style="margin: 4px 0 0 0; font-size: 0.9rem; color: var(--on-surface-variant);">
+                Evaluate prompt library edits against a fixed suite of benchmark inputs whenever a provider updates model weights.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="section-footer">
+        <span class="dossier-meta">Syllabus Note: Chain-of-Thought prompting improves multi-step arithmetic, logic, and code reasoning.</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="review-btn-07" onclick="toggleSectionReviewed('07')">Mark Module 07 Reviewed</button>
+      </div>
+    </section>
+
+    <!-- MODULE 08: ADVANCED CONCEPTS -->
+    <section id="sec-08" class="dossier-section reveal-section">
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="index-num">08</span>
+          <span class="dossier-meta">Zero-Shot, Few-Shot, Hallucinations &amp; Vectors</span>
+        </div>
+        <span class="tag tag-teal">3 Interactive Labs</span>
+      </div>
+      <h2 class="section-heading">Teaching models on the fly, diagnosing hallucinations, and mapping semantic vectors</h2>
+      <p class="section-deck">Advanced prompt engineering moves beyond phrasing into in-context examples, reliability safeguards, and numeric representations of meaning.</p>
+
+      <!-- 8A: Zero-Shot vs Few-Shot -->
+      <div class="equal-split" style="margin-bottom: var(--space-xl);">
+        <div class="figure-card">
+          <div class="figure-label">Lab 8A · In-Context Learning</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Zero-Shot vs Few-Shot Prompting</h3>
+          <p style="font-size: 0.92rem; color: var(--on-surface-variant);">
+            <strong>Zero-shot prompting</strong> relies solely on pre-trained weights with zero task examples (e.g. <em>“When is Christmas in America?”</em>). <strong>Few-shot prompting</strong> supplies examples inside the prompt itself—teaching private or domain-specific facts without retraining the model.
+          </p>
+          <div class="pill-tabs">
+            <button type="button" class="btn btn-secondary btn-sm is-active" id="btn-zs" onclick="setShotMode('zero')">Zero-Shot (No Context)</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-fs" onclick="setShotMode('few')">Few-Shot (With Examples)</button>
+          </div>
+          <div id="shot-output"></div>
+        </div>
+
+        <!-- 8B: AI Hallucinations -->
+        <div class="figure-card">
+          <div class="figure-label">Lab 8B · Reliability &amp; Failure Modes</div>
+          <h3 class="sub-heading" style="margin-top: var(--space-xs);">Understanding AI Hallucinations</h3>
+          <p style="font-size: 0.92rem; color: var(--on-surface-variant);">
+            Hallucinations occur when models misinterpret inputs or creatively “fill in the gaps” from training patterns—neither seeing unicorns nor lying intentionally.
+          </p>
+          <div class="pill-tabs">
+            <button type="button" class="btn btn-secondary btn-sm is-active" onclick="selectHallucination('text', this)">Text Model Fabrication</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectHallucination('image', this)">Deep Dream Visual Over-Interpretation</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="selectHallucination('mitigate', this)">Mitigation Checklist</button>
+          </div>
+          <div id="hallucination-output"></div>
+        </div>
+      </div>
+
+      <!-- 8C: Vectors & Text Embeddings -->
+      <div class="figure-card">
+        <div class="figure-label">Lab 8C · Semantic Space &amp; OpenAI Embeddings API</div>
+        <h3 class="sub-heading" style="margin-top: var(--space-xs);">Why “Food” Maps Near “Burger”, Not “Foot”</h3>
+
+        <div class="asymmetric-split">
+          <div>
+            <p style="margin-top: 0; font-size: 0.95rem;">
+              A traditional computer comparing strings <strong>lexicographically</strong> (like scrolling through a dictionary) thinks <code>food</code> is closest to <code>foot</code>—sharing three of four letters despite unrelated meaning.
+            </p>
+            <p style="font-size: 0.95rem;">
+              <strong>Text embeddings</strong> solve this by converting a word, sentence, or entire prompt into a high-dimensional <strong>vector</strong> (a long array of floating-point numbers) that encodes semantic meaning. Comparing vector distances returns conceptually similar terms such as <code>burger</code> and <code>pizza</code>.
+            </p>
+
+            <div class="field-group" style="margin-bottom: var(--space-sm);">
+              <label for="embed-select" class="field-label">Inspect Vector Anchor Comparison</label>
+              <select id="embed-select" onchange="updateEmbeddingView(this.value)">
+                <option value="food">Query: “food” → Semantic neighbours vs Lexicographical trap</option>
+                <option value="finance">Query: “international finance” → Sector cluster</option>
+                <option value="eliza">Query: “psychotherapist chatbot” → Historical AI cluster</option>
+              </select>
+            </div>
+
+            <div id="embed-readout" class="aside-box"></div>
+
+            <details style="margin-top: var(--space-md);">
+              <summary style="cursor: pointer; font-weight: 600; color: var(--secondary); font-size: 0.92rem;">Inspect OpenAI Node.js createEmbedding Pipeline</summary>
+              <div class="prompt-box" style="margin-top: var(--space-sm);">const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAIApi(configuration);
+
+const response = await openai.createEmbedding({
+  model: "text-embedding-ada-002",
+  input: "food"
+});
+// Access vector array: response.data.data[0].embedding -> [ -0.0069, 0.0053, ... ]</div>
+            </details>
+          </div>
+
+          <div>
+            <div class="figure-label" style="margin-bottom: var(--space-xs);">2D Semantic Vector Projection (Hover or Click Nodes)</div>
+            <div class="svg-box" style="background: var(--surface-container); border: var(--card-border); border-radius: var(--rounded); padding: var(--space-sm);">
+              <svg id="vector-svg" viewBox="0 0 420 290" role="img" aria-label="2D semantic vector projection showing food clustered near burger and pizza rather than foot">
+                <!-- Grid -->
+                <line x1="40" y1="250" x2="395" y2="250" stroke="var(--outline)" stroke-width="1"/>
+                <line x1="40" y1="20" x2="40" y2="250" stroke="var(--outline)" stroke-width="1"/>
+                <line x1="40" y1="135" x2="395" y2="135" stroke="var(--outline-variant)" stroke-dasharray="3 3"/>
+                <line x1="215" y1="20" x2="215" y2="250" stroke="var(--outline-variant)" stroke-dasharray="3 3"/>
+
+                <text x="215" y="275" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">Semantic Dimension 1 (Topic / Domain)</text>
+                <text x="16" y="135" text-anchor="middle" transform="rotate(-90 16 135)" font-family="var(--font-label)" font-size="10" fill="var(--on-surface-variant)">Semantic Dimension 2 (Context)</text>
+
+                <!-- Distance Dashed Lines -->
+                <line id="vec-line-sem" x1="125" y1="80" x2="170" y2="62" stroke="var(--data-3)" stroke-width="2" stroke-dasharray="4 3"/>
+                <line id="vec-line-lex" x1="125" y1="80" x2="320" y2="205" stroke="var(--data-4)" stroke-width="1.5" stroke-dasharray="2 3"/>
+
+                <!-- Cluster: Culinary -->
+                <circle cx="125" cy="80" r="9" fill="var(--data-2)"/>
+                <text x="125" y="65" text-anchor="middle" font-family="var(--font-label)" font-size="11" font-weight="600" fill="var(--on-surface)">food</text>
+
+                <circle cx="170" cy="62" r="7" fill="var(--data-3)"/>
+                <text x="182" y="66" font-family="var(--font-label)" font-size="10" fill="var(--positive)">burger (0.91)</text>
+
+                <circle cx="152" cy="112" r="7" fill="var(--data-3)"/>
+                <text x="164" y="116" font-family="var(--font-label)" font-size="10" fill="var(--positive)">pizza (0.89)</text>
+
+                <circle cx="95" cy="105" r="6" fill="var(--data-3)"/>
+                <text x="95" y="122" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--positive)">fries (0.86)</text>
+
+                <!-- Lexicographical Trap -->
+                <circle cx="320" cy="205" r="7" fill="var(--data-4)"/>
+                <text x="320" y="191" text-anchor="middle" font-family="var(--font-label)" font-size="10" font-weight="600" fill="var(--error)">foot (0.21 — spelling trap)</text>
+
+                <!-- Finance Cluster -->
+                <circle cx="310" cy="70" r="7" fill="var(--data-1)"/>
+                <text x="310" y="55" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--secondary)">international finance</text>
+                <circle cx="342" cy="95" r="6" fill="var(--data-1)"/>
+                <text x="342" y="112" text-anchor="middle" font-family="var(--font-label)" font-size="10" fill="var(--secondary)">earnings report</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-footer">
+        <span class="dossier-meta">Takeaway: Embeddings power semantic search, retrieval-augmented generation (RAG), and prompt similarity clustering.</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="review-btn-08" onclick="toggleSectionReviewed('08')">Mark Module 08 Reviewed</button>
+      </div>
+    </section>
+
+    <!-- MODULE 09: COMPREHENSIVE INTERACTIVE QUIZ -->
+    <section id="sec-quiz" class="dossier-section reveal-section">
+      <div class="dossier-bar">
+        <div class="dossier-bar-left">
+          <span class="index-num">09</span>
+          <span class="dossier-meta">Comprehensive Mastery Quiz</span>
+        </div>
+        <span class="dossier-pill">Instant Feedback</span>
+      </div>
+      <h2 class="section-heading">Test your mastery across all eight curriculum domains</h2>
+      <p class="section-deck">Twelve scenario and concept questions with immediate explanatory feedback. Your answers and progress are preserved automatically.</p>
+
+      <div class="figure-card" style="margin-bottom: var(--space-lg);">
+        <div class="controls-row" style="justify-content: space-between; align-items: center;">
+          <div>
+            <div class="figure-label">Live Assessment Scoreboard</div>
+            <div id="quiz-scoreboard" style="font-family: var(--font-headline); font-size: 1.5rem; font-weight: 600; margin-top: 2px;">0 / 12 Answered · 0 Correct (0%)</div>
+          </div>
+          <div class="controls-row">
+            <div class="field-group">
+              <label for="quiz-filter" class="field-label">Filter Topic</label>
+              <select id="quiz-filter" onchange="renderQuiz()">
+                <option value="all">All 12 Questions</option>
+                <option value="foundations">Foundations, AI &amp; Linguistics</option>
+                <option value="history">History &amp; Token Economics</option>
+                <option value="craft">Best Practices &amp; Frameworks</option>
+                <option value="advanced">Zero/Few-Shot, Hallucinations &amp; Vectors</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-secondary" id="btn-reset-quiz" onclick="handleQuizReset(this)">Reset Quiz</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="quiz-container"></div>
+
+      <div class="section-footer">
+        <span class="dossier-meta">Assessment Complete? Mark Module 09 reviewed once you reach your target score.</span>
+        <button type="button" class="btn btn-secondary btn-sm" id="review-btn-09" onclick="toggleSectionReviewed('09')">Mark Module 09 Reviewed</button>
+      </div>
+    </section>
+
+    <!-- SOURCES & ACKNOWLEDGEMENTS -->
+    <footer style="border-top: var(--section-rule); padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
+      <div class="dossier-bar" style="border-bottom: none; margin-bottom: var(--space-xs);">
+        <span class="dossier-meta">Sources &amp; Editorial Attribution</span>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--on-surface-variant); max-width: 75ch; margin: 0;">
+        Primary curriculum grounded in Ania Kubów’s lecture <em>Prompt Engineering Tutorial – Master ChatGPT and LLM Responses</em> (freeCodeCamp), including citations to Bloomberg salary reporting, Mihail Eric (<em>Infinite Machine Learning</em> podcast), Joseph Weizenbaum’s MIT ELIZA (1964–1966), SHRDLU, OpenAI GPT-1 through GPT-4, Google BERT, Google Deep Dream, and OpenAI’s Embeddings API. Broader industry frameworks (RTF, CO-STAR, RISEN, ReAct, and evaluation practices) reflect standard production prompt-engineering methodology.
+      </p>
+    </footer>
+  </div>
+
+  <api-shim></api-shim>
+  <script>
+    /* ============================================================
+       STATE & PERSISTENCE (notebookAppApi)
+       ============================================================ */
+    const DEFAULT_STATE = {
+      reviewedModules: [],
+      quizAnswers: {},
+      workbench: {
+        task: `Explain quantum computing basics to a secondary school science class`,
+        persona: true,
+        format: true,
+        neutral: true,
+        factual: false,
+        outputFormat: `bullet`
+      }
+    };
+
+    let appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+    async function saveState() {
+      if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+        try {
+          await window.notebookAppApi.setAppState(appState);
+        } catch (e) {
+          /* Ignore storage errors gracefully */
+        }
+      }
+    }
+
+    async function loadInitialState() {
+      if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+        try {
+          const saved = await window.notebookAppApi.getAppState();
+          if (saved && typeof saved === 'object') {
+            appState.reviewedModules = Array.isArray(saved.reviewedModules) ? saved.reviewedModules : [];
+            appState.quizAnswers = (saved.quizAnswers && typeof saved.quizAnswers === 'object') ? saved.quizAnswers : {};
+            if (saved.workbench && typeof saved.workbench === 'object') {
+              appState.workbench = Object.assign({}, DEFAULT_STATE.workbench, saved.workbench);
+            }
+          }
+        } catch (e) {
+          /* Fallback to default state */
+        }
+      }
+    }
+
+    /* ============================================================
+       MODULE 02: ML CLASSIFIER SIMULATOR
+       ============================================================ */
+    function loadMlSample(kind) {
+      const box = document.getElementById('ml-input-text');
+      if (!box) return;
+      if (kind === 'finance') {
+        box.value = `Central bank sovereign bond yields climbed across Eurozone markets ahead of cross-border currency talks.`;
+      } else if (kind === 'earnings') {
+        box.value = `Quarterly revenue rose 14% year-on-year as net operating margin beat analyst EPS forecasts.`;
+      } else {
+        box.value = `Global subsidiaries reported higher quarterly turnover despite volatile foreign exchange tariffs.`;
+      }
+      runMlClassifier();
+    }
+
+    function runMlClassifier() {
+      const box = document.getElementById('ml-input-text');
+      const out = document.getElementById('ml-results');
+      if (!box || !out) return;
+      const text = box.value.toLowerCase();
+
+      const financeTerms = [`central bank`, `sovereign`, `bond`, `eurozone`, `currency`, `tariff`, `foreign exchange`, `global`, `treaty`, `macro`, `imf`, `trade`];
+      const earningsTerms = [`quarterly`, `revenue`, `margin`, `eps`, `forecast`, `profit`, `turnover`, `year-on-year`, `dividend`, `guidance`, `operating`, `earnings`];
+
+      let fScore = 18;
+      let eScore = 18;
+      financeTerms.forEach(function (t) { if (text.indexOf(t) !== -1) fScore += 19; });
+      earningsTerms.forEach(function (t) { if (text.indexOf(t) !== -1) eScore += 19; });
+
+      const total = fScore + eScore + 12;
+      const fPct = Math.round((fScore / total) * 100);
+      const ePct = Math.round((eScore / total) * 100);
+      const oPct = Math.max(2, 100 - fPct - ePct);
+
+      const winner = fPct >= ePct ? `International Finance` : `Earnings Reports`;
+
+      out.innerHTML = `
+        <div style="display: grid; gap: 0.6rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.88rem;">
+            <strong>Predicted Category: <span style="color: var(--secondary);">${winner}</span></strong>
+            <span class="dossier-meta">Pattern Match Output</span>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-family:var(--font-label); font-size:0.78rem;">
+              <span>International Finance</span><span>${fPct}%</span>
+            </div>
+            <div class="progress-track" style="height:7px; margin-top:3px;"><div class="progress-fill" style="width:${fPct}%; background:var(--data-1);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-family:var(--font-label); font-size:0.78rem;">
+              <span>Earnings Reports</span><span>${ePct}%</span>
+            </div>
+            <div class="progress-track" style="height:7px; margin-top:3px;"><div class="progress-fill" style="width:${ePct}%; background:var(--data-2);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-family:var(--font-label); font-size:0.78rem;">
+              <span>Other / Unclassified</span><span>${oPct}%</span>
+            </div>
+            <div class="progress-track" style="height:7px; margin-top:3px;"><div class="progress-fill" style="width:${oPct}%; background:var(--data-context);"></div></div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ============================================================
+       MODULE 03: LINGUISTICS EXPLORER
+       ============================================================ */
+    const LINGUISTICS_DATA = {
+      morphology: {
+        title: `Morphology — Word Structure`,
+        definition: `The study of how words are formed from roots, prefixes, and suffixes (morphemes), and how parts of speech inflect.`,
+        impact: `Precise morphological choices—such as distinguishing “summarisation” from “summary bullets” or using exact verbs (“extract”, “classify”, “refactor”)—anchor the model’s task.`,
+        exampleWeak: `“Make the essay short words.”`,
+        exampleStrong: `“Summarise the essay using concise, imperative bullet points.”`
+      },
+      syntax: {
+        title: `Syntax — Sentence Structure`,
+        definition: `The rules governing how words and clauses combine into grammatically well-formed sentences.`,
+        impact: `LLMs are trained predominantly on standard universal grammar. Clean, unambiguous clause ordering prevents dangling modifiers and ensures constraints bind to the intended noun.`,
+        exampleWeak: `“Write a function for ages in JavaScript filtering objects new array.”`,
+        exampleStrong: `“Write a JavaScript function that takes an array of objects, filters the ‘age’ property values, and returns them in a new array.”`
+      },
+      semantics: {
+        title: `Semantics — Linguistic Meaning`,
+        definition: `The study of literal and conceptual meaning encoded in words, phrases, and sentences.`,
+        impact: `Homonyms and vague nouns split probability across unrelated domains. Replacing “election” or “code” with semantically specific terms narrows the search space immediately.`,
+        exampleWeak: `“When is the election?”`,
+        exampleStrong: `“When is the next presidential election for Poland?”`
+      },
+      pragmatics: {
+        title: `Pragmatics — Language in Context`,
+        definition: `The study of how context, speaker intent, audience, and shared assumptions shape meaning beyond literal words.`,
+        impact: `Prompts carry implicit context in your head that the model cannot see. Persona, audience age, and intended occasion (“read aloud to friends and family at a graduation”) supply essential pragmatic framing.`,
+        exampleWeak: `“Write a graduation poem.”`,
+        exampleStrong: `“Writing as Helena, 25, compose a high-school graduation poem for her 18-year-old sister to be read aloud at a family gathering.”`
+      },
+      phonetics: {
+        title: `Phonetics — Speech Production & Perception`,
+        definition: `The study of how physical speech sounds are articulated, transmitted, and heard.`,
+        impact: `Crucial when prompting or configuring emerging text-to-speech and speech-to-text models (prosody, pronunciation guides, and phonetic spelling for rare names).`,
+        exampleWeak: `“Say my surname properly.”`,
+        exampleStrong: `“Pronounce ‘Kubów’ phonetically in British English text-to-speech notation.”`
+      },
+      phonology: {
+        title: `Phonology — Sound Patterns & Changes`,
+        definition: `The study of systematic sound patterns, stress, rhythm, and metre within a language.`,
+        impact: `Essential when instructing LLMs to write verse, rhyme schemes, alliteration, or cadence-controlled spoken scripts.`,
+        exampleWeak: `“Make this poem sound musical.”`,
+        exampleStrong: `“Compose four stanzas in iambic pentameter with an ABAB rhyme scheme.”`
+      },
+      historical: {
+        title: `Historical Linguistics — Language Change`,
+        definition: `The study of how languages, vocabulary, and grammar evolve across centuries.`,
+        impact: `Determines register accuracy when asking an LLM to emulate an era (e.g., 19th-century Victorian prose vs 21st-century minimalist poetry).`,
+        exampleWeak: `“Write an old-fashioned letter.”`,
+        exampleStrong: `“Draft a formal letter using 1840s British epistolary vocabulary and syntax.”`
+      },
+      sociolinguistics: {
+        title: `Sociolinguistics — Language & Society`,
+        definition: `The study of how regional dialects, social groups, and cultural norms shape language.`,
+        impact: `Guides regional spelling (UK vs US English), cultural idioms, and appropriate register for executive briefings versus teenage learners.`,
+        exampleWeak: `“Explain investing simply.”`,
+        exampleStrong: `“Explain index funds in UK English for a university fresher with no finance background.”`
+      },
+      computational: {
+        title: `Computational Linguistics — Machine Processing`,
+        definition: `The interdisciplinary study of how algorithms and statistical models parse, embed, and generate human language.`,
+        impact: `Directly informs tokenisation, vector embeddings, context windows, and why deterministic phrasing outperforms colloquial ambiguity.`,
+        exampleWeak: `“Why didn’t it match ‘food’ with ‘foot’?”`,
+        exampleStrong: `“Compare semantic cosine similarity in embedding space against lexicographical string distance.”`
+      },
+      psycholinguistics: {
+        title: `Psycholinguistics (Physiolinguistics) — Language Acquisition & Use`,
+        definition: `The study of how humans mentally acquire, comprehend, and produce language (referred to in the lecture as physiolinguistics).`,
+        impact: `Shapes educational prompts—such as designing a spoken English tutor that limits replies to 100 words and scaffolds learning with one follow-up question.`,
+        exampleWeak: `“Correct my English.”`,
+        exampleStrong: `“Act as a spoken English teacher, limit replies to 100 words, correct grammar and factual errors, and ask one engaging question.”`
+      }
+    };
+
+    function selectLinguistics(key, btnEl) {
+      const container = document.getElementById('ling-tabs');
+      if (container) {
+        const buttons = container.querySelectorAll('button');
+        buttons.forEach(function (b) { b.classList.remove('is-active'); });
+      }
+      if (btnEl) btnEl.classList.add('is-active');
+
+      const panel = document.getElementById('ling-detail-panel');
+      const item = LINGUISTICS_DATA[key];
+      if (!panel || !item) return;
+
+      panel.innerHTML = `
+        <div>
+          <h4 style="font-family: var(--font-headline); font-size: 1.25rem; margin: 0 0 0.4rem 0;">${item.title}</h4>
+          <p style="margin: 0 0 0.75rem 0; font-size: 0.95rem;"><strong>Definition:</strong> ${item.definition}</p>
+          <p style="margin: 0; font-size: 0.95rem; color: var(--secondary);"><strong>Prompting Impact:</strong> ${item.impact}</p>
+        </div>
+        <div style="display: grid; gap: 0.6rem;">
+          <div class="prompt-box prompt-weak"><strong>Underspecified:</strong> ${item.exampleWeak}</div>
+          <div class="prompt-box prompt-strong"><strong>Linguistically Grounded:</strong> ${item.exampleStrong}</div>
+        </div>
+      `;
+    }
+
+    /* ============================================================
+       MODULE 04: TIMELINE & LIVE ELIZA
+       ============================================================ */
+    const ERA_DATA = {
+      eliza: {
+        year: `1964 – 1966 · MIT`,
+        name: `ELIZA (Joseph Weizenbaum)`,
+        summary: `The first landmark natural language processing program, designed to mimic a Rogerian psychotherapist. It converted user input into symbols and matched predefined patterns without understanding meaning—yet famously captivated users (including Weizenbaum’s own secretary) into attributing human emotion to it.`
+      },
+      shrdlu: {
+        year: `1970s · MIT`,
+        name: `SHRDLU (Terry Winograd)`,
+        summary: `An early comprehension system capable of understanding simple commands and manipulating a virtual world of geometric blocks. Although not a statistical language model, SHRDLU proved machines could tie syntax to structured actions.`
+      },
+      dl2010: {
+        year: `c. 2010`,
+        name: `Deep Learning & Neural Networks`,
+        summary: `True modern language models emerged when deep neural networks and large-scale compute enabled models to learn hierarchical word representations directly from massive text corpora rather than hand-coded rules.`
+      },
+      gpt1: {
+        year: `2018 · OpenAI`,
+        name: `GPT-1 (Generative Pre-trained Transformer)`,
+        summary: `OpenAI’s first GPT iteration, trained on books, articles, and early web corpora. Small by later standards, it validated unsupervised pre-training on the Transformer architecture.`
+      },
+      gpt2: {
+        year: `2019 · OpenAI`,
+        name: `GPT-2`,
+        summary: `Scaled parameter count and training text substantially (1.5B parameters), demonstrating coherent multi-paragraph generation that foreshadowed general-purpose writing assistants.`
+      },
+      gpt3: {
+        year: `2020 · OpenAI`,
+        name: `GPT-3 (175B+ Parameters)`,
+        summary: `A watershed turning point equipped with over 175 billion parameters. GPT-3 demonstrated striking zero-shot and few-shot adaptability across comprehension, reasoning, and creative composition.`
+      },
+      gpt4: {
+        year: `Contemporary Era · OpenAI & Google`,
+        name: `GPT-4 & BERT`,
+        summary: `Models such as Google’s BERT and OpenAI’s GPT-4—trained on vast internet-scale datasets rather than small static collections—handle nuanced instructions, code generation, and conversational context, making prompt engineering an essential skill.`
+      }
+    };
+
+    function selectEra(key, btnEl) {
+      const rail = document.getElementById('timeline-buttons');
+      if (rail) {
+        rail.querySelectorAll('button').forEach(function (b) { b.classList.remove('is-active'); });
+      }
+      if (btnEl) btnEl.classList.add('is-active');
+
+      const detail = document.getElementById('era-detail');
+      const d = ERA_DATA[key];
+      if (!detail || !d) return;
+
+      detail.innerHTML = `
+        <div class="aside-box">
+          <div class="figure-label">${d.year}</div>
+          <h4 style="font-family: var(--font-headline); font-size: 1.3rem; margin: 0.25rem 0 0.5rem 0;">${d.name}</h4>
+          <p style="margin: 0; font-size: 0.95rem;">${d.summary}</p>
+        </div>
+      `;
+    }
+
+    function getElizaReply(input) {
+      const clean = input.trim();
+      const lower = clean.toLowerCase();
+      if (!clean) return `Please share a thought so my pattern matcher can respond.`;
+      if (lower.indexOf(`sad`) !== -1 || lower.indexOf(`anxious`) !== -1 || lower.indexOf(`stressed`) !== -1) {
+        const match = lower.match(/(sad|anxious|stressed)/);
+        const word = match ? match[1] : `that way`;
+        return `Why do you think you feel ${word}? [Rule matched: EMOTION_KEYWORD -> reflect question]`;
+      }
+      if (lower.indexOf(`boss`) !== -1 || lower.indexOf(`mother`) !== -1 || lower.indexOf(`family`) !== -1) {
+        return `Tell me more about that relationship. How does that make you feel? [Rule matched: PERSON_KEYWORD]`;
+      }
+      if (lower.indexOf(`why`) !== -1 || lower.indexOf(`computer`) !== -1 || lower.indexOf(`ai`) !== -1) {
+        return `Do machines worry you, or are you thinking about how people communicate with them? [Rule matched: MACHINE_REFLECTION]`;
+      }
+      if (lower.indexOf(`i am `) !== -1 || lower.indexOf(`i'm `) !== -1) {
+        return `How long have you felt that way? What led you to say that? [Rule matched: SELF_STATEMENT]`;
+      }
+      return `Please go on—what does “${clean}” suggest to you? [Fallback rule: MIRROR_PROMPT]`;
+    }
+
+    function appendElizaTurn(userText) {
+      const log = document.getElementById('eliza-log');
+      if (!log) return;
+      const uDiv = document.createElement('div');
+      uDiv.className = 'chat-msg user';
+      uDiv.textContent = userText;
+      log.appendChild(uDiv);
+
+      const bDiv = document.createElement('div');
+      bDiv.className = 'chat-msg bot';
+      bDiv.textContent = `ELIZA: ${getElizaReply(userText)}`;
+      log.appendChild(bDiv);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function sendElizaPreset(text) {
+      appendElizaTurn(text);
+    }
+
+    function submitEliza() {
+      const inp = document.getElementById('eliza-input');
+      if (!inp) return;
+      const val = inp.value.trim();
+      if (!val) return;
+      appendElizaTurn(val);
+      inp.value = '';
+    }
+
+    /* ============================================================
+       MODULE 05: LIVE TOKENISER & COST ESTIMATOR
+       ============================================================ */
+    let currentTokenCount = 6;
+    let currentCallScale = 10000;
+
+    function loadTokenPreset(type) {
+      const box = document.getElementById('token-input');
+      if (!box) return;
+      if (type === 'math') {
+        box.value = `What is 4 + 4?`;
+      } else if (type === 'vague') {
+        box.value = `When is the election? Wait no I meant Poland presidential. Also give me the date in a bullet list please.`;
+      } else {
+        box.value = `When is the next presidential election for Poland? Reply in 3 concise bullet points.`;
+      }
+      updateTokeniser();
+    }
+
+    function approximateTokens(text) {
+      if (!text.trim()) return [];
+      /* Approximate GPT BPE behaviour: split words/numbers/punctuation and split long words every 4-5 chars */
+      const rawParts = text.match(/[A-Za-z]+|[0-9]+|[^\sA-Za-z0-9]|\s+/g) || [];
+      const tokens = [];
+      rawParts.forEach(function (part) {
+        if (/^\s+$/.test(part)) {
+          return;
+        }
+        if (part.length <= 5) {
+          tokens.push(part);
+        } else {
+          for (let i = 0; i < part.length; i += 4) {
+            tokens.push(part.slice(i, i + 4));
+          }
+        }
+      });
+      return tokens;
+    }
+
+    function updateTokeniser() {
+      const box = document.getElementById('token-input');
+      const countEl = document.getElementById('tok-count');
+      const charsEl = document.getElementById('tok-chars');
+      const chipsEl = document.getElementById('token-chips');
+      if (!box || !countEl || !charsEl || !chipsEl) return;
+
+      const text = box.value;
+      /* Calibrate exact lecture benchmark for "What is 4 + 4?" -> 6 tokens */
+      let tokens = approximateTokens(text);
+      if (text.trim() === `What is 4 + 4?`) {
+        tokens = [`What`, ` is`, ` 4`, ` +`, ` 4`, `?`];
+      }
+
+      currentTokenCount = tokens.length;
+      const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+
+      countEl.textContent = String(currentTokenCount);
+      charsEl.textContent = `${text.length} chars · ${wordCount} words`;
+
+      const classes = ['tok-a', 'tok-b', 'tok-c', 'tok-d'];
+      if (tokens.length === 0) {
+        chipsEl.innerHTML = `<span class="dossier-meta">Type or choose a preset above to inspect token segmentation.</span>`;
+      } else {
+        chipsEl.innerHTML = tokens.map(function (tok, idx) {
+          const safe = tok.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          return `<span class="token-chip ${classes[idx % classes.length]}">${safe}</span>`;
+        }).join('');
+      }
+      updateTokenCost(currentCallScale);
+    }
+
+    function updateTokenCost(callsVal) {
+      currentCallScale = Number(callsVal) || 10000;
+      const lbl = document.getElementById('scale-calls-label');
+      const note = document.getElementById('tok-cost-note');
+      if (lbl) lbl.textContent = currentCallScale.toLocaleString('en-GB');
+      if (!note) return;
+
+      const totalPromptTokens = currentTokenCount * currentCallScale;
+      /* Illustrative API rate: $5.00 per 1M input tokens */
+      const estUsd = ((totalPromptTokens / 1000000) * 5).toFixed(2);
+      note.textContent = `At ${currentCallScale.toLocaleString('en-GB')} monthly runs, this prompt consumes ${totalPromptTokens.toLocaleString('en-GB')} input tokens (~$${estUsd} at $5/1M input tokens), before counting output tokens or follow-up turns.`;
+    }
+
+    /* ============================================================
+       MODULE 06: CASE STUDIES & WORKBENCH
+       ============================================================ */
+    const CASE_STUDIES = {
+      teacher: {
+        weakLabel: `Basic Prompt`,
+        weak: `Correct my paragraph:\n"Today was great in the world for me. I went to a Disneyland with my mom. It could have been better though if it wasn't raining."`,
+        strongLabel: `Engineered Tutor Persona + Factual Check`,
+        strong: `I want you to act as a spoken English teacher. I will speak to you in English and you will reply to practice my spoken English. Keep your reply neat, limiting it to 100 words. Strictly correct my grammar mistakes, typos, and factual errors, and ask me a question in your reply.`,
+        takeaway: `Turns a passive one-line rewrite into an engaging, bounded conversational teacher tailored to a young learner.`
+      },
+      election: {
+        weakLabel: `Assumed Context`,
+        weak: `When is the election?`,
+        strongLabel: `Specific Geography & Office`,
+        strong: `When is the next presidential election for Poland?`,
+        takeaway: `Eliminates follow-up guesswork and saves tokens by specifying both the country and election type on the first attempt.`
+      },
+      js: {
+        weakLabel: `Unspecified Stack`,
+        weak: `Write code to filter out the ages from data.`,
+        strongLabel: `Language + Data Structure + Explanation`,
+        strong: `Write a JavaScript function that will take an array of objects, filter out the value of the age property, and put them in a new array. Please explain what each code snippet does.`,
+        takeaway: `Prevents the model from defaulting to Python when you need JavaScript, and builds comprehension rather than blind copy-pasting.`
+      },
+      essay: {
+        weakLabel: `Open-Ended Summary`,
+        weak: `Tell me what this essay is about. [pasted essay]`,
+        strongLabel: `Strict Bullet & Word-Length Constraint`,
+        strong: `Use bullet points to explain what this essay is about, making sure each point is no longer than 10 words, followed by a brief conclusion.`,
+        takeaway: `Prevents a bloated summary nearly as long as the source essay.`
+      },
+      poem: {
+        weakLabel: `Generic Request`,
+        weak: `Write a poem for a sister's high school graduation that will be read out to family and close friends.`,
+        strongLabel: `Named Persona + Stylistic Reference`,
+        strong: `Write a poem as Helena. Helena is 25 years old and an amazing writer whose style is similar to 21st-century poet Rupi Kaur. Writing as Helena, write a poem for her 18-year-old sister to celebrate her high school graduation, to be read out to friends and family.`,
+        takeaway: `Incorporates age (“18 summers”), familial voice (“little sister”), and Rupi Kaur’s lyrical cadence instead of generic rhymes.`
+      },
+      checklist: {
+        weakLabel: `Unformatted Request`,
+        weak: `Help me prepare for a product launch.`,
+        strongLabel: `Explicit Checklist Format`,
+        strong: `Create an actionable pre-launch checklist grouped into Technical, Content, and QA stages.`,
+        takeaway: `Explicit format directives reliably unlock checklists, tables, summaries, or step-by-step guides.`
+      }
+    };
+
+    function selectCaseStudy(key, btnEl) {
+      const tabs = document.getElementById('case-tabs');
+      if (tabs) {
+        tabs.querySelectorAll('button').forEach(function (b) { b.classList.remove('is-active'); });
+      }
+      if (btnEl) btnEl.classList.add('is-active');
+
+      const box = document.getElementById('case-study-display');
+      const cs = CASE_STUDIES[key];
+      if (!box || !cs) return;
+
+      box.innerHTML = `
+        <div style="display: grid; gap: 0.75rem;">
+          <div class="prompt-box prompt-weak"><strong>${cs.weakLabel}:</strong>\n${cs.weak}</div>
+          <div class="prompt-box prompt-strong"><strong>${cs.strongLabel}:</strong>\n${cs.strong}</div>
+          <p class="figure-caption" style="margin: 0;"><strong>Why it works:</strong> ${cs.takeaway}</p>
+        </div>
+      `;
+    }
+
+    function buildWorkbenchPrompt() {
+      const taskEl = document.getElementById('wb-task');
+      const pEl = document.getElementById('wb-persona');
+      const fEl = document.getElementById('wb-format');
+      const nEl = document.getElementById('wb-neutral');
+      const factEl = document.getElementById('wb-factual');
+      const fmtSel = document.getElementById('wb-audience-format');
+      const outEl = document.getElementById('wb-output');
+      const scoreEl = document.getElementById('wb-quality-score');
+      if (!taskEl || !pEl || !fEl || !nEl || !factEl || !fmtSel || !outEl || !scoreEl) return;
+
+      const task = taskEl.value.trim() || `Explain the requested topic clearly`;
+      const parts = [];
+      let strength = 1;
+
+      if (pEl.checked) {
+        parts.push(`Act as an experienced, approachable subject-matter educator.`);
+        strength++;
+      }
+      parts.push(`Task: ${task}.`);
+
+      if (fEl.checked) {
+        if (fmtSel.value === 'bullet') {
+          parts.push(`Format: Present exactly 5 bullet points (maximum 12 words each) followed by 1 everyday analogy.`);
+        } else if (fmtSel.value === 'checklist') {
+          parts.push(`Format: Produce a numbered study checklist with a verification question under each step.`);
+        } else {
+          parts.push(`Format: Keep your response under 100 words, correct any errors, and end with 1 engaging question.`);
+        }
+        strength++;
+      }
+      if (nEl.checked) {
+        parts.push(`Tone & Balance: Maintain neutral, evidence-led framing without assuming a predetermined conclusion.`);
+        strength++;
+      }
+      if (factEl.checked) {
+        parts.push(`Accuracy Guardrail: Flag any factual uncertainties explicitly rather than guessing.`);
+        strength++;
+      }
+
+      outEl.textContent = parts.join('\n\n');
+      const pct = Math.min(100, strength * 20);
+      scoreEl.textContent = `Specification Completeness: ${pct}% (${strength}/5 structural pillars active)`;
+      scoreEl.style.color = pct >= 80 ? `var(--positive)` : (pct >= 60 ? `var(--tertiary)` : `var(--error)`);
+
+      appState.workbench = {
+        task: taskEl.value,
+        persona: pEl.checked,
+        format: fEl.checked,
+        neutral: nEl.checked,
+        factual: factEl.checked,
+        outputFormat: fmtSel.value
+      };
+      saveState();
+    }
+
+    /* ============================================================
+       MODULE 07: FRAMEWORKS EXPLORER
+       ============================================================ */
+    const FRAMEWORKS = {
+      cot: {
+        name: `Chain-of-Thought (CoT) Prompting`,
+        origin: `Covered in Lecture Syllabus · Reasoning Technique`,
+        desc: `Instructs the model to articulate intermediate reasoning steps (“Think step by step”) before stating a final answer. Dramatically reduces arithmetic, logic, and multi-hop errors.`,
+        template: `Question: A team sends 400 prompts daily averaging 250 tokens each. How many tokens are processed in a 30-day month?\n\nInstruction: Reason step by step, showing intermediate totals before giving the final figure.`
+      },
+      rtf: {
+        name: `RTF — Role, Task, Format`,
+        origin: `Lightweight Everyday Industry Standard`,
+        desc: `A rapid three-part mental checklist that directly operationalises the core principles taught in Module 06 without over-engineering.`,
+        template: `[Role]: Act as a senior UK technical editor.\n[Task]: Critique the clarity and structure of the attached release note.\n[Format]: Return a 3-column Markdown table (Issue, Reason, Suggested Edit).`
+      },
+      costar: {
+        name: `CO-STAR — Context, Objective, Style, Tone, Audience, Response`,
+        origin: `Enterprise Communication & Content Design`,
+        desc: `Ideal when brand voice, audience sophistication, and pragmatic context matter as much as factual content.`,
+        template: `[Context]: Launching an internal AI literacy programme for non-technical staff.\n[Objective]: Draft a 1-page launch email.\n[Style]: Briefing magazine.\n[Tone]: Encouraging, pragmatic.\n[Audience]: Operations managers.\n[Response]: Plain text under 180 words with 3 action items.`
+      },
+      risen: {
+        name: `RISEN — Role, Instructions, Steps, End Goal, Narrowing`,
+        origin: `Complex Multi-Step Workflows`,
+        desc: `Designed for repeatable processes (such as curriculum design or data auditing) where explicit execution order and scope constraints prevent drift.`,
+        template: `[Role]: Curriculum architect.\n[Instructions]: Build a 4-week study plan for prompt engineering.\n[Steps]: 1) Map prerequisites, 2) Assign weekly labs, 3) Define capstone.\n[End Goal]: Learner passes a practical audit.\n[Narrowing]: Assume 3 hours/week and zero Python experience.`
+      },
+      react: {
+        name: `ReAct (Reason + Act) & Delimiters`,
+        origin: `Agentic & Tool-Augmented Systems`,
+        desc: `Pairs internal reasoning traces with external tool calls (search, database lookup, code execution), bounded by strict delimiters so user data never collides with system rules.`,
+        template: `System: Analyse only the text inside <transcript> tags. Alternate Thought -> Action -> Observation before Final Answer.\n\n<transcript>\n  ...\n</transcript>`
+      }
+    };
+
+    function selectFramework(key, btnEl) {
+      const tabs = document.getElementById('fw-tabs');
+      if (tabs) {
+        tabs.querySelectorAll('button').forEach(function (b) { b.classList.remove('is-active'); });
+      }
+      if (btnEl) btnEl.classList.add('is-active');
+
+      const box = document.getElementById('fw-detail');
+      const fw = FRAMEWORKS[key];
+      if (!box || !fw) return;
+
+      box.innerHTML = `
+        <div style="display: grid; gap: 0.75rem;">
+          <div>
+            <span class="tag">${fw.origin}</span>
+            <h4 style="font-family: var(--font-headline); font-size: 1.3rem; margin: 0.45rem 0 0.35rem 0;">${fw.name}</h4>
+            <p style="margin: 0; font-size: 0.95rem;">${fw.desc}</p>
+          </div>
+          <div class="prompt-box">${fw.template}</div>
+        </div>
+      `;
+    }
+
+    /* ============================================================
+       MODULE 08: ADVANCED LABS
+       ============================================================ */
+    function setShotMode(mode) {
+      const bZ = document.getElementById('btn-zs');
+      const bF = document.getElementById('btn-fs');
+      const out = document.getElementById('shot-output');
+      if (!bZ || !bF || !out) return;
+
+      bZ.classList.toggle('is-active', mode === 'zero');
+      bF.classList.toggle('is-active', mode === 'few');
+
+      if (mode === 'zero') {
+        out.innerHTML = `
+          <div style="display: grid; gap: 0.6rem;">
+            <div class="prompt-box"><strong>Prompt (0 Examples):</strong>\nWhat is Ania’s favourite type of food?</div>
+            <div class="prompt-box prompt-weak"><strong>Model Response:</strong>\n“I do not have access to personal preferences unless you provide them in our conversation.” (GPT-4 cannot know private facts absent from training data.)</div>
+          </div>
+        `;
+      } else {
+        out.innerHTML = `
+          <div style="display: grid; gap: 0.6rem;">
+            <div class="prompt-box"><strong>In-Context Examples + Query:</strong>\nAnia’s favourite foods include burgers, fries, and pizza.\n\nWhat restaurants should I take Ania to in Dubai this weekend?</div>
+            <div class="prompt-box prompt-strong"><strong>Model Response:</strong>\nRecommends top Dubai burger, artisanal pizza, and gourmet fries venues—achieved purely via prompt examples without retraining the model.</div>
+          </div>
+        `;
+      }
+    }
+
+    const HALLUCINATION_DATA = {
+      text: `
+        <div class="prompt-box prompt-weak" style="margin-bottom: 0.6rem;"><strong>Scenario:</strong> Asking an LLM for details on an obscure historical figure absent from its weights.</div>
+        <p style="margin: 0; font-size: 0.92rem;"><strong>Mechanism:</strong> Rather than admitting ignorance, the next-token predictor stitches statistically plausible dates, titles, and deeds into a confident but fabricated biography. This reveals how the model interpolates patterns rather than retrieving verified truth.</p>
+      `,
+      image: `
+        <div class="prompt-box" style="margin-bottom: 0.6rem;"><strong>Lecture Example: Google Deep Dream</strong></div>
+        <p style="margin: 0; font-size: 0.92rem;"><strong>Mechanism:</strong> Deep Dream visualises patterns learned by a convolutional neural network by amplifying whatever shapes it half-recognises—turning an ordinary photo of a dog into a surreal tapestry of eyes and dog faces when filling visual gaps.</p>
+      `,
+      mitigate: `
+        <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.92rem; display: grid; gap: 0.4rem;">
+          <li><strong>Permission to abstain:</strong> Explicitly instruct “If the answer is not in the provided context, state that you do not know.”</li>
+          <li><strong>Ground with few-shot / RAG context:</strong> Supply authoritative excerpts or vector-retrieved passages inside the prompt.</li>
+          <li><strong>Lower temperature:</strong> Set temperature near <code>0.0–0.2</code> for factual tasks to reduce creative gap-filling.</li>
+        </ul>
+      `
+    };
+
+    function selectHallucination(key, btnEl) {
+      if (btnEl && btnEl.parentElement) {
+        btnEl.parentElement.querySelectorAll('button').forEach(function (b) { b.classList.remove('is-active'); });
+        btnEl.classList.add('is-active');
+      }
+      const out = document.getElementById('hallucination-output');
+      if (out && HALLUCINATION_DATA[key]) {
+        out.innerHTML = HALLUCINATION_DATA[key];
+      }
+    }
+
+    const EMBED_VIEWS = {
+      food: `<strong>Query: “food”</strong><br>Semantic cosine matches: <code>burger</code> (0.91), <code>pizza</code> (0.89), <code>fries</code> (0.86).<br>Lexicographical decoy: <code>foot</code> (0.21) — looks nearly identical in spelling, yet sits far away in vector space.`,
+      finance: `<strong>Query: “international finance”</strong><br>Semantic cluster neighbours: <code>sovereign bond</code> (0.88), <code>earnings report</code> (0.84), <code>exchange rate</code> (0.82).<br>Used in document classification and retrieval pipelines.`,
+      eliza: `<strong>Query: “psychotherapist chatbot”</strong><br>Semantic cluster neighbours: <code>ELIZA</code> (0.87), <code>Rogerian dialogue</code> (0.83), <code>natural language processing</code> (0.80).<br>Connects concepts even when zero keywords overlap.`
+    };
+
+    function updateEmbeddingView(val) {
+      const el = document.getElementById('embed-readout');
+      if (el && EMBED_VIEWS[val]) {
+        el.innerHTML = EMBED_VIEWS[val];
+      }
+    }
+
+    /* ============================================================
+       MODULE 09: 12-QUESTION INTERACTIVE MASTERY QUIZ
+       ============================================================ */
+    const QUIZ_QUESTIONS = [
+      {
+        id: `q1`,
+        category: `foundations`,
+        topic: `Industry Roles`,
+        question: `According to the Bloomberg report cited in the lecture, up to what annual salary have companies offered dedicated prompt engineers, and what coding prerequisite applies?`,
+        options: [
+          `Up to $120,000, requiring at least five years of Python and PyTorch experience`,
+          `Up to $335,000, with no coding background necessarily required`,
+          `Up to $500,000, restricted to machine-learning PhD researchers`,
+          `Up to $180,000, requiring a degree in computational linguistics`
+        ],
+        correct: 1,
+        explanation: `Bloomberg reported roles paying up to $335,000 per year, and Ania Kubów emphasises that no coding background is strictly required—structured linguistic thinking, prompt monitoring, and maintaining prompt libraries are the core skills.`
+      },
+      {
+        id: `q2`,
+        category: `foundations`,
+        topic: `AI & Machine Learning`,
+        question: `How does the lecture distinguish modern AI tools such as ChatGPT from sentient intelligence?`,
+        options: [
+          `They simulate human intelligence processes by analysing large training datasets for correlations and predicting outcomes`,
+          `They reason consciously using symbolic block worlds like SHRDLU`,
+          `They verify every factual claim against a live deterministic calculator`,
+          `They rewrite their own weights after every single user message`
+        ],
+        correct: 0,
+        explanation: `AI is a simulation of human intelligence processes—not sentient. Tools such as ChatGPT rely on machine learning: training on vast corpora to detect patterns and predict likely outcomes.`
+      },
+      {
+        id: `q3`,
+        category: `foundations`,
+        topic: `Linguistics`,
+        question: `Why does writing prompts in universally standard grammar generally produce more accurate LLM outputs?`,
+        options: [
+          `OpenAI’s tokeniser rejects non-standard punctuation automatically`,
+          `Training corpora overwhelmingly reflect standard grammar and universally used sentence structures`,
+          `Standard grammar halves the character count of every prompt`,
+          `LLMs translate all input into Latin before predicting tokens`
+        ],
+        correct: 1,
+        explanation: `Because internet-scale training data predominantly uses standard grammar and syntax, adhering to universal phrasing aligns your prompt with the strongest patterns in the model’s training distribution.`
+      },
+      {
+        id: `q4`,
+        category: `foundations`,
+        topic: `Linguistics Branches`,
+        question: `Which branch of linguistics specifically examines how context, intent, and situation shape meaning?`,
+        options: [
+          `Phonology`,
+          `Morphology`,
+          `Pragmatics`,
+          `Phonetics`
+        ],
+        correct: 2,
+        explanation: `Pragmatics studies how language is used in context (whereas morphology studies word structure, syntax studies sentence structure, and semantics studies literal linguistic meaning).`
+      },
+      {
+        id: `q5`,
+        category: `history`,
+        topic: `History of Language Models`,
+        question: `How did Joseph Weizenbaum’s 1964–1966 MIT program ELIZA create the illusion of understanding a human patient?`,
+        options: [
+          `Using a 175-billion-parameter transformer trained on medical journals`,
+          `Using predefined pattern-matching rules that transformed user keywords into reflective Rogerian questions`,
+          `Using high-dimensional text embeddings from an external vector database`,
+          `Using a virtual 3D block simulation inspired by SHRDLU`
+        ],
+        correct: 1,
+        explanation: `ELIZA converted inputs into symbols and matched predefined patterns—for instance turning “I feel sad” into “Why do you think you feel sad?”—creating a powerful conversational illusion without true comprehension.`
+      },
+      {
+        id: `q6`,
+        category: `history`,
+        topic: `GPT Evolution`,
+        question: `Which OpenAI model released in 2020 marked a major turning point with over 175 billion parameters?`,
+        options: [
+          `GPT-1`,
+          `GPT-2`,
+          `GPT-3`,
+          `BERT`
+        ],
+        correct: 2,
+        explanation: `GPT-1 arrived in 2018 and GPT-2 in 2019, but GPT-3 in 2020—with over 175 billion parameters—marked the breakthrough in fluency and creative generation.`
+      },
+      {
+        id: `q7`,
+        category: `history`,
+        topic: `Token Economics`,
+        question: `Approximately how much English text corresponds to 1 token in GPT-4, and how many tokens did “What is 4 + 4?” use in the lecture’s tokenizer demo?`,
+        options: [
+          `~10 characters (2 words); “What is 4 + 4?” used 3 tokens`,
+          `~4 characters (0.75 words); “What is 4 + 4?” used 6 tokens`,
+          `~1 word exact; “What is 4 + 4?” used 5 tokens`,
+          `~8 characters (1.5 words); “What is 4 + 4?” used 4 tokens`
+        ],
+        correct: 1,
+        explanation: `One token equals roughly 4 characters or 0.75 words in English. In the lecture’s OpenAI Tokenizer check, “What is 4 + 4?” resolved to exactly 6 tokens.`
+      },
+      {
+        id: `q8`,
+        category: `craft`,
+        topic: `Best Practices`,
+        question: `In the lecture’s JavaScript example, what two additions turned a vague “filter out ages” request into an exemplary prompt?`,
+        options: [
+          `Specifying JavaScript with an array of objects, plus asking the model to explain what each snippet does`,
+          `Asking for Python first and then converting it manually`,
+          `Setting temperature to 1.0 and omitting the data shape`,
+          `Leading the prompt with “You must agree this code is slow”`
+        ],
+        correct: 0,
+        explanation: `Naming the language (JavaScript), specifying the data structure (array of objects), and requesting step-by-step explanations prevented a wasteful Python response and supported learning.`
+      },
+      {
+        id: `q9`,
+        category: `craft`,
+        topic: `Persona Prompting`,
+        question: `How did assigning the persona “Helena, 25, writing in the style of Rupi Kaur” improve the graduation poem?`,
+        options: [
+          `It forced the poem into strict 10-word bullet points`,
+          `It infused personal sisterly warmth, the 18-year-old milestone, and a distinct poetic cadence rather than generic rhymes`,
+          `It eliminated all token charges from OpenAI billing`,
+          `It prevented the model from referencing the graduation gathering`
+        ],
+        correct: 1,
+        explanation: `Giving Helena an age, relationship context (18-year-old younger sister), and stylistic benchmark (Rupi Kaur) produced a far more personal, nuanced poem.`
+      },
+      {
+        id: `q10`,
+        category: `craft`,
+        topic: `Frameworks`,
+        question: `Why do Chain-of-Thought (CoT) prompts and frameworks such as CO-STAR or RTF improve complex model outputs?`,
+        options: [
+          `They bypass token limits entirely`,
+          `They separate reasoning steps, audience, persona, and output structure so the model does not guess intent`,
+          `They disable machine learning pattern prediction in favour of ELIZA rules`,
+          `They lock the model into zero-shot mode only`
+        ],
+        correct: 1,
+        explanation: `Structured frameworks ensure all pragmatic constraints (Role, Task, Format, Context, Audience) are explicit, while CoT encourages intermediate reasoning steps before answering.`
+      },
+      {
+        id: `q11`,
+        category: `advanced`,
+        topic: `Zero-Shot vs Few-Shot`,
+        question: `Why did GPT-4 fail Ania’s zero-shot query about her favourite foods yet succeed after few-shot prompting?`,
+        options: [
+          `Zero-shot prompting provides no task-specific examples, whereas few-shot prompting supplies personal facts (“burgers, fries, pizza”) right inside the prompt`,
+          `Few-shot prompting permanently retrains OpenAI’s global model weights`,
+          `Zero-shot prompting only works for arithmetic equations`,
+          `Few-shot prompting deletes previous chat history automatically`
+        ],
+        correct: 0,
+        explanation: `Few-shot prompting injects examples or private context directly in the prompt—allowing GPT-4 to recommend Dubai burger, fries, and pizza restaurants without retraining.`
+      },
+      {
+        id: `q12`,
+        category: `advanced`,
+        topic: `Hallucinations & Embeddings`,
+        question: `Why do text embeddings pair “food” closely with “burger” rather than “foot”?`,
+        options: [
+          `Embeddings sort words alphabetically in a dictionary`,
+          `Embeddings convert text into high-dimensional numeric vectors capturing semantic meaning rather than lexicographical spelling`,
+          `Embeddings intentionally hallucinate rhymes between unrelated nouns`,
+          `Embeddings strip vowels from prompts to reduce token fees`
+        ],
+        correct: 1,
+        explanation: `Lexicographical matching looks at spelling (“food” vs “foot”), whereas high-dimensional embedding vectors encode semantic relationships so “food” clusters near “burger” and “pizza”.`
+      }
+    ];
+
+    function renderQuiz() {
+      const container = document.getElementById('quiz-container');
+      const filterEl = document.getElementById('quiz-filter');
+      if (!container || !filterEl) return;
+
+      const filter = filterEl.value;
+      const letters = ['A', 'B', 'C', 'D'];
+      const filtered = QUIZ_QUESTIONS.filter(function (q) {
+        return filter === 'all' || q.category === filter;
+      });
+
+      container.innerHTML = filtered.map(function (q, idx) {
+        const chosen = appState.quizAnswers[q.id];
+        const hasAnswered = typeof chosen === 'number';
+        const isCorrect = hasAnswered && chosen === q.correct;
+
+        const optionsHtml = q.options.map(function (opt, oIdx) {
+          let cls = 'quiz-option-btn';
+          if (hasAnswered) {
+            if (oIdx === chosen && isCorrect) cls += ' selected-correct';
+            else if (oIdx === chosen && !isCorrect) cls += ' selected-wrong';
+            else if (oIdx === q.correct) cls += ' reveal-correct';
+          }
+          return `
+            <button type="button" class="${cls}" ${hasAnswered ? 'disabled' : ''} onclick="answerQuiz('${q.id}', ${oIdx})">
+              <span class="index-num">${letters[oIdx]}</span>
+              <span>${opt}</span>
+            </button>
+          `;
+        }).join('');
+
+        let feedbackHtml = '';
+        if (hasAnswered) {
+          feedbackHtml = `
+            <div class="quiz-feedback ${isCorrect ? 'correct' : 'wrong'}">
+              <strong>${isCorrect ? 'Correct.' : 'Not quite.'}</strong> ${q.explanation}
+            </div>
+          `;
+        }
+
+        return `
+          <article class="quiz-item" id="card-${q.id}">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <span class="tag tag-teal">${q.topic}</span>
+              <span class="dossier-meta">Question ${idx + 1} of ${filtered.length}</span>
+            </div>
+            <h3 style="font-family: var(--font-headline); font-size: 1.2rem; margin: 0.6rem 0 0 0; line-height: 1.3;">${q.question}</h3>
+            <div class="quiz-options">${optionsHtml}</div>
+            ${feedbackHtml}
+          </article>
+        `;
+      }).join('');
+
+      updateProgressDisplay();
+    }
+
+    function answerQuiz(qId, optIdx) {
+      appState.quizAnswers[qId] = optIdx;
+      saveState();
+      renderQuiz();
+    }
+
+    function handleQuizReset(btn) {
+      if (!btn) return;
+      if (btn.dataset.armed !== 'true') {
+        btn.dataset.armed = 'true';
+        btn.textContent = `Click again to confirm reset`;
+        return;
+      }
+      btn.dataset.armed = 'false';
+      btn.textContent = `Reset Quiz`;
+      appState.quizAnswers = {};
+      saveState();
+      renderQuiz();
+    }
+
+    /* ============================================================
+       PROGRESS TRACKING & GLOBAL CONTROLS
+       ============================================================ */
+    function toggleSectionReviewed(modId) {
+      const idx = appState.reviewedModules.indexOf(modId);
+      if (idx === -1) {
+        appState.reviewedModules.push(modId);
+      } else {
+        appState.reviewedModules.splice(idx, 1);
+      }
+      saveState();
+      updateProgressDisplay();
+    }
+
+    function updateProgressDisplay() {
+      const totalMods = 9;
+      const revCount = appState.reviewedModules.length;
+
+      let answeredCount = 0;
+      let correctCount = 0;
+      QUIZ_QUESTIONS.forEach(function (q) {
+        const ans = appState.quizAnswers[q.id];
+        if (typeof ans === 'number') {
+          answeredCount++;
+          if (ans === q.correct) correctCount++;
+        }
+      });
+
+      const pctQuiz = answeredCount > 0 ? Math.round((correctCount / QUIZ_QUESTIONS.length) * 100) : 0;
+      const summaryEl = document.getElementById('progress-summary');
+      const barFill = document.getElementById('progress-fill-bar');
+      const barRole = document.getElementById('progress-bar-role');
+      const scoreboard = document.getElementById('quiz-scoreboard');
+
+      if (summaryEl) {
+        summaryEl.textContent = `${revCount} of ${totalMods} modules reviewed · Quiz score: ${correctCount} / ${QUIZ_QUESTIONS.length}`;
+      }
+      if (scoreboard) {
+        scoreboard.textContent = `${answeredCount} / ${QUIZ_QUESTIONS.length} Answered · ${correctCount} Correct (${pctQuiz}%)`;
+      }
+
+      const overallPct = Math.round(((revCount + (correctCount / QUIZ_QUESTIONS.length) * 3) / (totalMods + 3)) * 100);
+      if (barFill) barFill.style.width = `${overallPct}%`;
+      if (barRole) barRole.setAttribute('aria-valuenow', String(overallPct));
+
+      for (let i = 1; i <= 9; i++) {
+        const idStr = i < 10 ? '0' + i : String(i);
+        const isRev = appState.reviewedModules.indexOf(idStr) !== -1;
+        const dot = document.getElementById('dot-' + idStr);
+        const btn = document.getElementById('review-btn-' + idStr);
+        if (dot) dot.classList.toggle('reviewed', isRev);
+        if (btn) {
+          btn.classList.toggle('is-active', isRev);
+          btn.textContent = isRev ? `Module ${idStr} Reviewed ✓` : `Mark Module ${idStr} Reviewed`;
+        }
+      }
+    }
+
+    function handleGlobalReset(btn) {
+      if (!btn) return;
+      if (btn.dataset.armed !== 'true') {
+        btn.dataset.armed = 'true';
+        btn.textContent = `Confirm full reset?`;
+        return;
+      }
+      btn.dataset.armed = 'false';
+      btn.textContent = `Reset Progress`;
+      appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      restoreWorkbenchInputs();
+      saveState();
+      buildWorkbenchPrompt();
+      renderQuiz();
+      updateProgressDisplay();
+    }
+
+    function restoreWorkbenchInputs() {
+      const taskEl = document.getElementById('wb-task');
+      const pEl = document.getElementById('wb-persona');
+      const fEl = document.getElementById('wb-format');
+      const nEl = document.getElementById('wb-neutral');
+      const factEl = document.getElementById('wb-factual');
+      const fmtSel = document.getElementById('wb-audience-format');
+      if (taskEl) taskEl.value = appState.workbench.task;
+      if (pEl) pEl.checked = Boolean(appState.workbench.persona);
+      if (fEl) fEl.checked = Boolean(appState.workbench.format);
+      if (nEl) nEl.checked = Boolean(appState.workbench.neutral);
+      if (factEl) factEl.checked = Boolean(appState.workbench.factual);
+      if (fmtSel) fmtSel.value = appState.workbench.outputFormat || `bullet`;
+    }
+
+    /* ============================================================
+       INITIALISATION
+       ============================================================ */
+    async function initApp() {
+      await loadInitialState();
+
+      runMlClassifier();
+      selectLinguistics('morphology', document.querySelector('#ling-tabs button'));
+      selectEra('eliza', document.querySelector('#timeline-buttons button'));
+      updateTokeniser();
+      selectCaseStudy('teacher', document.querySelector('#case-tabs button'));
+      restoreWorkbenchInputs();
+      buildWorkbenchPrompt();
+      selectFramework('cot', document.querySelector('#fw-tabs button'));
+      setShotMode('zero');
+      selectHallucination('text', null);
+      updateEmbeddingView('food');
+      renderQuiz();
+      updateProgressDisplay();
+
+      if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+        window.notebookAppApi.notifyAppReady();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>

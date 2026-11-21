@@ -1,0 +1,2559 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="dashboard">
+  <meta name="design-style" content="carbon">
+  <title>Think Python Mastery Studio — Complete Interactive Revision &amp; Practice</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces (Carbon) */
+      --background: #ffffff;
+      --surface-container-low: #f4f4f4;
+      --surface-container: #f4f4f4;
+      --surface-container-high: #e0e0e0;
+
+      /* Ink */
+      --on-surface: #161616;
+      --on-surface-variant: #525252;
+
+      /* Rules */
+      --outline: #8d8d8d;
+      --outline-variant: #e0e0e0;
+
+      /* Accents */
+      --primary: #0f62fe;
+      --on-primary: #ffffff;
+      --primary-hover: #0353e9;
+      --primary-container: #d0e2ff;
+      --on-primary-container: #161616;
+      --secondary: #6f6f6f;
+      --tertiary: #198038;
+      --tertiary-container: #defbe6;
+      --error: #da1e28;
+      --error-container: #fff1f1;
+      --on-error: #ffffff;
+
+      /* Semantic */
+      --positive: #198038;
+      --warning: #b28600;
+      --warning-container: #fcf4d6;
+      --focus: #0f62fe;
+
+      /* Data series */
+      --data-1: #0f62fe;
+      --data-2: #6929c4;
+      --data-3: #005d5d;
+      --data-4: #9f1853;
+      --data-context: #8d8d8d;
+
+      /* Fonts */
+      --font-headline: 'IBM Plex Sans', sans-serif;
+      --font-body: 'IBM Plex Sans', sans-serif;
+      --font-label: 'IBM Plex Mono', monospace;
+
+      /* Shape */
+      --rounded: 0.125rem;
+      --rounded-lg: 0.25rem;
+      --rounded-full: 0.75rem;
+
+      /* Style effects */
+      --shadow-1: 0 2px 6px rgb(0 0 0 / 0.1);
+      --shadow-2: 0 4px 12px rgb(0 0 0 / 0.12);
+      --rule: 1px solid var(--outline-variant);
+      --rule-strong: 1px solid var(--on-surface);
+      --field-rule: 1px solid var(--outline);
+      --indicator: 2px solid var(--primary);
+      --indicator-bar: 3px solid var(--primary);
+
+      /* Type scale (Dashboard) */
+      --display-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+      --headline-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+      --subhead-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+      --body-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+      --label-size: 0.75rem;
+
+      /* Spacing scale (4pt base) */
+      --space-2xs: 0.125rem;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.5;
+    }
+    header { position: static !important; }
+
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-lg);
+      padding: var(--space-lg);
+      max-width: 1380px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .page-grid * { min-width: 0; }
+
+    /* Header & Masthead */
+    .masthead {
+      border-bottom: var(--rule);
+      padding-bottom: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+    .masthead-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-md);
+    }
+    .eyebrow-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--on-surface-variant);
+      margin: 0 0 var(--space-xs) 0;
+    }
+    .headline-display {
+      font-family: var(--font-headline);
+      font-size: var(--display-size);
+      font-weight: 300;
+      line-height: 1.18;
+      letter-spacing: 0;
+      margin: 0;
+    }
+    .headline-display strong { font-weight: 600; }
+    .masthead-sub {
+      color: var(--on-surface-variant);
+      max-width: 65ch;
+      margin: var(--space-xs) 0 0 0;
+    }
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: end;
+    }
+
+    /* Buttons (Carbon: square, 40px-48px, left-aligned label) */
+    .btn {
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      font-weight: 400;
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-lg) var(--space-sm) var(--space-md);
+      border-radius: 0;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      text-align: left;
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary {
+      background: var(--background);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    .btn-secondary:hover { background: var(--primary-container); color: var(--on-primary-container); }
+    .btn-ghost {
+      background: var(--surface-container);
+      color: var(--on-surface);
+      border-color: var(--outline-variant);
+    }
+    .btn-ghost:hover { background: var(--surface-container-high); }
+    .btn-danger {
+      background: var(--background);
+      color: var(--error);
+      border-color: var(--error);
+    }
+    .btn-danger:hover { background: var(--error-container); }
+    .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+    /* KPI Summary Strip */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+      gap: var(--space-sm);
+    }
+    .kpi-tile {
+      background: var(--surface-container);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .kpi-tile.is-primary {
+      border-bottom: var(--indicator);
+    }
+    .kpi-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--on-surface-variant);
+    }
+    .kpi-value {
+      font-family: var(--font-label);
+      font-weight: 300;
+      font-size: 1.875rem;
+      line-height: 1.15;
+      color: var(--on-surface);
+    }
+    .kpi-meta {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+    }
+
+    /* Filter & Mode Controls Bar */
+    .controls-bar {
+      background: var(--surface-container);
+      padding: var(--space-md);
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto;
+      gap: var(--space-md);
+      align-items: end;
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .field-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--on-surface-variant);
+    }
+    .carbon-input, .carbon-select {
+      height: 44px;
+      background: var(--background);
+      color: var(--on-surface);
+      border: 0;
+      border-bottom: var(--field-rule);
+      padding: 0 var(--space-md);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      border-radius: 0;
+      width: 100%;
+    }
+    .carbon-select { padding-right: var(--space-xl); }
+    .mode-switch {
+      display: flex;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+    }
+    .mode-tab {
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      background: var(--background);
+      border: 0;
+      border-bottom: 2px solid var(--outline-variant);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      color: var(--on-surface-variant);
+      cursor: pointer;
+    }
+    .mode-tab.is-active {
+      border-bottom: var(--indicator);
+      color: var(--on-surface);
+      font-weight: 600;
+    }
+
+    /* Main Workspace Grid: Left Rail (320px) + Active Studio */
+    .workspace {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: var(--space-lg);
+      align-items: start;
+    }
+
+    /* Left Rail Curriculum Index */
+    .nav-rail {
+      background: var(--surface-container);
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-rail-header {
+      padding: var(--space-md);
+      border-bottom: var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: 760px;
+      overflow-y: auto;
+    }
+    .nav-item + .nav-item {
+      border-top: var(--rule);
+    }
+    .nav-btn {
+      width: 100%;
+      background: transparent;
+      border: 0;
+      border-left: 3px solid transparent;
+      padding: var(--space-sm) var(--space-md);
+      min-height: 52px;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+      gap: var(--space-sm);
+      align-items: center;
+      text-align: left;
+      cursor: pointer;
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      transition: background-color var(--dur-micro) var(--ease-out);
+    }
+    .nav-btn:hover { background: var(--surface-container-high); }
+    .nav-btn.is-active {
+      background: var(--background);
+      border-left: var(--indicator-bar);
+    }
+    .nav-code {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .nav-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .nav-part {
+      display: block;
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .status-dot {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      padding: var(--space-2xs) var(--space-xs);
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+    .status-dot.is-done {
+      background: var(--tertiary-container);
+      color: var(--tertiary);
+    }
+
+    /* Active Chapter Content Area */
+    .studio {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+    .chapter-banner {
+      background: var(--surface-container);
+      padding: var(--space-lg);
+      border-top: var(--indicator);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .banner-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 var(--space-sm);
+      border-radius: var(--rounded-full);
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-size: var(--label-size);
+      font-weight: 500;
+    }
+    .tag-neutral {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+    .chapter-title {
+      font-family: var(--font-headline);
+      font-size: var(--headline-size);
+      font-weight: 300;
+      line-height: 1.2;
+      margin: 0;
+    }
+    .chapter-title strong { font-weight: 600; }
+    .chapter-summary {
+      margin: 0;
+      max-width: 65ch;
+      color: var(--on-surface-variant);
+    }
+
+    /* Section Headers & Sub-navigation */
+    .studio-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      border-bottom: var(--rule);
+      gap: var(--space-xs);
+    }
+    .studio-tab {
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      color: var(--on-surface-variant);
+      cursor: pointer;
+    }
+    .studio-tab.is-active {
+      border-bottom: var(--indicator);
+      color: var(--on-surface);
+      font-weight: 600;
+    }
+
+    /* Panel Cards */
+    .panel {
+      background: var(--surface-container);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+    .panel-inner {
+      background: var(--background);
+      padding: var(--space-md);
+      border-top: var(--rule);
+    }
+    .section-head {
+      font-family: var(--font-headline);
+      font-size: var(--subhead-size);
+      font-weight: 600;
+      margin: 0;
+      padding-bottom: var(--space-sm);
+      border-bottom: var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    /* Sub-topic Matrix */
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+      gap: var(--space-sm);
+    }
+    .topic-card {
+      background: var(--background);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      border-left: 2px solid var(--outline-variant);
+    }
+    .topic-card.is-checked {
+      border-left: 2px solid var(--tertiary);
+    }
+    .topic-check-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+    .topic-code {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .topic-name {
+      font-weight: 600;
+      margin: 0;
+      font-size: 0.9375rem;
+    }
+    .topic-desc {
+      margin: 0;
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+    }
+    .check-toggle {
+      min-width: 44px;
+      min-height: 32px;
+      padding: var(--space-2xs) var(--space-sm);
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      cursor: pointer;
+      color: var(--on-surface);
+    }
+    .check-toggle.is-checked {
+      background: var(--tertiary-container);
+      border-color: var(--tertiary);
+      color: var(--tertiary);
+    }
+
+    /* Callouts & Code Blocks */
+    .callout {
+      background: var(--background);
+      padding: var(--space-md);
+      border-left: 3px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .callout.is-warn { border-left-color: var(--warning); }
+    .callout.is-err { border-left-color: var(--error); }
+    .callout.is-ok { border-left-color: var(--tertiary); }
+    .code-pre {
+      background: var(--on-surface);
+      color: var(--background);
+      font-family: var(--font-label);
+      font-size: 0.8125rem;
+      line-height: 1.55;
+      padding: var(--space-md);
+      overflow-x: auto;
+      margin: 0;
+      white-space: pre;
+    }
+
+    /* Interactive Practice Sandbox */
+    .lab-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: var(--space-md);
+    }
+    .code-editor {
+      width: 100%;
+      min-height: 220px;
+      background: var(--on-surface);
+      color: var(--background);
+      font-family: var(--font-label);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      padding: var(--space-md);
+      border: 0;
+      border-bottom: 2px solid var(--primary);
+      resize: vertical;
+    }
+    .output-box {
+      background: var(--background);
+      border: var(--rule);
+      padding: var(--space-md);
+      font-family: var(--font-label);
+      font-size: 0.8125rem;
+      min-height: 140px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+
+    /* Visualiser Canvas / Table */
+    .viz-wrapper { container-type: inline-size; }
+    .viz-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-md);
+    }
+    @container (min-width: 640px) {
+      .viz-grid.two-col { grid-template-columns: 1fr 1fr; }
+    }
+    .carbon-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .carbon-table th {
+      background: var(--surface-container-high);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-align: left;
+      padding: var(--space-sm) var(--space-md);
+    }
+    .carbon-table td {
+      padding: var(--space-sm) var(--space-md);
+      border-top: var(--rule);
+      vertical-align: top;
+    }
+    .carbon-table tr:nth-child(even) td { background: var(--surface-container-low); }
+    .mono { font-family: var(--font-label); }
+
+    /* Quiz Interface */
+    .quiz-card {
+      background: var(--background);
+      padding: var(--space-md);
+      border-top: var(--rule);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .quiz-opt {
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+    .quiz-opt:hover:not([disabled]) { background: var(--surface-container-high); }
+    .quiz-opt.is-correct {
+      background: var(--tertiary-container);
+      border-color: var(--tertiary);
+    }
+    .quiz-opt.is-wrong {
+      background: var(--error-container);
+      border-color: var(--error);
+    }
+    .feedback-box {
+      padding: var(--space-sm) var(--space-md);
+      background: var(--surface-container);
+      border-left: 3px solid var(--primary);
+      font-size: 0.875rem;
+    }
+    .feedback-box.is-correct { border-left-color: var(--tertiary); }
+    .feedback-box.is-wrong { border-left-color: var(--error); }
+
+    /* Glossary & Footer */
+    .glossary-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+    .glossary-item {
+      background: var(--background);
+      padding: var(--space-sm) var(--space-md);
+      border-top: var(--rule);
+    }
+    .footer-note {
+      border-top: var(--rule);
+      padding-top: var(--space-md);
+      color: var(--on-surface-variant);
+      font-size: 0.8125rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--space-sm);
+    }
+
+    @media (max-width: 900px) {
+      .workspace { grid-template-columns: minmax(0, 1fr); }
+      .nav-list { max-height: 280px; }
+      .lab-split { grid-template-columns: minmax(0, 1fr); }
+      .controls-bar { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .page-grid { padding: var(--space-sm); gap: var(--space-md); }
+      .panel, .chapter-banner { padding: var(--space-md); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-grid">
+    <!-- Masthead -->
+    <header class="masthead">
+      <div class="masthead-top">
+        <div>
+          <p class="eyebrow-label">Think Python (Version 2.0.18) · Complete 22-Module Curriculum</p>
+          <h1 class="headline-display">Think Python <strong>Mastery Studio</strong></h1>
+          <p class="masthead-sub">Systematic revision notes, interactive concept labs, Python code challenges, and diagnostic tests across all 19 chapters and 3 appendices.</p>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn btn-secondary" id="btn-export" onclick="exportProgress()">Export Summary</button>
+          <button type="button" class="btn btn-danger" id="btn-reset" onclick="handleResetProgress(this)">Reset Progress</button>
+        </div>
+      </div>
+
+      <!-- KPI Summary Strip -->
+      <section class="kpi-grid" aria-label="Curriculum Progress">
+        <div class="kpi-tile is-primary">
+          <span class="kpi-label">Modules Revised</span>
+          <span class="kpi-value" id="kpi-modules">0 / 22</span>
+          <span class="kpi-meta" id="kpi-subtopics">0 sub-topics ticked</span>
+        </div>
+        <div class="kpi-tile">
+          <span class="kpi-label">Challenges Solved</span>
+          <span class="kpi-value" id="kpi-challenges">0 / 22</span>
+          <span class="kpi-meta">Interactive code verification</span>
+        </div>
+        <div class="kpi-tile">
+          <span class="kpi-label">Quiz Accuracy</span>
+          <span class="kpi-value" id="kpi-quiz">0%</span>
+          <span class="kpi-meta" id="kpi-quiz-count">0 / 88 chapter questions answered</span>
+        </div>
+        <div class="kpi-tile">
+          <span class="kpi-label">Active Module</span>
+          <span class="kpi-value" id="kpi-active">CH 01</span>
+          <span class="kpi-meta" id="kpi-active-name">The Way of the Program</span>
+        </div>
+      </section>
+    </header>
+
+    <!-- Global Controls & Mode Switch -->
+    <section class="controls-bar" aria-label="Curriculum Filter and Study Mode">
+      <div class="field-group">
+        <label class="field-label" for="search-input">Search chapters, sub-topics, or glossary terms</label>
+        <input class="carbon-input" id="search-input" type="search" placeholder="e.g. MRO, Newton, DSU, aliasing, pickle, Big-O..." oninput="handleSearch(this.value)">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="part-filter">Filter by textbook part</label>
+        <select class="carbon-select" id="part-filter" onchange="handlePartFilter(this.value)">
+          <option value="all">All Parts (19 Chapters + 3 Appendices)</option>
+          <option value="part1">Part I: Basics &amp; Control Flow (Ch 1–7)</option>
+          <option value="part2">Part II: Data Structures (Ch 8–13)</option>
+          <option value="part3">Part III: Files &amp; OOP (Ch 14–19)</option>
+          <option value="appendix">Appendices A–C (Debugging, Algorithms, Lumpy)</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <span class="field-label">Study Workspace</span>
+        <div class="mode-switch" role="tablist" aria-label="Workspace view">
+          <button type="button" class="mode-tab is-active" id="mode-chapter" onclick="setGlobalMode('chapter')">Chapter Studio</button>
+          <button type="button" class="mode-tab" id="mode-gauntlet" onclick="setGlobalMode('gauntlet')">Advanced Gauntlet (10)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Workspace: Left Curriculum Index + Active Chapter/Gauntlet -->
+    <main class="workspace" id="main-workspace">
+      <aside class="nav-rail" aria-label="Chapter Index">
+        <div class="nav-rail-header">
+          <span class="kpi-label" style="margin:0;">Syllabus Index</span>
+          <span class="mono" style="font-size:0.75rem;color:var(--on-surface-variant);" id="nav-count">22 modules</span>
+        </div>
+        <ul class="nav-list" id="nav-list"></ul>
+      </aside>
+
+      <section class="studio" id="studio-area" aria-live="polite">
+        <!-- Rendered dynamically -->
+        <div hidden>
+          <textarea id="code-editor"></textarea>
+          <div id="challenge-output"></div>
+          <div id="challenge-hint"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-note">
+      <span>Source curriculum: Allen B. Downey, <em>Think Python: How to Think Like a Computer Scientist</em> (Version 2.0.18, Green Tea Press) &amp; Advanced Python Edge-Case Companion Notes.</span>
+      <span class="mono">UK English · Offline Sandbox Evaluator</span>
+    </footer>
+  </div>
+
+  <api-shim></api-shim>
+  <script>
+    // =========================================================================
+    // THINK PYTHON COMPLETE 22-MODULE CURRICULUM DATA
+    // =========================================================================
+    const CURRICULUM = [
+      {
+        id: 'ch1', code: 'CH 01', part: 'part1', partLabel: 'Part I · Basics & Control Flow',
+        title: 'The Way of the Program',
+        summary: 'Problem solving as a computer scientist: formal vs natural languages, interpreters vs compilers, program building blocks, and the three error classes.',
+        sections: [
+          { id: '1.1', name: 'The Python Programming Language', detail: 'High-level vs low-level languages; portability; interpreters (line-by-line execution) vs compilers (source code to object/executable code); interactive mode (>>> prompt) vs script mode (.py files).' },
+          { id: '1.2', name: 'What Is a Program?', detail: 'Five universal building blocks: input, output, math, conditional execution, and repetition. Decomposing complex tasks into small algorithmic subtasks.' },
+          { id: '1.3', name: 'What Is Debugging?', detail: 'Distinguishing syntax errors (unparseable structure), runtime errors / exceptions (detected during execution), and semantic errors (runs cleanly, computes the wrong meaning). Experimental debugging as hypothesis testing.' },
+          { id: '1.4', name: 'Formal and Natural Languages', detail: 'Tokens and syntactic structure; parsing; why formal languages eliminate ambiguity, reduce redundancy, and demand strict literalness compared with poetry and prose.' },
+          { id: '1.5', name: 'The First Program (Py2 vs Py3)', detail: 'Python 2 print statement (print "Hello, World!") vs Python 3 print() function. Understanding quotation marks as string delimiters.' },
+          { id: '1.6', name: 'Debugging & Mindset', detail: 'Deliberate experimentation with errors to learn diagnostics; managing emotional responses to stubborn bugs.' },
+          { id: '1.7', name: 'Glossary & Core Vocabulary', detail: 'Algorithm, compile, interpret, source code, object code, executable, parse, token, semantics, syntax.' },
+          { id: '1.8', name: 'Exercises (1.1–1.4)', detail: 'Token vs structure sentences, Python.org docs, help() utility, and pace/speed calculator (10 km in 43m30s at 1.61 km/mile).' }
+        ],
+        pyNote: `Python 2 uses print 'Hello' as a statement; Python 3 requires print('Hello') as a function call.`,
+        codeExample: `# Exercise 1.4: 10 km in 43 min 30 sec\ndist_miles = 10.0 / 1.61\ntime_hours = (43 * 60 + 30) / 3600.0\npace_min = (43.5 / dist_miles)\nspeed_mph = dist_miles / time_hours\nprint(round(pace_min, 2), round(speed_mph, 2))`,
+        vizType: 'error_classifier',
+        challenge: {
+          prompt: `Write a Python function <code>race_stats(km, minutes, seconds)</code> that returns a tuple <code>(pace_sec_per_mile, mph)</code> rounded to 2 decimal places (using 1.61 km per mile).`,
+          starter: `def race_stats(km, minutes, seconds):\n    miles = km / 1.61\n    total_sec = minutes * 60 + seconds\n    pace_sec = round(total_sec / miles, 2)\n    mph = round(miles / (total_sec / 3600.0), 2)\n    return (pace_sec, mph)\n\nprint(race_stats(10, 43, 30))`,
+          tests: [
+            { call: `race_stats(10, 43, 30)`, expected: `[420.21, 8.57]`, desc: `10 km in 43m30s -> (420.21, 8.57)` },
+            { call: `race_stats(1.61, 8, 0)`, expected: `[480, 7.5]`, desc: `1 mile in 8m0s -> (480, 7.5)` }
+          ],
+          hint: `Convert km to miles by dividing by 1.61, then compute total seconds and hours.`
+        },
+        quiz: [
+          { q: `Which error category occurs when a Python script runs to completion without raising an exception, yet outputs an incorrect value?`, opts: [`Syntax error`, `Semantic error`, `Runtime exception`, `Tokenisation error`], ans: 1, exp: `Semantic errors occur when the code is syntactically valid and executes without crashing, but its meaning does not match the programmer's intent.` },
+          { q: `In Python 2, what happens if you type 1,000,000 at the prompt?`, opts: [`SyntaxError: invalid token`, `Evaluates to integer 1000000`, `Evaluates to the tuple (1, 0, 0)`, `Raises ValueError`], ans: 2, exp: `Commas create a tuple in Python, so 1,000,000 is parsed as (1, 0, 0) — a classic semantic error.` },
+          { q: `Which property distinguishes formal languages from natural languages?`, opts: [`High redundancy and idiom`, `Context-dependent ambiguity`, `Unambiguous literal meaning parsed from tokens and structure`, `Evolved without deliberate design`], ans: 2, exp: `Formal languages are deliberately engineered to be unambiguous, concise, and strictly literal.` },
+          { q: `What does an interpreter do differently from a compiler?`, opts: [`Translates the entire source file into object code before execution`, `Reads and executes the high-level program incrementally, a little at a time`, `Requires manual memory assembly`, `Only runs in interactive mode`], ans: 1, exp: `An interpreter alternates between reading lines of source code and performing the computation directly.` }
+        ]
+      },
+      {
+        id: 'ch2', code: 'CH 02', part: 'part1', partLabel: 'Part I · Basics & Control Flow',
+        title: 'Variables, Expressions & Statements',
+        summary: 'Values and types (int, float, str), state diagrams, keyword rules, floor vs float division, PEMDAS precedence, string concatenation/repetition, and comments.',
+        sections: [
+          { id: '2.1', name: 'Values and Types', detail: 'Categories of data: int, float, and str. Quoted numerals like "17" are strings. Comma-separated integers like 1,000,000 form tuples.' },
+          { id: '2.2', name: 'Variables & State Diagrams', detail: 'Assignment binds a name to a value. State diagrams depict each variable name with an arrow to its value.' },
+          { id: '2.3', name: 'Variable Names and Keywords', detail: 'Must start with a letter or underscore; case-sensitive; cannot clash with reserved keywords (31 in Py2, nonlocal added and exec removed in Py3).' },
+          { id: '2.4', name: 'Operators and Operands', detail: '+, -, *, /, **. In Python 2, 59/60 performs floor division (0); Python 3 uses / for true float division and // for floor division. ^ is bitwise XOR, not exponentiation.' },
+          { id: '2.5–2.6', name: 'Expressions, Statements & Modes', detail: 'Expressions evaluate to a value; statements execute an action. Script mode suppresses bare expression output unless printed.' },
+          { id: '2.7', name: 'Order of Operations (PEMDAS)', detail: 'Parentheses, Exponentiation (right-to-left!), Multiplication/Division (left-to-right), Addition/Subtraction. Watch 1.0 / 2.0 * pi vs 1.0 / (2.0 * pi).' },
+          { id: '2.8–2.9', name: 'String Operations & Comments', detail: '+ concatenates (non-commutative!), * repeats with an integer. # comments explain why, not what.' },
+          { id: '2.10–2.12', name: 'Debugging & Exercises (2.1–2.3)', detail: 'Use-before-def NameError, sphere volume (watch integer 4/3 = 1 in Py2!), wholesale book cost, and running breakfast time.' }
+        ],
+        pyNote: `Python 2 integer division 4/3 == 1 (semantic trap in sphere volume!). Use 4.0/3.0 or Python 3 true division /.`,
+        codeExample: `# Sphere volume trap: 4/3 vs 4.0/3.0\npi = 3.141592653589793\nr = 5\nvol_py3 = (4.0 / 3.0) * pi * (r ** 3)\nprint(round(vol_py3, 2))  # 523.6`,
+        vizType: 'stack_sim',
+        challenge: {
+          prompt: `Compute the wholesale cost for <code>n</code> copies of a £24.95 book with a 40% bookstore discount, plus £3 shipping for the first copy and £0.75 for each additional copy. Write <code>wholesale_cost(n)</code> rounded to 2 decimal places.`,
+          starter: `def wholesale_cost(n):\n    if n <= 0:\n        return 0.0\n    unit = 24.95 * 0.6\n    shipping = 3.0 + (n - 1) * 0.75\n    return round(unit * n + shipping, 2)\n\nprint(wholesale_cost(60))`,
+          tests: [
+            { call: `wholesale_cost(60)`, expected: `945.45`, desc: `60 copies -> 945.45` },
+            { call: `wholesale_cost(1)`, expected: `17.97`, desc: `1 copy -> 17.97` }
+          ],
+          hint: `Bookstore pays 60% of 24.95 per copy; shipping is 3.00 + 0.75 * (n - 1).`
+        },
+        quiz: [
+          { q: `What is the value of 1.0 / 2.0 * 3.14 in Python?`, opts: [`0.1592`, `1.57`, `0.0`, `Raises TypeError`], ans: 1, exp: `Division and multiplication have equal precedence and evaluate left-to-right: (1.0 / 2.0) * 3.14 = 1.57.` },
+          { q: `Which operator performs exponentiation in Python?`, opts: [`^`, `**`, `pow^`, `//`], ans: 1, exp: `** is exponentiation; ^ is bitwise XOR and // is floor division.` },
+          { q: `Which property holds for integer addition but NOT for string concatenation (+)?`, opts: [`Associativity`, `Commutativity`, `Closure`, `Identity`], ans: 1, exp: `'a' + 'b' is 'ab', whereas 'b' + 'a' is 'ba' — string concatenation is not commutative.` },
+          { q: `What happens in Python if you evaluate 2 ** 3 ** 2?`, opts: [`64`, `512`, `36`, `SyntaxError`], ans: 1, exp: `Exponentiation associates right-to-left: 2 ** (3 ** 2) = 2 ** 9 = 512.` }
+        ]
+      },
+      {
+        id: 'ch3', code: 'CH 03', part: 'part1', partLabel: 'Part I · Basics & Control Flow',
+        title: 'Functions & Stack Diagrams',
+        summary: 'Function calls, type conversions, math module & dot notation, composition, local scope, stack diagrams, tracebacks, fruitful vs void functions, and imports.',
+        sections: [
+          { id: '3.1–3.2', name: 'Function Calls & Type Conversion', detail: 'Functions take arguments and yield return values. int() truncates towards zero (int(-2.3) == -2); float() and str() convert types.' },
+          { id: '3.3–3.4', name: 'Math Functions & Composition', detail: 'import math creates a module object; access functions via dot notation (math.sin in radians). Expressions can compose arbitrarily, except the LHS of = must be a variable.' },
+          { id: '3.5–3.7', name: 'Definitions, Uses & Flow of Execution', detail: 'def creates a function object without running its body. Functions must be defined before being called at runtime. Flow jumps to the callee and returns to the caller.' },
+          { id: '3.8–3.10', name: 'Parameters, Local Scope & Stack Diagrams', detail: 'Arguments are evaluated once before binding to local parameters. Stack diagrams show frames (__main__ at top, active callee at bottom); tracebacks mirror frames on error.' },
+          { id: '3.11–3.13', name: 'Fruitful vs Void & Imports', detail: 'Void functions return None (type NoneType). from math import pi avoids dot notation; wildcard import * risks name collisions.' },
+          { id: '3.14–3.16', name: 'Debugging & Exercises (3.1–3.5)', detail: 'Avoid mixing tabs and spaces; save scripts before running. Exercises: right_justify, do_twice/do_four (passing function objects), and ASCII grid drawing.' }
+        ],
+        pyNote: `Function objects are first-class values: passing f without () passes the function object itself, whereas f() calls it immediately.`,
+        codeExample: `def do_twice(f, val):\n    f(val)\n    f(val)\n\ndef do_four(f, val):\n    do_twice(f, val)\n    do_twice(f, val)`,
+        vizType: 'stack_sim',
+        challenge: {
+          prompt: `Write <code>right_justify(s)</code> that returns a string padded with enough leading spaces so that its final character sits in column 70 (total length 70).`,
+          starter: `def right_justify(s):\n    return ' ' * (70 - len(s)) + s\n\nres = right_justify('allen')\nprint(len(res), res[-5:])`,
+          tests: [
+            { call: `len(right_justify('allen'))`, expected: `70`, desc: `Length of right_justify('allen') is 70` },
+            { call: `right_justify('py')[:3]`, expected: `'   '`, desc: `Leading characters are spaces` }
+          ],
+          hint: `Multiply a single space ' ' by (70 - len(s)) and concatenate s.`
+        },
+        quiz: [
+          { q: `What does int(-2.9) return in Python?`, opts: [`-3`, `-2`, `-2.0`, `Raises ValueError`], ans: 1, exp: `int() chops off the fractional part (truncates toward zero), yielding -2.` },
+          { q: `If a function has no return statement, what value is bound when you assign result = my_void_fn()?`, opts: [`'None'`, `0`, `None`, `Raises TypeError`], ans: 2, exp: `Void functions implicitly return the special singleton None of type NoneType.` },
+          { q: `In a stack diagram and traceback, where does __main__ sit relative to the currently running function?`, opts: [`__main__ is the topmost frame; the running function is at the bottom`, `__main__ is at the bottom`, `Frames are ordered alphabetically`, `Only fruitful functions get frames`], ans: 0, exp: `Each nested call pushes a frame beneath its caller, with __main__ (module level) at the top.` },
+          { q: `Why does hours * 60 = minutes raise SyntaxError?`, opts: [`Multiplication is invalid`, `The left-hand side of an assignment statement must be an assignable target, not an expression`, `minutes is undefined`, `Missing parentheses`], ans: 1, exp: `Assignment binds a value to a variable name (or subscript/attribute), never to an arithmetic expression.` }
+        ]
+      },
+      {
+        id: 'ch4', code: 'CH 04', part: 'part1', partLabel: 'Part I · Basics & Control Flow',
+        title: 'Case Study: Interface Design',
+        summary: 'TurtleWorld, for-loop repetition, encapsulation, generalisation, interface design, refactoring, docstrings, and preconditions/postconditions.',
+        sections: [
+          { id: '4.1–4.3', name: 'TurtleWorld & Simple Repetition', detail: 'Instantiating Turtle() objects; steering with fd, bk, lt, rt, pu, pd. Using for i in range(n) loops so the turtle completes symmetric turns.' },
+          { id: '4.4–4.5', name: 'Encapsulation & Generalisation', detail: 'Wrapping working code in a named function (encapsulation) and replacing concrete constants with parameters (generalisation, plus keyword arguments).' },
+          { id: '4.6–4.7', name: 'Interface Design & Refactoring', detail: 'Keeping interfaces clean and intuitive (e.g. circle(t, r) computes n and length internally). Refactoring extracts shared logic such as polyline(t, n, length, angle).' },
+          { id: '4.8–4.9', name: 'Development Plan & Docstrings', detail: 'Encapsulation-and-generalisation workflow. Triple-quoted docstrings document interfaces, parameters, and assumptions right after the def header.' },
+          { id: '4.10–4.12', name: 'Debugging & Pre/Postconditions', detail: 'Preconditions (caller responsibilities before call) vs postconditions (guarantees on return). Exercises: turtle flowers, pies, and Archimedean spirals.' }
+        ],
+        pyNote: `In Python 2, arc_length / n could suffer integer floor truncation unless 360.0 or float division is used.`,
+        codeExample: `import math\ndef polygon_step(r, angle):\n    arc_len = 2 * math.pi * r * abs(angle) / 360.0\n    n = int(arc_len / 4) + 3\n    step_len = arc_len / n\n    step_angle = float(angle) / n\n    return (n, round(step_len, 2), round(step_angle, 2))`,
+        vizType: 'turtle_sim',
+        challenge: {
+          prompt: `Write a refactored helper <code>arc_params(r, angle)</code> that returns <code>(n, step_length, step_angle)</code> where <code>n = int(arc_len / 4) + 3</code>, <code>step_length</code> is rounded to 2 dp, and <code>step_angle</code> is rounded to 2 dp.`,
+          starter: `import math\ndef arc_params(r, angle):\n    arc_len = 2 * math.pi * r * abs(angle) / 360.0\n    n = int(arc_len / 4) + 3\n    step_len = round(arc_len / n, 2)\n    step_ang = round(float(angle) / n, 2)\n    return (n, step_len, step_ang)\n\nprint(arc_params(50, 90))`,
+          tests: [
+            { call: `arc_params(50, 90)[0]`, expected: `22`, desc: `r=50, angle=90 gives n=22 segments` },
+            { call: `arc_params(50, 90)[1]`, expected: `3.57`, desc: `step_length is 3.57` }
+          ],
+          hint: `Use 2 * math.pi * r * abs(angle) / 360.0 for arc_len.`
+        },
+        quiz: [
+          { q: `What is refactoring in software development?`, opts: [`Rewriting code from scratch in another language`, `Modifying a working programme to improve function interfaces and internal structure without altering external behaviour`, `Adding print statements to locate bugs`, `Replacing loops with recursion`], ans: 1, exp: `Refactoring improves clarity, reuse, and interface cleanliness (like extracting polyline) while preserving behaviour.` },
+          { q: `Which term describes a requirement that the caller must satisfy before invoking a function?`, opts: [`Postcondition`, `Invariant`, `Precondition`, `Docstring`], ans: 2, exp: `Preconditions govern valid inputs/state before the call; postconditions describe what holds when the function finishes.` },
+          { q: `What is the difference between encapsulation and generalisation?`, opts: [`Encapsulation wraps statements into a function; generalisation adds parameters so it handles varied cases`, `They are synonyms`, `Generalisation removes parameters`, `Encapsulation only applies to classes`], ans: 0, exp: `First you encapsulate working statements into a named function, then you generalise it by parameterising hard-coded values.` },
+          { q: `Where must a function's docstring appear in Python?`, opts: [`Directly above the def header`, `As the first statement inside the function body`, `After the return statement`, `Inside a # comment`], ans: 1, exp: `Python binds the first string literal in a function body to its __doc__ attribute.` }
+        ]
+      },
+      {
+        id: 'ch5', code: 'CH 05', part: 'part1', partLabel: 'Part I · Basics & Control Flow',
+        title: 'Conditionals & Recursion',
+        summary: 'Modulus %, boolean expressions, logical operators, if/elif/else, nested conditionals, recursion, base cases, infinite recursion, and keyboard input.',
+        sections: [
+          { id: '5.1–5.3', name: 'Modulus, Booleans & Logical Operators', detail: 'x % y yields the remainder (extracting digits via x % 10, checking divisibility). Relational operators yield bool (True/False). and, or, not; non-zero numbers are truthy.' },
+          { id: '5.4–5.7', name: 'Conditional Execution Forms', detail: 'Simple if (with pass placeholder), alternative if/else branches, chained if/elif/else, and nested conditionals.' },
+          { id: '5.8–5.10', name: 'Recursion & Infinite Recursion', detail: 'A function calling itself. Requires a base case to terminate; without progress toward the base case, Python hits maximum recursion depth and raises RuntimeError.' },
+          { id: '5.11–5.14', name: 'Input, Debugging & Exercises (5.1–5.6)', detail: 'raw_input() (Py2) vs input() (Py3). Reading bottom of deep tracebacks first. Exercises: Fermat’s Last Theorem checker, triangle inequality, and Koch snowflake curve.' }
+        ],
+        pyNote: `Python 2 raw_input() always returns a string (whereas Py2 input() evaluates code dangerously). Python 3 renamed raw_input() to input().`,
+        codeExample: `def is_triangle(a, b, c):\n    if a > b + c or b > a + c or c > a + b:\n        return 'No'\n    return 'Yes'`,
+        vizType: 'stack_sim',
+        challenge: {
+          prompt: `Write a recursive function <code>countdown_sum(n)</code> that returns the sum of integers from <code>n</code> down to <code>1</code> (and returns <code>0</code> for <code>n &lt;= 0</code> as the base case).`,
+          starter: `def countdown_sum(n):\n    if n <= 0:\n        return 0\n    return n + countdown_sum(n - 1)\n\nprint(countdown_sum(5))`,
+          tests: [
+            { call: `countdown_sum(5)`, expected: `15`, desc: `5+4+3+2+1 = 15` },
+            { call: `countdown_sum(0)`, expected: `0`, desc: `Base case n=0 -> 0` }
+          ],
+          hint: `Check if n <= 0 first and return 0; otherwise return n + countdown_sum(n - 1).`
+        },
+        quiz: [
+          { q: `What exception does Python raise when infinite recursion exceeds the call-stack limit?`, opts: [`OverflowError`, `MemoryError`, `RuntimeError / RecursionError: maximum recursion depth exceeded`, `SyntaxError`], ans: 2, exp: `Think Python notes Python raises RuntimeError: maximum recursion depth exceeded (RecursionError subclass in Python 3).` },
+          { q: `In Python, what does 42 and True evaluate to?`, opts: [`True`, `False`, `42`, `0`], ans: 0, exp: `and evaluates the left operand (42, truthy) and returns the right operand (True).` },
+          { q: `If a recursive function has a base case n == 0, what happens if you call it with n = -1 and recurse on n - 1?`, opts: [`It stops immediately`, `It skips the base case and triggers infinite recursion`, `It converts -1 to 0`, `It returns None`], ans: 1, exp: `Subtracting 1 moves away from 0 (-1, -2, -3...), never hitting n == 0.` },
+          { q: `Which expression tests whether x is divisible by y without remainder?`, opts: [`x / y == 0`, `x % y == 0`, `x // y == 0`, `x ** y == 0`], ans: 1, exp: `The modulus operator % gives the remainder after integer division.` }
+        ]
+      },
+      {
+        id: 'ch6', code: 'CH 06', part: 'part1', partLabel: 'Part I · Basics & Control Flow',
+        title: 'Fruitful Functions & Guardians',
+        summary: 'Return values, dead code, incremental development with scaffolding, boolean functions, leap of faith, type checking with isinstance, and guardian patterns.',
+        sections: [
+          { id: '6.1–6.2', name: 'Return Values & Incremental Development', detail: 'Early returns across branches; code after return is dead code. Incremental development adds 1–2 lines at a time with temporary variables and scaffolding print statements.' },
+          { id: '6.3–6.4', name: 'Composition & Boolean Functions', detail: 'Composing distance() and area() into circle_area(). Boolean functions like is_divisible(x, y) return True/False directly and read naturally in if statements.' },
+          { id: '6.5–6.7', name: 'More Recursion & Leap of Faith', detail: 'factorial(n) and fibonacci(n). The leap of faith: assume the recursive call works correctly for smaller inputs rather than tracing every branch.' },
+          { id: '6.8–6.11', name: 'Guardians & Exercises (6.1–6.8)', detail: 'Using isinstance(n, int) and n < 0 guards to prevent infinite recursion on invalid inputs. Exercises: Ackermann function ack(m, n), is_palindrome, is_power, and gcd(a, b).' }
+        ],
+        pyNote: `Avoid "if x % y == 0: return True else: return False" — write "return x % y == 0" directly!`,
+        codeExample: `def ack(m, n):\n    if m == 0:\n        return n + 1\n    if n == 0:\n        return ack(m - 1, 1)\n    return ack(m - 1, ack(m, n - 1))`,
+        vizType: 'stack_sim',
+        challenge: {
+          prompt: `Implement Euclid's algorithm <code>gcd(a, b)</code> recursively (Exercise 6.8): base case when <code>b == 0</code> returns <code>a</code>, otherwise returns <code>gcd(b, a % b)</code>.`,
+          starter: `def gcd(a, b):\n    if b == 0:\n        return a\n    return gcd(b, a % b)\n\nprint(gcd(48, 18))`,
+          tests: [
+            { call: `gcd(48, 18)`, expected: `6`, desc: `gcd(48, 18) == 6` },
+            { call: `gcd(101, 10)`, expected: `1`, desc: `gcd(101, 10) == 1` }
+          ],
+          hint: `Base case: if b == 0: return a. Recursive step: return gcd(b, a % b).`
+        },
+        quiz: [
+          { q: `What is "dead code" in Python?`, opts: [`Code commented out with #`, `Code inside a function that can never execute, such as statements after a return`, `Unused global variables`, `Syntax errors`], ans: 1, exp: `return immediately exits the function, so any statement after it in the same execution path is unreachable.` },
+          { q: `What is the primary purpose of the "guardian" pattern in Section 6.8?`, opts: [`To encrypt return values`, `To check preconditions with conditionals (like isinstance and bounds) before risking bad execution or infinite recursion`, `To avoid writing docstrings`, `To replace loops`], ans: 1, exp: `Guardians validate inputs at function entry (e.g. checking integer and non-negative) before recursing.` },
+          { q: `What does ack(3, 4) evaluate to in the Ackermann function?`, opts: [`29`, `61`, `125`, `13`], ans: 2, exp: `ack(3, n) = 2^(n+3) - 3, so ack(3, 4) = 2^7 - 3 = 125 (and grows explosively for m >= 4).` },
+          { q: `What does "scaffolding" refer to during incremental development?`, opts: [`Temporary print statements or stubs used while testing that are removed in the final code`, `Importing external libraries`, `Class inheritance`, `Docstring formatting`], ans: 0, exp: `Scaffolding supports construction and debugging of intermediate steps before being stripped out.` }
+        ]
+      },
+      {
+        id: 'ch7', code: 'CH 07', part: 'part1', partLabel: 'Part I · Basics & Control Flow',
+        title: 'Iteration & Newton’s Method',
+        summary: 'Multiple assignment, updating & initialising variables, while loops, break statements, Newton’s square-root algorithm, and debugging by bisection.',
+        sections: [
+          { id: '7.1–7.2', name: 'Multiple Assignment & Updating', detail: 'Rebinding variables changes state diagrams; updates (x = x + 1) require prior initialisation or raise NameError. Increment vs decrement.' },
+          { id: '7.3–7.4', name: 'The while Statement & break', detail: 'Evaluating loop condition, executing body, repeating until False. Avoiding infinite loops. Using break with while True for mid-loop exit.' },
+          { id: '7.5–7.6', name: 'Newton’s Method & Algorithms', detail: 'y = (x + a/x) / 2.0 converges rapidly to sqrt(a); stop when abs(y - x) < epsilon. Algorithms solve whole categories of problems mechanically.' },
+          { id: '7.7–7.9', name: 'Debugging by Bisection & Exercises', detail: 'Inspect the midpoint of a 100-line script to halve the search space (~7 checks instead of 100). Exercises: test_square_root table, eval_loop, and Ramanujan pi series.' }
+        ],
+        pyNote: `In Newton's method, comparing floats for exact equality (y == x) is risky across architectures; use abs(y - x) < epsilon.`,
+        codeExample: `def square_root(a):\n    x = a / 2.0 if a > 1 else 1.0\n    while True:\n        y = (x + a / x) / 2.0\n        if abs(y - x) < 1e-7:\n            return y\n        x = y`,
+        vizType: 'newton_sim',
+        challenge: {
+          prompt: `Implement <code>newton_sqrt(a, x0)</code> starting from initial guess <code>x0</code> and looping until <code>abs(y - x) &lt; 1e-7</code>, returning the converged estimate rounded to 6 decimal places.`,
+          starter: `def newton_sqrt(a, x0):\n    x = x0\n    while True:\n        y = (x + a / x) / 2.0\n        if abs(y - x) < 1e-7:\n            return round(y, 6)\n        x = y\n\nprint(newton_sqrt(9.0, 4.0))`,
+          tests: [
+            { call: `newton_sqrt(9.0, 4.0)`, expected: `3`, desc: `sqrt(9) -> 3.0` },
+            { call: `newton_sqrt(2.0, 1.0)`, expected: `1.414214`, desc: `sqrt(2) -> 1.414214` }
+          ],
+          hint: `Inside while True, compute y = (x + a / x) / 2.0, check abs(y - x) < 1e-7, and update x = y.`
+        },
+        quiz: [
+          { q: `Why does executing x = x + 1 on a brand-new variable raise NameError?`, opts: [`+ cannot add 1`, `Python evaluates the right-hand side before assigning to the left-hand side`, `x must be a float`, `Assignment is immutable`], ans: 1, exp: `You must initialise x first because Python reads the current value of x on the RHS before rebinding.` },
+          { q: `Why does Think Python recommend abs(y - x) < epsilon rather than y == x in Newton's method?`, opts: [`== is a syntax error on floats`, `Floating-point arithmetic has finite precision, so exact equality may fail or loop forever`, `abs is faster than ==`, `epsilon makes it an integer`], ans: 1, exp: `Floating-point approximations can differ in the last bit, so tolerance checks prevent non-termination.` },
+          { q: `How many checks does "debugging by bisection" take at most to isolate a bug in a 100-line script?`, opts: [`100`, `50`, `About 7 (log2 100)`, `1`], ans: 2, exp: `Halving the search region each step isolates a single line in ceil(log2(100)) = 7 checks.` },
+          { q: `Which statement best describes an algorithm?`, opts: [`A memorised lookup table of answers`, `A mechanical, general process for solving an entire category of problems`, `Any valid Python script`, `A recursive-only function`], ans: 1, exp: `Unlike memorising multiplication tables, an algorithm gives a general procedure applicable to arbitrary inputs.` }
+        ]
+      },
+      {
+        id: 'ch8', code: 'CH 08', part: 'part2', partLabel: 'Part II · Data Structures',
+        title: 'Strings',
+        summary: 'Strings as sequences, zero-based & negative indexing, len, for traversal, slicing [n:m:step], immutability, search & counter patterns, string methods, in, and comparison.',
+        sections: [
+          { id: '8.1–8.3', name: 'Sequences, Indexing & Traversal', detail: 'Zero-based bracket indexing fruit[0], negative indexing fruit[-1], IndexError out of bounds, len(fruit), and while vs for char in fruit.' },
+          { id: '8.4–8.5', name: 'Slices & Immutability', detail: 's[n:m] includes n and excludes m; [:3], [3:], [:] full copy, empty string "". Strings are immutable — s[0] = "J" raises TypeError.' },
+          { id: '8.6–8.7', name: 'Searching & Counting Patterns', detail: 'Returning early inside a loop (find returning index or -1) and accumulator counters.' },
+          { id: '8.8–8.10', name: 'String Methods, in & Comparison', detail: 'Method invocation word.upper(), find(sub, start, end), strip(), replace(), count(). Boolean in substring check. Uppercase sorts before lowercase in ASCII/Unicode!' },
+          { id: '8.11–8.13', name: 'Debugging Indices & Exercises', detail: 'Fixing off-by-one errors in is_reverse (j = len(word2)-1, while j >= 0). Step slices [::-1] for palindromes, and Caesar cipher rotate_word.' }
+        ],
+        pyNote: `'Pineapple' < 'banana' evaluates to True because all ASCII uppercase letters (65–90) precede lowercase letters (97–122).`,
+        codeExample: `def is_palindrome(word):\n    return word == word[::-1]`,
+        vizType: 'aliasing_sim',
+        challenge: {
+          prompt: `Write <code>caesar_rotate(word, shift)</code> (Exercise 8.12) that rotates lowercase a–z letters by <code>shift</code> (positive or negative) using <code>ord()</code> and <code>chr()</code> modulo 26.`,
+          starter: `def caesar_rotate(word, shift):\n    out = ''\n    for ch in word:\n        if 'a' <= ch <= 'z':\n            code = (ord(ch) - ord('a') + shift) % 26 + ord('a')\n            out += chr(code)\n        else:\n            out += ch\n    return out\n\nprint(caesar_rotate('cheer', 7))`,
+          tests: [
+            { call: `caesar_rotate('cheer', 7)`, expected: `'jolly'`, desc: `'cheer' rotated by 7 -> 'jolly'` },
+            { call: `caesar_rotate('melon', -10)`, expected: `'cubed'`, desc: `'melon' rotated by -10 -> 'cubed'` }
+          ],
+          hint: `Subtract ord('a'), add shift, take % 26, then add ord('a') back.`
+        },
+        quiz: [
+          { q: `What does 'banana'[1:4] evaluate to?`, opts: [`'ana'`, `'ban'`, `'anan'`, `'nan'`], ans: 0, exp: `Indices 1, 2, 3 are 'a', 'n', 'a' (index 4 is excluded).` },
+          { q: `Why does 'Pineapple' < 'banana' evaluate to True in Python?`, opts: [`'Pineapple' is longer`, `All uppercase ASCII letters have smaller code points than lowercase letters`, `Python ignores case`, `'P' is closer to 'b'`], ans: 1, exp: `ASCII 'P' is 80 while 'b' is 98; normalise case with .lower() before alphabetical comparison.` },
+          { q: `What happens if you execute s = 'hello'; s[0] = 'j'?`, opts: [`s becomes 'jello'`, `Raises TypeError because strings are immutable`, `Raises IndexError`, `Creates a new string silently`], ans: 1, exp: `Strings do not support item assignment; build a new string via concatenation and slicing instead.` },
+          { q: `What does 'banana'[::-1] produce?`, opts: [`'banana'`, `'ananab'`, `'bnn'`, `''`], ans: 1, exp: `A step size of -1 traverses the sequence backwards, reversing the string.` }
+        ]
+      },
+      {
+        id: 'ch9', code: 'CH 09', part: 'part2', partLabel: 'Part II · Data Structures',
+        title: 'Case Study: Word Play',
+        summary: 'Reading word lists with open(), strip(), lipograms, search & filter patterns, problem recognition (uses_all via uses_only), and looping with indices.',
+        sections: [
+          { id: '9.1–9.2', name: 'Reading Word Lists', detail: 'open("words.txt") returns a file object; fin.readline() retains trailing \\r\\n, cleaned via line.strip(). Iterating directly with for line in fin.' },
+          { id: '9.3', name: 'Search & Problem Recognition', detail: 'has_no_e, avoids, uses_only, uses_all. Recognising uses_all(word, required) simply delegates to uses_only(required, word).' },
+          { id: '9.4', name: 'Looping with Indices', detail: 'Comparing adjacent characters in is_abecedarian using while i < len(word) - 1 or zip/recursion.' },
+          { id: '9.5–9.7', name: 'Testing & Car Talk Puzzlers', detail: 'Dijkstra: testing shows the presence of bugs, never their absence. Special cases (empty string). Exercises: triple consecutive double letters, palindromic odometer, and age reversal.' }
+        ],
+        pyNote: `Problem recognition turns uses_all(word, required) into a one-liner: return uses_only(required, word).`,
+        codeExample: `def is_abecedarian(word):\n    i = 0\n    while i < len(word) - 1:\n        if word[i + 1] < word[i]:\n            return False\n        i += 1\n    return True`,
+        vizType: 'aliasing_sim',
+        challenge: {
+          prompt: `Write <code>has_triple_double(word)</code> (Car Talk Puzzler 9.7) that returns <code>True</code> if <code>word</code> contains three consecutive double letters (like <code>'bookkeeper'</code>) and <code>False</code> otherwise.`,
+          starter: `def has_triple_double(word):\n    i = 0\n    count = 0\n    while i < len(word) - 1:\n        if word[i] == word[i + 1]:\n            count += 1\n            if count == 3:\n                return True\n            i += 2\n        else:\n            count = 0\n            i += 1\n    return False\n\nprint(has_triple_double('bookkeeper'))`,
+          tests: [
+            { call: `has_triple_double('bookkeeper')`, expected: `true`, desc: `'bookkeeper' has oo-kk-ee -> True` },
+            { call: `has_triple_double('committee')`, expected: `false`, desc: `'committee' is not consecutive -> False` }
+          ],
+          hint: `When word[i] == word[i+1], increment count and advance i by 2; otherwise reset count = 0 and advance i by 1.`
+        },
+        quiz: [
+          { q: `What does line.strip() remove when reading words from a plain-text file?`, opts: [`All vowels`, `Leading and trailing whitespace including spaces, tabs, and newlines`, `Punctuation inside the word`, `Only spaces at the start`], ans: 1, exp: `strip() removes leading and trailing whitespace characters such as \\n, \\r, and spaces.` },
+          { q: `How can uses_all(word, required) be implemented using problem recognition?`, opts: [`return avoids(word, required)`, `return uses_only(required, word)`, `return word == required`, `return len(word) > len(required)`], ans: 1, exp: `Every required letter must appear in word, which is equivalent to checking that required uses only letters from word.` },
+          { q: `What famous observation by Edsger Dijkstra is quoted in Section 9.5?`, opts: [`Premature optimisation is the root of all evil`, `Program testing can be used to show the presence of bugs, but never to show their absence`, `Simple is better than complex`, `Programs must be written for people to read`], ans: 1, exp: `Testing checks finite test cases and special cases, but cannot exhaustively prove correctness without careful reasoning.` },
+          { q: `In is_abecedarian(word), why does the index loop stop at len(word) - 1?`, opts: [`To ignore the first letter`, `Because the body accesses word[i + 1], which would raise IndexError at the last index`, `Because strings are 1-indexed`, `To avoid empty strings`], ans: 1, exp: `Accessing i + 1 requires i < len(word) - 1 so the pair stays within bounds.` }
+        ]
+      },
+      {
+        id: 'ch10', code: 'CH 10', part: 'part2', partLabel: 'Part II · Data Structures',
+        title: 'Lists & Aliasing',
+        summary: 'Mutable sequences, operations, slices, void list methods (append, extend, sort), map/filter/reduce, pop/del/remove, objects vs values (is vs ==), aliasing, and list arguments.',
+        sections: [
+          { id: '10.1–10.5', name: 'Mutability, Operations & Slices', detail: 'Lists hold any type including nested lists. Mutable item assignment t[1] = 5. + concatenates, * repeats, t[1:3] = ["x", "y"] updates slices.' },
+          { id: '10.6–10.8', name: 'Methods, Map/Filter/Reduce & Deletion', detail: 'append, extend, sort modify in place and return None! Reduce (sum/accumulator), map, filter patterns. pop(i) returns removed item; del t[i]; remove(val).' },
+          { id: '10.9–10.11', name: 'Objects, Values & Aliasing', detail: 'Strings "banana" may intern (a is b True), whereas two [1,2,3] lists are equivalent (==) but not identical (is). b = a creates an alias sharing the same mutable object.' },
+          { id: '10.12–10.15', name: 'List Arguments, Pitfalls & Exercises', detail: 't.append(x) mutates caller list; t = t + [x] rebinds local parameter only! Exercises: nested_sum, cumsum, middle vs chop, is_sorted, bisect search, reverse/interlock pairs.' }
+        ],
+        pyNote: `Trap: t = t.sort() overwrites t with None! Always call t.sort() as a standalone statement, or use sorted(t) for a new list.`,
+        codeExample: `a = [1, 2, 3]\nb = a         # alias: a is b -> True\nc = a[:]      # shallow clone: c is a -> False, c == a -> True`,
+        vizType: 'aliasing_sim',
+        challenge: {
+          prompt: `Write <code>bisect_search(sorted_list, target)</code> (Exercise 10.11) using binary search to return the index of <code>target</code> in <code>sorted_list</code>, or <code>None</code> if absent.`,
+          starter: `def bisect_search(t, target):\n    lo = 0\n    hi = len(t) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if t[mid] == target:\n            return mid\n        elif t[mid] < target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return None\n\nprint(bisect_search(['a', 'c', 'e', 'g'], 'e'))`,
+          tests: [
+            { call: `bisect_search([2, 5, 8, 12, 19], 12)`, expected: `3`, desc: `Finds 12 at index 3` },
+            { call: `bisect_search([2, 5, 8, 12, 19], 7)`, expected: `null`, desc: `Missing item returns None` }
+          ],
+          hint: `Maintain lo and hi bounds; compare t[mid] against target and halve the search interval each iteration.`
+        },
+        quiz: [
+          { q: `What does t = [3, 1, 2]; x = t.sort() leave in x?`, opts: [`[1, 2, 3]`, `[3, 1, 2]`, `None`, `Raises TypeError`], ans: 2, exp: `List mutating methods (sort, append, extend, reverse) modify the list in place and return None.` },
+          { q: `Suppose def bad_delete(t): t = t[1:]. Calling bad_delete(letters) leaves letters unchanged. Why?`, opts: [`Slices cannot be used inside functions`, `t = t[1:] creates a new list and rebinds only the local parameter t`, `letters is immutable`, `It raises UnboundLocalError`], ans: 1, exp: `Rebinding a parameter does not mutate the caller's list object; del t[0] or t.pop(0) would mutate it.` },
+          { q: `If a = [1, 2, 3] and b = [1, 2, 3], what are (a == b, a is b)?`, opts: [`(True, True)`, `(True, False)`, `(False, True)`, `(False, False)`], ans: 1, exp: `a and b have equal contents (equivalent, ==) but are two distinct list objects in memory (not identical, is).` },
+          { q: `What is the difference between t.append([4, 5]) and t.extend([4, 5]) on t = [1, 2]?`, opts: [`Both produce [1, 2, 4, 5]`, `append produces [1, 2, [4, 5]]; extend produces [1, 2, 4, 5]`, `extend returns a new list`, `append fails on lists`], ans: 1, exp: `append inserts its argument as a single nested element; extend appends each item from the iterable.` }
+        ]
+      },
+      {
+        id: 'ch11', code: 'CH 11', part: 'part2', partLabel: 'Part II · Data Structures',
+        title: 'Dictionaries & Memos',
+        summary: 'Hash-table mappings, histogram counters, get(), looping keys, reverse lookup (ValueError), inverting dicts, hashability, memoisation, global vs UnboundLocalError.',
+        sections: [
+          { id: '11.1–11.2', name: 'Dictionaries as Counters & Traversal', detail: 'dict() and {} braces. O(1) key lookup with in (checks keys, not values). d.get(k, default) simplifies histogram counters. Looping traverses keys in arbitrary order (Py2).' },
+          { id: '11.3–11.4', name: 'Reverse Lookup & Inverting Dicts', detail: 'Reverse lookup searches values linearly and raises LookupError/ValueError on failure. Inverting maps frequencies to lists of keys (d.setdefault(val, []).append(key)).' },
+          { id: '11.5', name: 'Memos & Hashability', detail: 'Caching fibonacci(n) in a known dict collapses exponential O(2^n) calls into linear time. Keys must be hashable (immutable): lists and dicts raise TypeError: unhashable type.' },
+          { id: '11.6–11.10', name: 'Global Variables, Long Ints & Exercises', detail: 'Reading globals works without declaration; reassigning a global inside a function without "global x" raises UnboundLocalError! Mutating a global dict/list works without global. Exercises: memoised Ackermann, has_duplicates, rotate pairs.' }
+        ],
+        pyNote: `Reassigning count += 1 inside a function without "global count" triggers UnboundLocalError because Python treats count as local across the entire function body.`,
+        codeExample: `known = {0: 0, 1: 1}\ndef fib_memo(n):\n    if n in known:\n        return known[n]\n    res = fib_memo(n - 1) + fib_memo(n - 2)\n    known[n] = res\n    return res`,
+        vizType: 'aliasing_sim',
+        challenge: {
+          prompt: `Write <code>invert_dict(d)</code> (Section 11.4) that takes a dictionary and returns its inverse mapping each value to a sorted list of keys that mapped to it.`,
+          starter: `def invert_dict(d):\n    inv = {}\n    for key in d:\n        val = d[key]\n        if val not in inv:\n            inv[val] = [key]\n        else:\n            inv[val].append(key)\n    for val in inv:\n        inv[val].sort()\n    return inv\n\nprint(invert_dict({'a': 1, 'p': 1, 'r': 2}))`,
+          tests: [
+            { call: `invert_dict({'a': 1, 'p': 1, 'r': 2})`, expected: `{"1":["a","p"],"2":["r"]}`, desc: `Groups keys by frequency` }
+          ],
+          hint: `Iterate over keys in d; use setdefault or an if/else branch to append each key to inv[val].`
+        },
+        quiz: [
+          { q: `What happens if you assign known = {0: 0}; def f(): known = {}; f()?`, opts: [`Rebinds the global known`, `Creates a local variable known without altering the global dict`, `Raises UnboundLocalError`, `Raises TypeError`], ans: 1, exp: `Without a global statement, assigning to known creates a local variable shadowing the global one.` },
+          { q: `When does Python raise UnboundLocalError with a global counter?`, opts: [`When reading a global inside a function`, `When reading and reassigning a global (e.g. count += 1) inside a function without declaring global count`, `When mutating a global list with .append()`, `When deleting a dictionary key`], ans: 1, exp: `Any assignment inside a function marks the name as local for the whole function, so reading it before local assignment fails.` },
+          { q: `Why can a tuple (1, 2) be a dictionary key while a list [1, 2] cannot?`, opts: [`Tuples are shorter`, `Dictionaries require hashable (immutable) keys so hash codes never change after insertion`, `Lists cannot store integers`, `Tuples are faster to print`], ans: 1, exp: `Lists are mutable and unhashable (TypeError: unhashable type: 'list'); note a tuple containing a list is also unhashable!` },
+          { q: `What does the in operator check when applied to a dictionary (x in d)?`, opts: [`Whether x is a value in d`, `Whether x is a key in d`, `Whether x is a (key, value) tuple`, `Whether d is sorted`], ans: 1, exp: `in checks dictionary keys in O(1) average time via the hash table.` }
+        ]
+      },
+      {
+        id: 'ch12', code: 'CH 12', part: 'part2', partLabel: 'Part II · Data Structures',
+        title: 'Tuples & DSU Pattern',
+        summary: 'Immutable tuples (singleton trailing comma!), tuple assignment & swap, divmod, *args gather/scatter, zip & enumerate, DSU sorting, and structshape.',
+        sections: [
+          { id: '12.1–12.3', name: 'Immutability, Tuple Assignment & Return Values', detail: 'Singleton tuples require a trailing comma: t = ("a",). Swap a, b = b, a evaluates RHS completely before unpacking. divmod returns (quotient, remainder).' },
+          { id: '12.4–12.5', name: 'Gather/Scatter, zip & enumerate', detail: 'def f(*args) gathers positional arguments into a tuple; f(*t) scatters a sequence. zip(s, t) pairs shortest length; enumerate yields (index, element).' },
+          { id: '12.6–12.7', name: 'Dicts + Tuples & DSU Pattern', detail: 'd.items() yields (k, v) pairs; dict(t) builds from pairs. Tuple comparison compares element-by-element. Decorate-Sort-Undecorate sorts by custom keys.' },
+          { id: '12.8–12.11', name: 'Sequences of Sequences, structshape & Exercises', detail: 'Composite data structures suffer shape errors; structshape summarises type/size/composition. Exercises: sumall(*args), most_frequent letters, anagram sets, reducible words.' }
+        ],
+        pyNote: `('a') is just a string 'a', whereas ('a',) is a 1-element tuple! Also, in Python 3 zip() and d.items() return lazy iterators rather than lists.`,
+        codeExample: `def sort_by_length(words):\n    t = [(len(w), w) for w in words]\n    t.sort(reverse=True)\n    return [w for _, w in t]`,
+        vizType: 'aliasing_sim',
+        challenge: {
+          prompt: `Using the Decorate-Sort-Undecorate (DSU) pattern, write <code>dsu_sort_words(words)</code> that sorts a list of words in <strong>descending</strong> order of length, breaking ties in reverse alphabetical order.`,
+          starter: `def dsu_sort_words(words):\n    t = []\n    for w in words:\n        t.append((len(w), w))\n    t.sort(reverse=True)\n    res = []\n    for length, w in t:\n        res.append(w)\n    return res\n\nprint(dsu_sort_words(['pear', 'fig', 'apple', 'plum']))`,
+          tests: [
+            { call: `dsu_sort_words(['pear', 'fig', 'apple', 'plum'])`, expected: `["apple","plum","pear","fig"]`, desc: `Length desc, tie-break reverse alpha` }
+          ],
+          hint: `Decorate each word as (len(w), w), call t.sort(reverse=True), and undecorate the second element.`
+        },
+        quiz: [
+          { q: `What is type(('a')) in Python?`, opts: [`tuple`, `str`, `list`, `SyntaxError`], ans: 1, exp: `Parentheses alone only group expressions; a singleton tuple requires a trailing comma ('a',).` },
+          { q: `What does the * operator do in def printall(*args) vs divmod(*t)?`, opts: [`Multiplies numbers`, `Gathers arguments into a tuple in def; scatters a tuple into positional arguments at call site`, `Converts tuples to lists`, `Raises TypeError`], ans: 1, exp: `In parameter lists * gathers; in call expressions * scatters.` },
+          { q: `What are the three phases of the DSU pattern?`, opts: [`Define, Search, Update`, `Decorate (build tuples with sort key), Sort, Undecorate (extract values)`, `Divide, Sort, Unite`, `Dict, Set, Unpack`], ans: 1, exp: `DSU decorates items into tuples, sorts lexicographically, then extracts the original values.` },
+          { q: `What does (0, 1, 2000000) < (0, 3, 4) evaluate to?`, opts: [`False`, `True`, `Raises TypeError`, `None`], ans: 1, exp: `Tuple comparison checks left-to-right and stops at the first mismatch: 0 == 0, 1 < 3 -> True immediately.` }
+        ]
+      },
+      {
+        id: 'ch13', code: 'CH 13', part: 'part2', partLabel: 'Part II · Data Structures',
+        title: 'Case Study: Data Structure Selection',
+        summary: 'Word frequency analysis, pseudorandom numbers, optional parameters, set subtraction, prefix-sum binary search for weighted random words, Markov analysis, and benchmarking.',
+        sections: [
+          { id: '13.1–13.4', name: 'Word Frequency & Histograms', detail: 'Stripping string.punctuation and whitespace, lowercasing, skipping Project Gutenberg headers, building word histograms, and extracting top-N words via DSU.' },
+          { id: '13.5–13.6', name: 'Optional Parameters & Set Subtraction', detail: 'Default parameter values (def print_most_common(hist, num=10)). Subtracting keys via dicts or set(d1) - set(d2) to isolate out-of-vocabulary words.' },
+          { id: '13.2 & 13.7', name: 'Random Numbers & Weighted Choice', detail: 'random.random(), randint, choice. Fast O(log n) weighted selection using cumulative frequency sums and bisect instead of repeating words.' },
+          { id: '13.8–13.12', name: 'Markov Analysis, Trade-offs & Debugging', detail: 'Mapping prefix tuples of length n to suffix lists/histograms. Trade-offs: ease of implementation, runtime, memory, and converting structures between phases. Four debugging R’s: Reading, Running, Ruminating, Retreating. Zipf’s law.' }
+        ],
+        pyNote: `Choosing data structures depends on the operations needed: a tuple works cleanly as an immutable Markov prefix key, while a list or Counter holds suffixes.`,
+        codeExample: `# Markov prefix shift using tuple slicing\ndef shift(prefix, word):\n    return prefix[1:] + (word,)`,
+        vizType: 'aliasing_sim',
+        challenge: {
+          prompt: `Write <code>build_markov(words, order)</code> that returns a dictionary mapping each prefix tuple of length <code>order</code> to a list of following suffix strings.`,
+          starter: `def build_markov(words, order):\n    d = {}\n    for i in range(len(words) - order):\n        prefix = tuple(words[i:i + order])\n        suffix = words[i + order]\n        if prefix not in d:\n            d[prefix] = [suffix]\n        else:\n            d[prefix].append(suffix)\n    return d\n\nprint(build_markov(['half', 'a', 'bee', 'half', 'a', 'bo'], 2))`,
+          tests: [
+            { call: `build_markov(['half', 'a', 'bee', 'half', 'a', 'bo'], 2)[('half', 'a')]`, expected: `["bee","bo"]`, desc: `Maps ('half', 'a') -> ['bee', 'bo']` }
+          ],
+          hint: `Slide a window of size order across words using tuple(words[i:i+order]) as the dict key.`
+        },
+        quiz: [
+          { q: `Why is a tuple of strings preferred over a list of strings for Markov analysis prefixes?`, opts: [`Tuples use more memory`, `Tuples are immutable and hashable, so they can serve as dictionary keys`, `Lists cannot contain strings`, `Tuples have an append method`], ans: 1, exp: `Dictionary keys must be hashable; shifting a tuple prefix is cleanly done via prefix[1:] + (word,).` },
+          { q: `How can you select a weighted random word from a large histogram without duplicating words in a massive list?`, opts: [`Sort the dictionary keys alphabetically`, `Build a cumulative sum list of frequencies and use bisect on a random integer in [1, total]`, `Use random.choice on the dictionary`, `Convert to a set`], ans: 1, exp: `Prefix sums + binary search (bisect) select a word proportional to its frequency in O(log V) time.` },
+          { q: `What are the "Four R's" of debugging hard bugs listed in Section 13.10?`, opts: [`Read, Run, Ruminate, Retreat`, `Refactor, Repeat, Return, Raise`, `Retry, Reset, Reload, Remove`, `Record, Review, Rank, Resolve`], ans: 0, exp: `Reading the code carefully, running controlled experiments, ruminating away from the keyboard, and retreating to a simpler working state.` },
+          { q: `What does Zipf's law predict for word frequency f vs rank r in natural-language corpora?`, opts: [`f grows exponentially with r`, `f = c * r^(-s), so log(f) vs log(r) forms a straight line of slope -s`, `All words have equal frequency`, `f is independent of r`], ans: 1, exp: `Zipf's law is a power-law distribution yielding an approximately linear log-log plot.` }
+        ]
+      },
+      {
+        id: 'ch14', code: 'CH 14', part: 'part3', partLabel: 'Part III · Files & OOP',
+        title: 'Files, Exceptions & Pickling',
+        summary: 'Persistence, file reading/writing, % format operator, os.path & os.walk, try/except exception handling, anydbm databases, pickle serialisation, pipes, and __name__ == "__main__".',
+        sections: [
+          { id: '14.1–14.3', name: 'Persistence, Reading/Writing & Formatting', detail: 'open(name, "w") creates or truncates files; write() expects strings only; close() flushes buffers. Format operator %d, %g, %s for typed interpolation.' },
+          { id: '14.4–14.5', name: 'Paths, Directories & Catching Exceptions', detail: 'os.getcwd(), os.path.abspath, exists, isdir, listdir, os.walk. Wrapping risky I/O in try ... except ... (and else/finally) instead of brittle pre-checks.' },
+          { id: '14.6–14.8', name: 'Databases, Pickling & Pipes', detail: 'anydbm (dbm in Py3) stores string-to-string pairs on disk. pickle.dumps/loads serialises arbitrary Python objects (with identical round-trip equality, not identity). os.popen runs shell commands.' },
+          { id: '14.9–14.12', name: 'Writing Modules & repr() Debugging', detail: 'if __name__ == "__main__": runs test code only when executed directly, not when imported! repr(s) reveals invisible \\t, \\n, \\r characters. Beware duplicate module imports via reload().' }
+        ],
+        pyNote: `Unpickling untrusted data can execute arbitrary code, and pickle.loads(pickle.dumps(x)) creates a distinct object (== is True, is is False).`,
+        codeExample: `def linecount(filename):\n    count = 0\n    for line in open(filename):\n        count += 1\n    return count\n\nif __name__ == '__main__':\n    print(linecount('wc.py'))`,
+        vizType: 'oop_sim',
+        challenge: {
+          prompt: `Write <code>safe_format_camels(n)</code> using the <code>%</code> format operator (Section 14.3) that formats integer <code>n</code> into <code>'In %d years I have spotted %g %s.'</code> with <code>0.1</code> and <code>'camels'</code>, returning the formatted string.`,
+          starter: `def safe_format_camels(n):\n    return 'In %d years I have spotted %g %s.' % (n, 0.1, 'camels')\n\nprint(safe_format_camels(3))`,
+          tests: [
+            { call: `safe_format_camels(3)`, expected: `'In 3 years I have spotted 0.1 camels.'`, desc: `Formats %d, %g, %s accurately` }
+          ],
+          hint: `Provide a tuple (n, 0.1, 'camels') on the right-hand side of %.`
+        },
+        quiz: [
+          { q: `Why should test code in a reusable Python module be guarded by if __name__ == '__main__':?`, opts: [`Python refuses to import modules without it`, `So test code runs when executed as a script, but is skipped when imported by another programme`, `It accelerates file I/O`, `It enables pickling`], ans: 1, exp: `__name__ equals '__main__' only for the entry-point script; when imported, __name__ is the module's name.` },
+          { q: `If t1 = [1, 2, 3] and t2 = pickle.loads(pickle.dumps(t1)), what are (t1 == t2, t1 is t2)?`, opts: [`(True, True)`, `(True, False)`, `(False, True)`, `(False, False)`], ans: 1, exp: `Pickling and unpickling reconstructs an equivalent copy in memory (same value, distinct object identity).` },
+          { q: `Which built-in function makes invisible tabs and newlines explicit in debugging output?`, opts: [`str()`, `repr()`, `dir()`, `type()`], ans: 1, exp: `repr('a\\tb\\n') displays "'a\\tb\\n'" with explicit backslash escapes.` },
+          { q: `What limitation applies to keys and values stored in an anydbm (dbm) database?`, opts: [`Only integers are allowed`, `Both keys and values must be strings (bytes)`, `Nested lists are supported natively`, `Only 10 keys are permitted`], ans: 1, exp: `anydbm only stores strings directly; use pickle to serialise arbitrary objects into strings first.` }
+        ]
+      },
+      {
+        id: 'ch15', code: 'CH 15', part: 'part3', partLabel: 'Part III · Files & OOP',
+        title: 'Classes & Objects',
+        summary: 'User-defined class objects, instance attributes, embedded objects (Rectangle + Point), instances as return values, object mutability, shallow vs deep copy, and hasattr.',
+        sections: [
+          { id: '15.1–15.2', name: 'User-Defined Types & Attributes', detail: 'class Point(object): defines a class object (a factory). Instantiation blank = Point(). Assigning instance attributes via dot notation: blank.x = 3.0.' },
+          { id: '15.3–15.5', name: 'Rectangles, Return Values & Mutability', detail: 'Embedded objects: box.corner = Point(). Functions can return new instances or mutate objects passed in place (move_rectangle).' },
+          { id: '15.6', name: 'Shallow Copy vs Deep Copy', detail: 'copy.copy(box) duplicates the outer Rectangle, sharing the embedded box.corner Point! copy.deepcopy(box) recursively clones embedded objects too.' },
+          { id: '15.7–15.9', name: 'Debugging Objects & Exercises', detail: 'AttributeError when accessing missing attributes; type(obj), isinstance(obj, Point), hasattr(obj, "x"). Exercises: distance_between_points, move_rectangle copy, Swampy World flags.' }
+        ],
+        pyNote: `With box2 = copy.copy(box), box2 is box is False, yet box2.corner is box.corner is True — moving box2 moves box too!`,
+        codeExample: `import copy\n# box2 = copy.copy(box)   -> shares embedded corner!\n# box3 = copy.deepcopy(box) -> independent corner`,
+        vizType: 'oop_sim',
+        challenge: {
+          prompt: `Model a <code>Point</code> and <code>Rectangle</code> in Python: write <code>move_rect_coords(x, y, w, h, dx, dy)</code> that simulates returning the new centre <code>(cx, cy)</code> after shifting corner <code>(x, y)</code> by <code>(dx, dy)</code>.`,
+          starter: `def move_rect_coords(x, y, w, h, dx, dy):\n    nx = x + dx\n    ny = y + dy\n    return (nx + w / 2.0, ny + h / 2.0)\n\nprint(move_rect_coords(0, 0, 100, 200, 10, 20))`,
+          tests: [
+            { call: `move_rect_coords(0, 0, 100, 200, 10, 20)`, expected: `[60, 120]`, desc: `New centre at (60.0, 120.0)` }
+          ],
+          hint: `Add dx, dy to the corner (x, y) and add half of width and height.`
+        },
+        quiz: [
+          { q: `If box2 = copy.copy(box) where box has an embedded Point attribute corner, what happens when you run box2.corner.x += 10?`, opts: [`Only box2.corner.x changes`, `Both box2.corner.x and box.corner.x change because copy.copy is shallow`, `Raises AttributeError`, `box.corner becomes None`], ans: 1, exp: `Shallow copying copies references to embedded objects rather than cloning the embedded objects themselves.` },
+          { q: `Which built-in function safely checks whether an object p currently possesses an attribute named 'z'?`, opts: [`getattr(p, 'z')`, `hasattr(p, 'z')`, `isinstance(p, 'z')`, `type(p, 'z')`], ans: 1, exp: `hasattr(obj, 'attr_name') returns True or False without raising AttributeError.` },
+          { q: `What does class Point(object): create at definition time?`, opts: [`An instance of Point`, `A class object bound to the name Point`, `A module object`, `Nothing until instantiated`], ans: 1, exp: `Executing a class block creates a class object that acts as a factory when called as Point().` },
+          { q: `Which error is raised if you access p.z on a Point instance that only has x and y assigned?`, opts: [`NameError`, `KeyError`, `AttributeError`, `IndexError`], ans: 2, exp: `Missing attributes on an object raise AttributeError.` }
+        ]
+      },
+      {
+        id: 'ch16', code: 'CH 16', part: 'part3', partLabel: 'Part III · Files & OOP',
+        title: 'Classes & Functions',
+        summary: 'Time user-defined class, pure functions vs modifiers, functional programming style, prototype-and-patch vs planned development (base-60 arithmetic), and invariants.',
+        sections: [
+          { id: '16.1–16.2', name: 'Time & Pure Functions', detail: 'Defining Time(hour, minute, second). Pure functions never mutate arguments or produce side effects — they return a fresh Time object.' },
+          { id: '16.3', name: 'Modifiers & Functional Style', detail: 'Modifiers mutate passed objects in place and typically return None. Preferring pure functions ("functional programming style") reduces aliasing bugs.' },
+          { id: '16.4', name: 'Prototyping vs Planned Development', detail: 'Prototype-and-patch patches carrying overflows ad hoc. Planned development recognises Time as base-60 (sexagesimal) integer seconds via time_to_int and int_to_time.' },
+          { id: '16.5–16.7', name: 'Invariants & Debugging', detail: 'Invariants (0 <= minute < 60, 0 <= second < 60, non-negative) checked via assert statements. Exercises: is_after, mul_time, datetime birthday age.' }
+        ],
+        pyNote: `Converting Time to integer seconds (time_to_int) and back (int_to_time with divmod) eliminates edge-case carry/borrow bugs completely.`,
+        codeExample: `def time_to_int(h, m, s):\n    return (h * 60 + m) * 60 + s\n\ndef int_to_time(seconds):\n    mins, sec = divmod(seconds, 60)\n    hr, mins = divmod(mins, 60)\n    return (hr, mins, sec)`,
+        vizType: 'oop_sim',
+        challenge: {
+          prompt: `Use planned development (base-60 conversion) to write <code>add_times(t1, t2)</code> where <code>t1</code> and <code>t2</code> are <code>(hour, minute, second)</code> tuples, returning the normalised <code>(h, m, s)</code> tuple.`,
+          starter: `def add_times(t1, t2):\n    s1 = (t1[0] * 60 + t1[1]) * 60 + t1[2]\n    s2 = (t2[0] * 60 + t2[1]) * 60 + t2[2]\n    total = s1 + s2\n    m, s = divmod(total, 60)\n    h, m = divmod(m, 60)\n    return (h, m, s)\n\nprint(add_times((9, 45, 50), (1, 35, 20)))`,
+          tests: [
+            { call: `add_times((9, 45, 50), (1, 35, 20))`, expected: `[11, 21, 10]`, desc: `09:45:50 + 01:35:20 = 11:21:10` },
+            { call: `add_times((0, 59, 59), (0, 0, 1))`, expected: `[1, 0, 0]`, desc: `Carry across seconds and minutes -> 01:00:00` }
+          ],
+          hint: `Convert both tuples to total seconds, add them, then use divmod(..., 60) twice.`
+        },
+        quiz: [
+          { q: `What defines a "pure function" in Chapter 16?`, opts: [`A function with zero parameters`, `A function that does not modify any of the objects passed to it and has no side effects`, `A function written inside a class`, `A function that returns None`], ans: 1, exp: `Pure functions compute and return a new value without mutating inputs or global state.` },
+          { q: `Why does Downey replace "prototype and patch" with "planned development" for Time addition?`, opts: [`Because divmod is illegal in prototypes`, `Because recognising Time as base-60 seconds reduces addition/subtraction to simple integer arithmetic`, `Because pure functions cannot use loops`, `To make objects immutable`], ans: 1, exp: `Seeing the deeper mathematical structure (sexagesimal numbers) makes carry/borrow logic trivial and bug-free.` },
+          { q: `What is an "invariant" in a class like Time?`, opts: [`A global constant`, `A condition that should always hold true during execution (e.g. 0 <= second < 60)`, `A method without self`, `A syntax error`], ans: 1, exp: `Checking invariants with assert statements catches corrupt object state early.` },
+          { q: `Which statement is usually true about modifier functions?`, opts: [`They are pure`, `They mutate an argument object in place and return None`, `They require operator overloading`, `They only accept strings`], ans: 1, exp: `Modifiers like increment() change attributes directly and are usually void (fruitless).` }
+        ]
+      },
+      {
+        id: 'ch17', code: 'CH 17', part: 'part3', partLabel: 'Part III · Files & OOP',
+        title: 'Classes & Methods',
+        summary: 'Methods and self, __init__, __str__, operator overloading (__add__, __radd__), type-based dispatch, polymorphism (sum), __dict__ & getattr, information hiding, and BadKangaroo.',
+        sections: [
+          { id: '17.1–17.4', name: 'Methods & the self Subject', detail: 'Methods live inside class definitions. start.print_time() passes start as the subject parameter self, shifting active agency onto objects.' },
+          { id: '17.5–17.6', name: '__init__ & __str__', detail: '__init__ initialises all attributes with optional defaults at instantiation. __str__ returns a human-readable string used by print and str().' },
+          { id: '17.7–17.9', name: 'Operator Overloading, Dispatch & Polymorphism', detail: '+ invokes __add__; if LHS fails or returns NotImplemented, Python calls RHS __radd__. Type-based dispatch checks isinstance(other, Time). Polymorphism lets sum([t1, t2, t3]) work automatically (needs __radd__ because sum starts from 0!).' },
+          { id: '17.10–17.13', name: 'Debugging, Information Hiding & BadKangaroo', detail: 'Traverse attributes with obj.__dict__ and getattr. Keep interfaces separate from representation (information hiding). Mutable default arg pitfall: def __init__(self, contents=[]): causes all Kangaroos to share ONE list, and kanga.put_in_pouch(roo) creates a circular reference!' }
+        ],
+        pyNote: `Critical traps: (1) sum([t1, t2]) starts with 0 + t1, invoking 0.__add__(t1) -> NotImplemented -> t1.__radd__(0)! (2) def __init__(self, contents=[]): aliases the single default list across every instance!`,
+        codeExample: `class Kangaroo(object):\n    def __init__(self, contents=None):\n        # NEVER use contents=[] as default!\n        self.pouch_contents = [] if contents is None else list(contents)`,
+        vizType: 'oop_sim',
+        challenge: {
+          prompt: `Demonstrate the mutable default fix: write a factory <code>make_pouch(items=None)</code> that returns a fresh list copy each time it is called (preventing aliasing across calls), returning <code>[]</code> when <code>items is None</code>.`,
+          starter: `def make_pouch(items=None):\n    if items is None:\n        return []\n    return list(items)\n\np1 = make_pouch()\np1.append('wallet')\np2 = make_pouch()\nprint(p1, p2)`,
+          tests: [
+            { call: `(lambda a, b: (a.append(1), len(b))[1])(make_pouch(), make_pouch())`, expected: `0`, desc: `Two calls with None do not share the same list` },
+            { call: `make_pouch(['key'])`, expected: `["key"]`, desc: `Copies passed iterable` }
+          ],
+          hint: `Check if items is None and create a fresh [] inside the function body.`
+        },
+        quiz: [
+          { q: `Why does sum([t1, t2]) fail on a Time class that defines __add__ (with type-based dispatch for ints) unless __radd__ is also defined?`, opts: [`sum() only works on floats`, `sum() starts with accumulator 0 and computes 0 + t1, calling t1.__radd__(0) when int doesn't recognise Time`, `sum() calls __mul__`, `__add__`], ans: 1, exp: `0 is on the left of +, so Python tries (0).__add__(t1) -> NotImplemented, then falls back to t1.__radd__(0).` },
+          { q: `In BadKangaroo (Exercise 17.7), what causes roo's pouch to contain itself when kanga = Kangaroo(); roo = Kangaroo(); kanga.put_in_pouch(roo)?`, opts: [`Infinite recursion in __str__`, `A mutable default list contents=[] in __init__ is shared in __defaults__ by both kanga and roo`, `copy.copy was omitted`, `Global variables clashed`], ans: 1, exp: `Default arguments are evaluated once at def time, so every Kangaroo instance aliases the exact same pouch_contents list.` },
+          { q: `What does obj.__dict__ store for a typical Python instance?`, opts: [`All class methods`, `A dictionary mapping the instance's attribute names to their current values`, `The inheritance hierarchy`, `Module imports`], ans: 1, exp: `Instance attributes live in obj.__dict__ (accessible dynamically via getattr/setattr).` },
+          { q: `What principle states that external code should interact via methods rather than touching attributes directly?`, opts: [`Polymorphism`, `Information hiding`, `Operator overloading`, `Type dispatch`], ans: 1, exp: `Information hiding separates interface from implementation so internal attribute representation can evolve safely.` }
+        ]
+      },
+      {
+        id: 'ch18', code: 'CH 18', part: 'part3', partLabel: 'Part III · Files & OOP',
+        title: 'Inheritance & MRO',
+        summary: 'Card/Deck/Hand design, class attributes vs instance attributes, __cmp__ / rich comparisons, inheritance (IS-A vs HAS-A), class diagrams, C3 MRO & find_defining_class, veneer methods, and data encapsulation.',
+        sections: [
+          { id: '18.1–18.3', name: 'Card Objects & Class Attributes', detail: 'Encoding suits (0–3) and ranks (1–13). Class attributes (suit_names, rank_names) live on the class object and are shared by all instances. __cmp__ (Py2) vs rich __lt__/__eq__ (Py3).' },
+          { id: '18.4–18.6', name: 'Decks, Printing & Veneer Methods', detail: 'Deck holds self.cards (HAS-A relationship). "\n".join(res) builds strings cleanly. Veneer methods like sort() wrap list.sort() without heavy logic.' },
+          { id: '18.7–18.8', name: 'Inheritance & Class Diagrams', detail: 'class Hand(Deck): inherits methods from parent/superclass Deck (IS-A relationship). Child overrides __init__. UML class diagrams show IS-A (hollow triangle) and HAS-A (multiplicity).' },
+          { id: '18.9–18.12', name: 'MRO Debugging & Data Encapsulation', detail: 'find_defining_class walks type(obj).mro() checking cls.__dict__ (NOT hasattr, which searches parents!). Python uses C3 linearisation for diamond inheritance; inconsistent bases raise TypeError. Data encapsulation refactors global state into class attributes (Markov).' }
+        ],
+        pyNote: `find_defining_class must check method_name in cls.__dict__ across type(obj).mro(); using hasattr(cls, name) would erroneously return the child class itself!`,
+        codeExample: `def find_defining_class(obj, method_name):\n    for ty in type(obj).mro():\n        if method_name in ty.__dict__:\n            return ty`,
+        vizType: 'mro_sim',
+        challenge: {
+          prompt: `Simulate C3-style lookup: given a list of <code>(class_name, dict_keys_list)</code> tuples representing MRO order (from child to <code>object</code>), write <code>find_defining(mro_list, method)</code> returning the first <code>class_name</code> whose own dict contains <code>method</code>, or <code>None</code>.`,
+          starter: `def find_defining(mro_list, method):\n    for cls_name, keys in mro_list:\n        if method in keys:\n            return cls_name\n    return None\n\nprint(find_defining([('Hand', ['__init__']), ('Deck', ['shuffle', 'pop_card']), ('object', ['__str__'])], 'shuffle'))`,
+          tests: [
+            { call: `find_defining([('Hand', ['__init__']), ('Deck', ['shuffle']), ('object', [])], 'shuffle')`, expected: `'Deck'`, desc: `Finds 'Deck' along MRO` },
+            { call: `find_defining([('Hand', ['__init__']), ('Deck', ['shuffle'])], 'missing')`, expected: `null`, desc: `Returns None if absent` }
+          ],
+          hint: `Loop over (cls_name, keys) in mro_list and return cls_name on the first match.`
+        },
+        quiz: [
+          { q: `In find_defining_class(obj, method_name), why does Think Python check method_name in ty.__dict__ instead of hasattr(ty, method_name)?`, opts: [`hasattr does not work on classes`, `hasattr searches inherited attributes too, so it would always return the child class`, `__dict__ is faster to type`, `mro() returns strings`], ans: 1, exp: `Checking ty.__dict__ inspects only methods defined directly on ty, finding the exact class that implemented/overrode it.` },
+          { q: `What is the difference between a class attribute and an instance attribute?`, opts: [`Class attributes are private`, `Class attributes live on the class object and are shared unless shadowed; instance attributes live per-instance in self.__dict__`, `Instance attributes cannot be mutated`, `Class attributes require @staticmethod`], ans: 1, exp: `Defining suit_names inside the class body creates one shared list on Card, saving memory across 52 instances.` },
+          { q: `In a diamond inheritance hierarchy D(B, C) where B(A) and C(A), in what order does Python's C3 MRO search classes?`, opts: [`D -> B -> A -> C -> object`, `D -> B -> C -> A -> object`, `D -> A -> B -> C -> object`, `Alphabetical order`], ans: 1, exp: `C3 linearisation preserves local precedence (B before C) and monotonicity, visiting shared base A only after both B and C.` },
+          { q: `What does a "veneer" method do in Chapter 18?`, opts: [`Hides private attributes`, `Provides a clean class interface wrapping another object's method (e.g. Deck.shuffle calling random.shuffle)`, `Draws UML borders`, `Compiles bytecode`], ans: 1, exp: `A veneer offers an idiomatic method on the wrapper class without adding complex computation.` }
+        ]
+      },
+      {
+        id: 'ch19', code: 'CH 19', part: 'part3', partLabel: 'Part III · Files & OOP',
+        title: 'Case Study: Tkinter GUI',
+        summary: 'Event-driven GUIs, widgets (Button, Label, Canvas, Entry, Text, Frame, Menubutton), callbacks & Callable objects, geometry managers (pack/grid), event binding, and GUI debugging.',
+        sections: [
+          { id: '19.1–19.2', name: 'Event-Driven GUIs & Callbacks', detail: 'g = Gui(); g.mainloop() runs an infinite event loop waiting for clicks/keys. Passing callback references (command=make_label) vs mistakenly calling command=make_label() during setup!' },
+          { id: '19.3–19.5', name: 'Canvas, Coordinates & Input Widgets', detail: 'Canvas(width, height) with origin (0,0) at centre in Swampy (top-left in raw Tkinter); itemconfig() mutates drawn items. Entry (single-line) and Text (multi-line) widgets.' },
+          { id: '19.6–19.7', name: 'Packing Widgets, Menus & Callables', detail: 'Geometry managers arrange Frames with side=LEFT/TOP, expand, fill. Menubutton + Callable(func, arg) stores a callback and its argument without firing prematurely.' },
+          { id: '19.8–19.11', name: 'Event Binding & Debugging Pitfalls', detail: 'widget.bind("<ButtonPress-1>", handler) passes an Event object (x, y). Traps: calling callback at setup, late-binding closures in loops (lambdas capturing loop var), and PhotoImage garbage collection when no Python reference is kept!' }
+        ],
+        pyNote: `Three classic Tkinter traps: (1) command=fn() executes immediately at build time; (2) loop lambdas late-bind the final loop variable unless captured via default arg or Callable; (3) local PhotoImage variables get garbage-collected unless stored on an attribute!`,
+        codeExample: `# Trap: loop lambda late-binding vs Callable/default arg\n# Wrong: [lambda: print(c) for c in colors]  -> prints 'blue' 3 times\n# Right: [lambda c=c: print(c) for c in colors]`,
+        vizType: 'oop_sim',
+        challenge: {
+          prompt: `Fix late-binding in callbacks: write <code>make_color_callbacks(colors)</code> returning a list of zero-argument functions where each function returns its own colour string rather than the last colour in the list.`,
+          starter: `def make_color_callbacks(colors):\n    callbacks = []\n    for c in colors:\n        callbacks.append(lambda col=c: col)\n    return callbacks\n\nfns = make_color_callbacks(['red', 'green', 'blue'])\nprint([f() for f in fns])`,
+          tests: [
+            { call: `[f() for f in make_color_callbacks(['red', 'green', 'blue'])]`, expected: `["red","green","blue"]`, desc: `Each closure captures its own colour` }
+          ],
+          hint: `Bind the loop variable at creation time using a default parameter: lambda col=c: col.`
+        },
+        quiz: [
+          { q: `What happens if you write g.bu(text='Press me', command=make_label()) instead of command=make_label?`, opts: [`It works identically`, `make_label() runs immediately while building the GUI, passing its return value (usually None) as command`, `Tkinter raises SyntaxError`, `The button runs twice`], ans: 1, exp: `Parentheses invoke the function right away during widget construction instead of passing the function object as a callback.` },
+          { q: `Why do images loaded inside a helper function as PhotoImage often vanish from a Tkinter Canvas?`, opts: [`Tkinter only supports BMP`, `Tkinter's C layer does not increment Python's reference count, so Python garbage-collects the local PhotoImage when the function returns`, `Canvas hides images behind background`, `mainloop clears Canvas items`], ans: 1, exp: `Store a reference on a persistent object (e.g. self.img = photo) so Python keeps it alive.` },
+          { q: `If you create buttons inside for c in ['red', 'green', 'blue']: using lambda: set_color(c), what colour does every button pass when clicked?`, opts: [`Its respective colour`, `'red'`, `'blue' (the final value of c after the loop finishes)`, `Raises NameError`], ans: 2, exp: `Closures look up free variable c dynamically at click time, when the loop has already left c == 'blue'.` },
+          { q: `What is the role of g.mainloop() in a GUI programme?`, opts: [`To draw one frame and exit`, `To enter an infinite event loop waiting for and dispatching user events to callbacks`, `To compile widgets`, `To pack Frames horizontally`], ans: 1, exp: `GUI programmes are event-driven; mainloop keeps the window alive and dispatches events until closed.` }
+        ]
+      },
+      {
+        id: 'appA', code: 'APP A', part: 'appendix', partLabel: 'Appendix · Debugging Taxonomy',
+        title: 'Debugging Taxonomy',
+        summary: 'Systematic classification and triage of SyntaxError, RuntimeError (hangs, infinite recursion, exceptions, pdb), and SemanticError (mental models, temporary variables, rubber-ducking).',
+        sections: [
+          { id: 'A.1', name: 'Syntax Errors', detail: 'Caught during bytecode compilation. Note the caret often points one line *after* the true error (unclosed (, [, {, quotes, missing colon, = instead of ==, mixed tabs/spaces).' },
+          { id: 'A.2', name: 'Runtime Errors & Hangs', detail: 'Nothing happens (missing main call), infinite loops (loop condition never False), infinite recursion (missing base case), and NameError/TypeError/KeyError/AttributeError/IndexError. Using pdb.' },
+          { id: 'A.3', name: 'Semantic Errors & Mental Models', detail: 'Verify code actually runs; decompose "big, hairy expressions" into named temporary variables; isolate minimal failing test cases; avoid superstitious "random walk programming".' }
+        ],
+        pyNote: `Avoid "random walk programming" (making unreasoned edits hoping a bug disappears); test one hypothesis at a time against a minimal reproducible case.`,
+        codeExample: `# Decomposing a hairy expression (A.3.2)\nneighbor = self.findNeighbor(i)\npickedCard = self.hands[neighbor].popCard()\nself.hands[i].addCard(pickedCard)`,
+        vizType: 'error_classifier',
+        challenge: {
+          prompt: `Debug this broken function: <code>reverse_match(w1, w2)</code> is meant to return <code>True</code> if <code>w2</code> is the reverse of <code>w1</code>, but has two classic Chapter 8 / Appendix A bugs (wrong upper index and off-by-one stop). Fix it!`,
+          starter: `def reverse_match(w1, w2):\n    if len(w1) != len(w2):\n        return False\n    i = 0\n    j = len(w2) - 1\n    while j >= 0:\n        if w1[i] != w2[j]:\n            return False\n        i += 1\n        j -= 1\n    return True\n\nprint(reverse_match('pots', 'stop'))`,
+          tests: [
+            { call: `reverse_match('pots', 'stop')`, expected: `true`, desc: `'pots' vs 'stop' -> True` },
+            { call: `reverse_match('pots', 'spot')`, expected: `false`, desc: `'pots' vs 'spot' -> False` }
+          ],
+          hint: `j must start at len(w2) - 1 (not len(w2)) and loop while j >= 0 (not j > 0).`
+        },
+        quiz: [
+          { q: `Why does Python sometimes report a SyntaxError on line 15 when the actual mistake is on line 14?`, opts: [`Line numbers are 0-indexed`, `An unclosed parenthesis or bracket on line 14 makes Python keep parsing line 15 as part of the same expression`, `Python skips blank lines`, `Comments shift line numbers`], ans: 1, exp: `Python reports the location where it first realised syntax could no longer be valid, often after an unclosed (, [, or {.` },
+          { q: `What does Downey call the anti-pattern of randomly editing code until it seems to work without understanding why?`, opts: [`Incremental development`, `Random walk programming`, `Prototype and patch`, `Bisection debugging`], ans: 1, exp: `Random walk programming creates cargo-cult code and superstitious debugging; instead form clear hypotheses.` },
+          { q: `What is the best cure for a "big, hairy expression" that yields unexpected results?`, opts: [`Wrap it in try/except`, `Break it into intermediate temporary variable assignments whose types and values can be inspected`, `Convert it to a lambda`, `Rewrite in C`], ans: 1, exp: `Intermediate variables document intent and make each sub-step inspectable.` },
+          { q: `If a Python script prints nothing and exits immediately with zero errors, what is the most likely cause?`, opts: [`Infinite recursion`, `The file defines functions/classes without calling a top-level entry function`, `Mixed tabs and spaces`, `A SyntaxError`], ans: 1, exp: `Function and class definitions create objects but do not execute their bodies until invoked.` }
+        ]
+      },
+      {
+        id: 'appB', code: 'APP B', part: 'appendix', partLabel: 'Appendix · Analysis of Algorithms',
+        title: 'Analysis of Algorithms & Big-O',
+        summary: 'Order of growth (Big-O), leading terms & crossover points, exact costs of Python primitives (slicing, append vs t+[x], sort, dict lookup), binary search, and hash-table resizing.',
+        sections: [
+          { id: 'B.1', name: 'Order of Growth & Big-O', detail: 'Ignoring constant factors and lower-order terms: O(1) constant, O(log n) logarithmic, O(n) linear, O(n log n) linearithmic, O(n^2) quadratic, O(c^n) exponential. Crossover points matter for small n.' },
+          { id: 'B.2', name: 'Analysis of Basic Python Operations', detail: 'Indexing and len() are O(1). List append() is O(1) amortised via geometric resizing, whereas t = t + [x] copies all k elements each step -> O(n^2) total reference copies! Slicing t[a:b] is O(b-a). sort() is O(n log n); dict.update(other) is O(M).' },
+          { id: 'B.3', name: 'Analysis of Search Algorithms', detail: 'Linear search (list in) is O(n); bisection search on a sorted list is O(log n) — though sorting first costs O(n log n), creating a setup vs query trade-off.' },
+          { id: 'B.4', name: 'Hashtables (LinearMap -> BetterMap -> HashMap)', detail: 'LinearMap O(n) -> BetterMap (100 buckets) -> HashMap doubling buckets (geometric resizing) whenever len(items) == len(buckets) to keep load factor <= 1 and lookup O(1) average.' }
+        ],
+        pyNote: `Building a list of n items via "t = t + [x]" copies 0 + 1 + ... + (n-1) = n(n-1)/2 element references — O(n^2)! Using t.append(x) does O(n) amortised work.`,
+        codeExample: `# O(n^2) anti-pattern vs O(n) amortised:\n# Bad:  t = t + [x]   -> n*(n-1)/2 copies\n# Good: t.append(x)   -> geometric resizing`,
+        vizType: 'bigo_sim',
+        challenge: {
+          prompt: `Compute the exact number of existing element references copied when building an <code>n</code>-element list via repeated <code>t = t + [x]</code> starting from <code>t = []</code>: write <code>concat_copy_count(n)</code> returning <code>n * (n - 1) // 2</code>.`,
+          starter: `def concat_copy_count(n):\n    return n * (n - 1) // 2\n\nprint(concat_copy_count(100))`,
+          tests: [
+            { call: `concat_copy_count(5)`, expected: `10`, desc: `0+1+2+3+4 = 10 reference copies` },
+            { call: `concat_copy_count(1000)`, expected: `499500`, desc: `n=1000 copies nearly half a million refs!` }
+          ],
+          hint: `At step k (0 to n-1), t + [x] copies k existing references: sum is n*(n-1)//2.`
+        },
+        quiz: [
+          { q: `How many existing element references are copied in total when building a list of n=10 elements using t = t + [x] in a loop?`, opts: [`10`, `45`, `100`, `55`], ans: 1, exp: `0 + 1 + 2 + ... + 9 = 10*9/2 = 45 copies — quadratic O(n^2) growth.` },
+          { q: `Why is Python's list.append() O(1) amortised time rather than O(n)?`, opts: [`Lists are linked lists`, `Python over-allocates capacity geometrically (multiplying size when full), so resizing happens exponentially rarely`, `append skips type checks`, `append stores items in a hash table`], ans: 1, exp: `Geometric resizing ensures total copies over n appends remain O(n), giving O(1) average cost per append.` },
+          { q: `When is sorting a list O(n log n) + binary searching k times faster than k linear O(n) searches?`, opts: [`When k = 1`, `When k exceeds roughly log2(n) queries so the setup cost amortises`, `Never`, `Only for strings`], ans: 1, exp: `A single search is cheaper linearly O(n), whereas repeated queries justify the O(n log n) sort setup.` },
+          { q: `In Appendix B's HashMap, when does rehashing (doubling the bucket array) occur?`, opts: [`Every insertion`, `When the number of items reaches the number of buckets (load factor = 1)`, `Only on KeyError`, `When a key is deleted`], ans: 1, exp: `Doubling buckets when len(items) == len(maps) keeps average bucket length bounded by 1, preserving O(1) lookup.` }
+        ]
+      },
+      {
+        id: 'appC', code: 'APP C', part: 'appendix', partLabel: 'Appendix · UML & Lumpy Diagrams',
+        title: 'UML & Lumpy Diagrams',
+        summary: 'Using Swampy’s Lumpy (inspect-based UML generator) to visualise state diagrams, recursive stack diagrams, object diagrams (aliasing & shallow copy), function/class objects, and UML class diagrams.',
+        sections: [
+          { id: 'C.1', name: 'State Diagrams (<module> Frame)', detail: 'lumpy.make_reference() sets a baseline; lumpy.object_diagram() draws module-level variables with reference lines to values (truncating long strings).' },
+          { id: 'C.2', name: 'Recursive Stack Diagrams', detail: 'Calling object_diagram() at the base case of countdown(n) captures every active recursive stack frame simultaneously.' },
+          { id: 'C.3', name: 'Object Diagrams (Lists, Dicts, Aliases)', detail: 'Visualising indexed list boxes, Point/Rectangle embedded references, and how copy.copy(box) leaves box2.corner pointing to the same Point.' },
+          { id: 'C.4', name: 'Function & Class Objects', detail: 'Functions and classes appear as first-class objects too; instances show __class__ links back to their class object and shared class attributes.' },
+          { id: 'C.5', name: 'UML Class Diagrams', detail: 'lumpy.class_diagram() abstracts away instance data to display classes, HAS-A composition/multiplicity, and IS-A inheritance arrows.' }
+        ],
+        pyNote: `Call lumpy.make_reference() before defining your test objects so Lumpy hides built-in noise and draws only what your code created.`,
+        codeExample: `from swampy.Lumpy import Lumpy\nlumpy = Lumpy()\nlumpy.make_reference()\nx = [1, 2, 3]\ny = x\nlumpy.object_diagram()`,
+        vizType: 'mro_sim',
+        challenge: {
+          prompt: `Model an object-diagram reference check: write <code>alias_report(a, b)</code> that returns <code>'ALIAS'</code> if <code>a is b</code>, <code>'EQUAL_COPY'</code> if <code>a == b</code> and not <code>a is b</code>, or <code>'DISTINCT'</code> otherwise.`,
+          starter: `def alias_report(a, b):\n    if a is b:\n        return 'ALIAS'\n    elif a == b:\n        return 'EQUAL_COPY'\n    return 'DISTINCT'\n\nx = [1, 2]\nprint(alias_report(x, x), alias_report(x, x[:]), alias_report(x, [1, 3]))`,
+          tests: [
+            { call: `(lambda x: [alias_report(x, x), alias_report(x, x[:]), alias_report(x, [9])])([1, 2])`, expected: `["ALIAS","EQUAL_COPY","DISTINCT"]`, desc: `Distinguishes ALIAS, EQUAL_COPY, and DISTINCT` }
+          ],
+          hint: `Test "a is b" first, then "elif a == b", otherwise return "DISTINCT".`
+        },
+        quiz: [
+          { q: `What Python standard-library module does Lumpy rely on to inspect live stack frames and objects?`, opts: [`pickle`, `inspect`, `os`, `bisect`], ans: 1, exp: `Lumpy uses Python's inspect module to traverse live frames, locals, and class hierarchies.` },
+          { q: `Why do you call lumpy.make_reference() before creating your variables?`, opts: [`To compile the code`, `To record already-existing objects so object_diagram() only draws newly created ones`, `To trigger garbage collection`, `To export PNGs`], ans: 1, exp: `make_reference() filters out background module internals for clean diagrams.` },
+          { q: `How does a UML class diagram differ from an object diagram?`, opts: [`Class diagrams only show lists`, `Class diagrams abstract over individual instances to show class definitions and IS-A / HAS-A relationships`, `Object diagrams never show attributes`, `They are identical`], ans: 1, exp: `Object diagrams snapshot runtime instances and attribute values; class diagrams show static structural relationships.` },
+          { q: `Where should lumpy.object_diagram() be called inside a recursive countdown(n) to capture the full stack?`, opts: [`Before the function is defined`, `At the base case (when n == 0), while all caller frames are still active on the stack`, `After countdown returns to __main__`, `Inside a class docstring`], ans: 1, exp: `Once recursion unwinds, the frames are popped; snapping at the base case captures every nested frame.` }
+        ]
+      }
+    ];
+
+    // Advanced 10-Question Gauntlet (sourced from user notebook challenges)
+    const GAUNTLET = [
+      {
+        tag: `Ch 17 · Mutable Default`,
+        q: `Consider: class Bag: def __init__(self, items=[]): self.items = items. After b1 = Bag(); b2 = Bag(); b1.items.append('x'), what is b2.items and why?`,
+        opts: [`[] because each instance creates a new list`, `['x'] because Bag.__init__.__defaults__ holds one shared list evaluated at def time`, `Raises AttributeError`, `['x', 'x']`],
+        ans: 1,
+        exp: `Default parameter values are evaluated once when def __init__ runs and stored on __defaults__, so b1 and b2 alias the same list object.`
+      },
+      {
+        tag: `Ch 17 · Dispatch & sum()`,
+        q: `You implement Time.__add__(self, other) supporting both Time and int, and call sum([t1, t2]). Without __radd__, what exception occurs?`,
+        opts: [`ValueError`, `TypeError: unsupported operand type(s) for +: 'int' and 'Time'`, `AttributeError`, `No error; it works`],
+        ans: 1,
+        exp: `sum() starts with total = 0 and evaluates 0 + t1. int.__add__(0, t1) returns NotImplemented, so Python looks for t1.__radd__(0).`
+      },
+      {
+        tag: `Ch 18 · C3 MRO`,
+        q: `In class A(object): pass; class B(A): pass; class C(A): pass; class D(B, C): pass, what is [cls.__name__ for cls in D.mro()]?`,
+        opts: [`['D', 'B', 'A', 'C', 'object']`, `['D', 'B', 'C', 'A', 'object']`, `['D', 'C', 'B', 'A', 'object']`, `Raises TypeError`],
+        ans: 1,
+        exp: `C3 linearisation visits subclasses before shared ancestor A while preserving B before C.`
+      },
+      {
+        tag: `Ch 18 · find_defining_class`,
+        q: `Why does find_defining_class(hand, 'shuffle') inspect ty.__dict__ in type(hand).mro() rather than calling hasattr(ty, 'shuffle')?`,
+        opts: [`hasattr raises KeyError on methods`, `hasattr(Hand, 'shuffle') returns True via inheritance even though shuffle is defined on Deck`, `__dict__ includes global variables`, `mro() skips object`],
+        ans: 1,
+        exp: `hasattr checks the entire inheritance chain, so it would stop immediately at Hand instead of finding Deck.`
+      },
+      {
+        tag: `App B · List Concatenation`,
+        q: `Building an n=2000 list by looping t = t + [i] from t = [] performs how many element reference copies in total?`,
+        opts: [`2,000`, `1,999,000`, `4,000,000`, `20,000`],
+        ans: 1,
+        exp: `Sum of 0..1999 is 2000 * 1999 / 2 = 1,999,000 copies — O(n^2) time vs O(n) amortised for append().`
+      },
+      {
+        tag: `Ch 11 · Scope`,
+        q: `total = 0; def bump(): total += 1; bump(). What happens in Python?`,
+        opts: [`total becomes 1`, `Raises UnboundLocalError: local variable 'total' referenced before assignment`, `Returns None`, `Raises NameError`],
+        ans: 1,
+        exp: `Because total += 1 binds total inside bump, Python classifies total as local throughout bump(), failing on the read before assignment.`
+      },
+      {
+        tag: `Ch 19 · Closures in Loops`,
+        q: `btns = [lambda: i for i in range(4)]. Calling [fn() for fn in btns] returns:`,
+        opts: [`[0, 1, 2, 3]`, `[3, 3, 3, 3]`, `[0, 0, 0, 0]`, `Raises NameError`],
+        ans: 1,
+        exp: `Late-binding closures capture the variable cell i, whose value after the loop ends is 3.`
+      },
+      {
+        tag: `Ch 15 · Shallow Copy`,
+        q: `box2 = copy.copy(box). Which pair of expressions evaluates to (False, True)?`,
+        opts: [`(box2 == box, box2 is box)`, `(box2 is box, box2.corner is box.corner)`, `(box2.corner is box.corner, box2 is box)`, `(hasattr(box2, 'corner'), box2 is box)`],
+        ans: 1,
+        exp: `copy.copy creates a new Rectangle (box2 is box -> False) while sharing the embedded corner reference (box2.corner is box.corner -> True).`
+      },
+      {
+        tag: `Ch 19 · Tkinter Lifetime`,
+        q: `A PhotoImage created in a local variable inside setup_canvas() disappears from the screen immediately after setup_canvas() returns. Why?`,
+        opts: [`Canvas only draws circles`, `Tkinter holds no Python reference, so Python garbage-collects the PhotoImage when the local frame pops`, `Tkinter converts it to None`, `pack() deletes images`],
+        ans: 1,
+        exp: `Keep a Python reference (e.g. canvas.image = photo) so the garbage collector does not reclaim the image buffer.`
+      },
+      {
+        tag: `Ch 10 & App B · Slices`,
+        q: `What is the time complexity of slicing a list t[a:b] of slice length k = b - a?`,
+        opts: [`O(1) pointer view`, `O(k) because Python copies k element references into a new list`, `O(len(t)) always`, `O(k log k)`],
+        ans: 1,
+        exp: `List slicing allocates a new list of size k and copies k references in O(k) time (unlike NumPy views).`
+      }
+    ];
+
+    // =========================================================================
+    // PERSISTENT APPLICATION STATE
+    // =========================================================================
+    let appState = {
+      activeId: 'ch1',
+      activeTab: 'notes', // 'notes' | 'practice' | 'quiz'
+      globalMode: 'chapter', // 'chapter' | 'gauntlet'
+      partFilter: 'all',
+      searchQuery: '',
+      checkedTopics: {},     // { 'ch1:1.1': true }
+      solvedChallenges: {},  // { 'ch1': true }
+      userCode: {},          // { 'ch1': '...' }
+      quizAnswers: {},       // { 'ch1:0': 1 }
+      gauntletAnswers: {},   // { '0': 1 }
+      vizInputs: {
+        stackN: 4,
+        newtonA: 25,
+        newtonX0: 12,
+        aliasMode: 'alias',
+        mroLayout: 'diamond',
+        bigON: 500
+      }
+    };
+
+    async function saveState() {
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+          await window.notebookAppApi.setAppState(appState);
+        }
+      } catch (e) {
+        // Non-fatal in preview environments
+      }
+    }
+
+    async function loadState() {
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+          const saved = await window.notebookAppApi.getAppState();
+          if (saved && typeof saved === 'object') {
+            appState = Object.assign({}, appState, saved);
+            if (!appState.vizInputs) {
+              appState.vizInputs = { stackN: 4, newtonA: 25, newtonX0: 12, aliasMode: 'alias', mroLayout: 'diamond', bigON: 500 };
+            }
+          }
+        }
+      } catch (e) {
+        // Use defaults
+      }
+    }
+
+    // =========================================================================
+    // PYTHON-SUBSET SAFE EVALUATOR FOR CODE CHALLENGES (OFFLINE SANDBOX)
+    // =========================================================================
+    function pyToJs(pyCode) {
+      const lines = pyCode.replace(/\r\n/g, '\n').split('\n');
+      const jsLines = [];
+      const indentStack = [0];
+
+      // Helpers available in sandbox
+      jsLines.push(`const __logs = [];`);
+      jsLines.push(`function print(...args){ __logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ')); }`);
+      jsLines.push(`function len(x){ return x == null ? 0 : (typeof x === 'object' && !Array.isArray(x) ? Object.keys(x).length : x.length); }`);
+      jsLines.push(`function range(a, b, step){ const res=[]; const s=(b===undefined?0:a); const e=(b===undefined?a:b); const st=(step===undefined?1:step); if(st>0){for(let i=s;i<e;i+=st)res.push(i);}else{for(let i=s;i>e;i+=st)res.push(i);} return res; }`);
+      jsLines.push(`function abs(x){ return Math.abs(x); }`);
+      jsLines.push(`function round(x, n=0){ const f=Math.pow(10,n); return Math.round(x*f)/f; }`);
+      jsLines.push(`function int(x){ return Math.trunc(Number(x)); }`);
+      jsLines.push(`function float(x){ return Number(x); }`);
+      jsLines.push(`function str(x){ return String(x); }`);
+      jsLines.push(`function ord(c){ return String(c).charCodeAt(0); }`);
+      jsLines.push(`function chr(n){ return String.fromCharCode(n); }`);
+      jsLines.push(`function divmod(a, b){ return [Math.trunc(a/b), a % b]; }`);
+      jsLines.push(`function list(x){ return Array.isArray(x) ? x.slice() : Array.from(x); }`);
+      jsLines.push(`function tuple(x){ return Array.isArray(x) ? x.slice() : Array.from(x); }`);
+      jsLines.push(`const math = { pi: Math.PI, sqrt: Math.sqrt, sin: Math.sin, cos: Math.cos, log: Math.log, log10: Math.log10 };`);
+      jsLines.push(`function __slice(seq, s, e){ const len=seq.length; const a = s==null?0:(s<0?len+s:s); const b = e==null?len:(e<0?len+e:e); return seq.slice(a, b); }`);
+      jsLines.push(`function __in(item, seq){ if(Array.isArray(seq)) return seq.some(v => JSON.stringify(v)===JSON.stringify(item)); if(typeof seq==='string') return seq.includes(item); if(seq && typeof seq==='object') return String(item) in seq; return false; }`);
+
+      function translateExpr(expr) {
+        let e = expr.trim();
+        // Python ternary: A if COND else B
+        const tern = e.match(/^(.+?)\s+if\s+(.+?)\s+else\s+(.+)$/);
+        if (tern && !e.startsWith('[')) {
+          e = `(${translateExpr(tern[2])}) ? (${translateExpr(tern[1])}) : (${translateExpr(tern[3])})`;
+        }
+        // Chained comparison like 'a' <= ch <= 'z'
+        e = e.replace(/(['"][^'"]+['"]|[a-zA-Z_]\w*)\s*<=\s*([a-zA-Z_]\w*)\s*<=\s*(['"][^'"]+['"]|[a-zA-Z_]\w*)/g, '($1 <= $2 && $2 <= $3)');
+        e = e.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false').replace(/\bNone\b/g, 'null');
+        e = e.replace(/\band\b/g, '&&').replace(/\bor\b/g, '||');
+        e = e.replace(/\bnot\s+in\b/g, '__NOT_IN__');
+        e = e.replace(/\b([a-zA-Z_]\w*)\s+is\s+null\b/g, '$1 === null');
+        e = e.replace(/\b([a-zA-Z_]\w*)\s+is\s+not\s+null\b/g, '$1 !== null');
+        e = e.replace(/(\S+)\s+is\s+(\S+)/g, '($1 === $2)');
+        // 'x' not in d -> !__in('x', d)
+        e = e.replace(/([^\s(]+)\s+__NOT_IN__\s+([a-zA-Z_]\w*)/g, '!__in($1, $2)');
+        e = e.replace(/([^\s(]+)\s+in\s+([a-zA-Z_]\w*)/g, '__in($1, $2)');
+        // String repetition ' ' * (expr) or 'a' * 3
+        e = e.replace(/('[^']*'|"[^"]*")\s*\*\s*(\([^)]+\)|[a-zA-Z0-9_]+(?:\([^)]*\))?)/g, '$1.repeat($2)');
+        // Tuple literal as key d[tuple(...)] -> JSON key handling via stringification in bracket
+        // Slice w[a:b]
+        e = e.replace(/([a-zA-Z_]\w*)\[([^:\]]*):([^\]]*)\]/g, (_, arr, s, end) => `__slice(${arr}, ${s.trim() || 'null'}, ${end.trim() || 'null'})`);
+        // Floor division //
+        e = e.replace(/([^/]+)\/\/\s*([^\s),;]+)/g, 'Math.floor(($1)/($2))');
+        // ** power
+        e = e.replace(/(\b[a-zA-Z0-9_.]+\b|\([^)]+\))\s*\*\*\s*(\b[a-zA-Z0-9_.]+\b|\([^)]+\))/g, 'Math.pow($1, $2)');
+        // Negative index seq[-1]
+        e = e.replace(/([a-zA-Z_]\w*)\[-(\d+)\]/g, '$1[$1.length - $2]');
+        // .append( -> .push(
+        e = e.replace(/\.append\(/g, '.push(');
+        // .sort(reverse=True) / .sort()
+        e = e.replace(/\.sort\(reverse=true\)/g, '.sort((a,b)=> (a<b?1:(a>b?-1:0)))');
+        e = e.replace(/\.sort\(\)/g, '.sort((a,b)=> (a<b?-1:(a>b?1:0)))');
+        // lambda arg=val: body or lambda: body
+        e = e.replace(/lambda\s*([^:]*):\s*(.+)/g, (_, args, body) => `(${args}) => (${translateExpr(body)})`);
+        // Top-level tuple return (a, b) -> [a, b]
+        if (e.startsWith('(') && e.endsWith(')') && e.includes(',') && !e.includes('=>')) {
+          e = '[' + e.slice(1, -1) + ']';
+        }
+        return e;
+      }
+
+      const declaredVars = new Set();
+      for (let raw of lines) {
+        if (!raw.trim() || raw.trim().startsWith('#')) continue;
+        if (/^\s*import\s+/.test(raw)) continue;
+        const indent = raw.search(/\S/);
+        while (indent < indentStack[indentStack.length - 1]) {
+          indentStack.pop();
+          jsLines.push(' '.repeat(indentStack[indentStack.length - 1]) + '}');
+        }
+        const stmt = raw.trim();
+        const pad = ' '.repeat(indent);
+
+        if (stmt.startsWith('def ')) {
+          const m = stmt.match(/^def\s+([a-zA-Z_]\w*)\(([^)]*)\):$/);
+          if (m) {
+            const params = m[2].replace(/\bNone\b/g, 'null').replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
+            jsLines.push(`${pad}function ${m[1]}(${params}) {`);
+            indentStack.push(indent + 4);
+            continue;
+          }
+        }
+        if (stmt.startsWith('if ') && stmt.endsWith(':')) {
+          jsLines.push(`${pad}if (${translateExpr(stmt.slice(3, -1))}) {`);
+          indentStack.push(indent + 4);
+          continue;
+        }
+        if (stmt.startsWith('elif ') && stmt.endsWith(':')) {
+          jsLines.push(`${pad}else if (${translateExpr(stmt.slice(5, -1))}) {`);
+          indentStack.push(indent + 4);
+          continue;
+        }
+        if (stmt === 'else:') {
+          jsLines.push(`${pad}else {`);
+          indentStack.push(indent + 4);
+          continue;
+        }
+        if (stmt.startsWith('while ') && stmt.endsWith(':')) {
+          jsLines.push(`${pad}while (${translateExpr(stmt.slice(6, -1))}) {`);
+          indentStack.push(indent + 4);
+          continue;
+        }
+        if (stmt.startsWith('for ') && stmt.endsWith(':')) {
+          const m = stmt.match(/^for\s+([a-zA-Z0-9_,\s]+)\s+in\s+(.+):$/);
+          if (m) {
+            const lhs = m[1].trim();
+            const iter = translateExpr(m[2]);
+            if (lhs.includes(',')) {
+              jsLines.push(`${pad}for (const [${lhs}] of ${iter}) {`);
+            } else {
+              jsLines.push(`${pad}for (const ${lhs} of (typeof ${iter} === 'object' && !Array.isArray(${iter}) ? Object.keys(${iter}) : ${iter})) {`);
+            }
+            indentStack.push(indent + 4);
+            continue;
+          }
+        }
+        if (stmt.startsWith('return ')) {
+          jsLines.push(`${pad}return ${translateExpr(stmt.slice(7))};`);
+          continue;
+        }
+        // Tuple unpack: m, s = divmod(...)
+        const unpack = stmt.match(/^([a-zA-Z_]\w*(?:\s*,\s*[a-zA-Z_]\w*)+)\s*=\s*(.+)$/);
+        if (unpack) {
+          jsLines.push(`${pad}var [${unpack[1]}] = ${translateExpr(unpack[2])};`);
+          continue;
+        }
+        // Augmented assignment
+        const aug = stmt.match(/^([a-zA-Z_]\w*(?:\[[^\]]+\])?)\s*(\+=|-=|\*=)\s*(.+)$/);
+        if (aug) {
+          jsLines.push(`${pad}${aug[1]} ${aug[2]} ${translateExpr(aug[3])};`);
+          continue;
+        }
+        // Simple assignment
+        const assign = stmt.match(/^([a-zA-Z_]\w*)\s*=\s*(.+)$/);
+        if (assign) {
+          const kw = declaredVars.has(assign[1]) ? '' : 'var ';
+          declaredVars.add(assign[1]);
+          jsLines.push(`${pad}${kw}${assign[1]} = ${translateExpr(assign[2])};`);
+          continue;
+        }
+        // Bracket assignment d[k] = v
+        const bAssign = stmt.match(/^([a-zA-Z_]\w*)\[(.+?)\]\s*=\s*(.+)$/);
+        if (bAssign) {
+          jsLines.push(`${pad}${bAssign[1]}[${translateExpr(bAssign[2])}] = ${translateExpr(bAssign[3])};`);
+          continue;
+        }
+        jsLines.push(`${pad}${translateExpr(stmt)};`);
+      }
+      while (indentStack.length > 1) {
+        indentStack.pop();
+        jsLines.push(' '.repeat(indentStack[indentStack.length - 1]) + '}');
+      }
+      return jsLines.join('\n');
+    }
+
+    function runChapterChallenge(chId) {
+      const ch = CURRICULUM.find(c => c.id === chId);
+      const editor = document.querySelector('#studio-area #code-editor') || document.getElementById('code-editor');
+      const output = document.querySelector('#studio-area #challenge-output') || document.getElementById('challenge-output');
+      if (!ch || !editor || !output) return;
+      const code = editor.value;
+      appState.userCode[chId] = code;
+
+      try {
+        const js = pyToJs(code);
+        // Evaluate user code + tests
+        const testResults = [];
+        let allPass = true;
+        let consoleLogs = [];
+
+        // Capture logs once from main script
+        const mainFn = new Function(js + `\nreturn __logs;`);
+        consoleLogs = mainFn();
+
+        for (const t of ch.challenge.tests) {
+          // Translate test expression cleanly
+          let callExpr = t.call
+            .replace(/\[f\(\) for f in ([^\]]+)\]/, '$1.map(f => f())')
+            .replace(/\(lambda ([^:]+): ([^)]+)\)\(([^)]+)\)/, '((($1) => ($2))($3))')
+            .replace(/build_markov\((.+?)\)\[\('half', 'a'\)\]/, 'build_markov($1)[["half","a"]]');
+          const testJs = js + `\nreturn (${callExpr});`;
+          const actual = new Function(testJs)();
+          const actualStr = JSON.stringify(actual);
+          // Compare normalised JSON or string
+          let expParsed;
+          try { expParsed = JSON.parse(t.expected.replace(/'/g, '"')); } catch (_) { expParsed = t.expected.replace(/^'|'$/g, ''); }
+          const pass = JSON.stringify(actual) === JSON.stringify(expParsed) || String(actual) === String(expParsed);
+          if (!pass) allPass = false;
+          testResults.push(`${pass ? '[PASS]' : '[FAIL]'} ${t.desc} | got: ${actualStr}`);
+        }
+
+        if (allPass) {
+          appState.solvedChallenges[chId] = true;
+        }
+        saveState();
+        updateKPIs();
+        renderNavList();
+
+        output.innerHTML =
+          `<div style="margin-bottom:var(--space-xs);font-weight:600;color:${allPass ? 'var(--tertiary)' : 'var(--error)'};">` +
+          `${allPass ? 'All test cases passed — challenge marked solved.' : 'Some checks did not match expected output.'}</div>` +
+          (consoleLogs.length ? `<div style="color:var(--on-surface-variant);margin-bottom:var(--space-xs);">Stdout: ${escapeHtml(consoleLogs.join(' | '))}</div>` : '') +
+          `<div>${testResults.map(r => escapeHtml(r)).join('\n')}</div>`;
+      } catch (err) {
+        output.innerHTML = `<span style="color:var(--error);">Execution error: ${escapeHtml(err.message)}</span>`;
+      }
+    }
+
+    function resetChallengeCode(chId) {
+      const ch = CURRICULUM.find(c => c.id === chId);
+      const editor = document.querySelector('#studio-area #code-editor') || document.getElementById('code-editor');
+      if (!ch || !editor) return;
+      editor.value = ch.challenge.starter;
+      delete appState.userCode[chId];
+      saveState();
+      const output = document.querySelector('#studio-area #challenge-output') || document.getElementById('challenge-output');
+      if (output) output.textContent = `Starter code restored. Edit and press "Run & Verify" to test.`;
+    }
+
+    function toggleHint() {
+      const box = document.querySelector('#studio-area #challenge-hint') || document.getElementById('challenge-hint');
+      if (box) box.hidden = !box.hidden;
+    }
+
+    // =========================================================================
+    // INTERACTIVE CONCEPT VISUALISERS (SVG + LIVE STEP TABLES)
+    // =========================================================================
+    function renderVisualiser(ch) {
+      const type = ch.vizType;
+      if (type === 'error_classifier') {
+        return `
+          <div class="panel">
+            <h3 class="section-head"><span>Interactive Concept Lab: Error Taxonomy Inspector</span><span class="tag tag-neutral">Ch 1 &amp; App A</span></h3>
+            <p class="topic-desc">Inspect how Python separates Syntax, Runtime, and Semantic defects across compile-time and execution-time.</p>
+            <table class="carbon-table">
+              <thead><tr><th>Code Snippet</th><th>Error Class</th><th>Stage Detected</th><th>Diagnosis</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">if x = 5:</td><td><strong>SyntaxError</strong></td><td>Bytecode parse</td><td>Assignment <code>=</code> used instead of comparison <code>==</code>.</td></tr>
+                <tr><td class="mono">print(1,000,000)</td><td><strong>Semantic</strong></td><td>No exception</td><td>Valid tuple syntax evaluates to <code>(1, 0, 0)</code> instead of one million.</td></tr>
+                <tr><td class="mono">print(rate * 10)</td><td><strong>Runtime (NameError)</strong></td><td>Execution</td><td>Use before def — <code>rate</code> has not been bound yet.</td></tr>
+                <tr><td class="mono">1.0 / 2.0 * math.pi</td><td><strong>Semantic</strong></td><td>No exception</td><td>Left-to-right PEMDAS yields <code>pi / 2</code> instead of <code>1 / (2*pi)</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>`;
+      }
+      if (type === 'stack_sim') {
+        const n = Number(appState.vizInputs.stackN) || 4;
+        const frames = [`<module> (__main__)`];
+        for (let k = n; k >= 0; k--) frames.push(`factorial(n=${k}) -> ${k === 0 ? 'base case 1' : `${k} * factorial(${k - 1})`}`);
+        return `
+          <div class="panel viz-wrapper">
+            <h3 class="section-head"><span>Interactive Stack Diagram Tracer</span><span class="tag tag-neutral">Frames &amp; Recursion</span></h3>
+            <div class="field-group" style="max-width:320px;">
+              <label class="field-label" for="slider-stack">Recursion depth n (0–6): <strong id="stack-n-val">${n}</strong></label>
+              <input id="slider-stack" type="range" min="0" max="6" value="${n}" oninput="updateStackViz(this.value)">
+            </div>
+            <div class="viz-grid two-col">
+              <div>
+                <p class="kpi-label" style="margin-bottom:var(--space-xs);">Live Call Stack (Top = Caller, Bottom = Active)</p>
+                ${frames.map((f, idx) => `
+                  <div style="background:var(--background);padding:var(--space-sm) var(--space-md);border-left:3px solid ${idx === frames.length - 1 ? 'var(--primary)' : 'var(--outline-variant)'};margin-bottom:var(--space-xs);font-family:var(--font-label);font-size:0.8125rem;">
+                    ${escapeHtml(f)}
+                  </div>`).join('')}
+              </div>
+              <div class="panel-inner">
+                <p class="kpi-label">Return Unwind Result</p>
+                <p class="kpi-value">${Array.from({ length: n }, (_, i) => i + 1).reduce((a, b) => a * b, 1)}</p>
+                <p class="topic-desc">Every call allocates an isolated local frame. Without a base case reaching <code>n == 0</code>, Python exhausts stack memory and raises <code>RuntimeError</code>.</p>
+              </div>
+            </div>
+          </div>`;
+      }
+      if (type === 'turtle_sim') {
+        return `
+          <div class="panel">
+            <h3 class="section-head"><span>Interface Design Refactoring Blueprint</span><span class="tag tag-neutral">Ch 4 · TurtleWorld</span></h3>
+            <table class="carbon-table">
+              <thead><tr><th>Stage</th><th>Function</th><th>Interface Parameters</th><th>Design Gain</th></tr></thead>
+              <tbody>
+                <tr><td>1. Raw</td><td class="mono">fd/lt × 4</td><td>None</td><td>Hard-coded 100-unit square; brittle repetition.</td></tr>
+                <tr><td>2. Encapsulate</td><td class="mono">square(t)</td><td>Turtle <code>t</code></td><td>Named reusable behaviour.</td></tr>
+                <tr><td>3. Generalise</td><td class="mono">polygon(t, n, len)</td><td><code>n</code> sides, side <code>len</code></td><td>Draws any regular polygon.</td></tr>
+                <tr><td>4. Refactor</td><td class="mono">polyline(t, n, len, ang)</td><td>Adds exterior <code>ang</code></td><td>Powers both <code>polygon</code> and <code>arc</code> with zero duplication.</td></tr>
+              </tbody>
+            </table>
+          </div>`;
+      }
+      if (type === 'newton_sim') {
+        const a = Math.max(1, Number(appState.vizInputs.newtonA) || 25);
+        let x = Math.max(0.5, Number(appState.vizInputs.newtonX0) || 12);
+        const rows = [];
+        for (let step = 1; step <= 7; step++) {
+          const y = (x + a / x) / 2;
+          const diff = Math.abs(y - x);
+          rows.push({ step, x: x.toFixed(6), y: y.toFixed(6), diff: diff.toExponential(2) });
+          x = y;
+          if (diff < 1e-10) break;
+        }
+        return `
+          <div class="panel">
+            <h3 class="section-head"><span>Interactive Newton’s Method Convergence Explorer</span><span class="tag tag-neutral">Ch 7 · Iteration</span></h3>
+            <div class="viz-grid two-col" style="max-width:520px;">
+              <div class="field-group">
+                <label class="field-label" for="newton-a">Target number a</label>
+                <input class="carbon-input" id="newton-a" type="number" min="1" max="10000" value="${a}" oninput="updateNewtonA(this.value)">
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="newton-x0">Initial guess x₀</label>
+                <input class="carbon-input" id="newton-x0" type="number" min="0.5" max="1000" step="0.5" value="${appState.vizInputs.newtonX0}" oninput="updateNewtonX0(this.value)">
+              </div>
+            </div>
+            <table class="carbon-table">
+              <thead><tr><th>Iteration</th><th>Current x</th><th>Next y = (x + a/x)/2</th><th>|y − x|</th></tr></thead>
+              <tbody>
+                ${rows.map(r => `<tr><td class="mono">${r.step}</td><td class="mono">${r.x}</td><td class="mono">${r.y}</td><td class="mono">${r.diff}</td></tr>`).join('')}
+              </tbody>
+            </table>
+          </div>`;
+      }
+      if (type === 'aliasing_sim') {
+        const mode = appState.vizInputs.aliasMode || 'alias';
+        const modes = {
+          alias: { code: `a = [1, 2, 3]\nb = a\nb[0] = 99`, eq: 'True', id: 'True', out: `a is [99, 2, 3] — both names point to ONE list object.` },
+          slice: { code: `a = [1, 2, 3]\nb = a[:]\nb[0] = 99`, eq: 'False', id: 'False', out: `a stays [1, 2, 3]; b becomes [99, 2, 3].` },
+          deep: { code: `a = [[1, 2], 3]\nb = copy.copy(a)\nb[0][0] = 99`, eq: 'True', id: 'False (outer), True (inner)', out: `Shallow slice/copy duplicates outer list only; nested list [1, 2] is still shared!` }
+        };
+        const m = modes[mode];
+        return `
+          <div class="panel">
+            <h3 class="section-head"><span>Interactive Reference, Equivalence &amp; Aliasing Inspector</span><span class="tag tag-neutral">Ch 8–13</span></h3>
+            <div class="mode-switch">
+              <button type="button" class="mode-tab ${mode === 'alias' ? 'is-active' : ''}" onclick="setAliasMode('alias')">b = a (Alias)</button>
+              <button type="button" class="mode-tab ${mode === 'slice' ? 'is-active' : ''}" onclick="setAliasMode('slice')">b = a[:] (Shallow Clone)</button>
+              <button type="button" class="mode-tab ${mode === 'deep' ? 'is-active' : ''}" onclick="setAliasMode('deep')">Nested Shallow Trap</button>
+            </div>
+            <div class="viz-grid two-col">
+              <pre class="code-pre">${escapeHtml(m.code)}</pre>
+              <div class="panel-inner">
+                <p class="kpi-label">State Comparison</p>
+                <p><strong>a == b:</strong> <span class="mono">${m.eq}</span> &nbsp;|&nbsp; <strong>a is b:</strong> <span class="mono">${m.id}</span></p>
+                <p class="topic-desc">${escapeHtml(m.out)}</p>
+              </div>
+            </div>
+          </div>`;
+      }
+      if (type === 'mro_sim') {
+        const layout = appState.vizInputs.mroLayout || 'diamond';
+        const data = layout === 'diamond'
+          ? { title: `Diamond: class D(B, C) where B(A), C(A)`, mro: `D -> B -> C -> A -> object`, note: `C3 preserves B before C and visits shared ancestor A only after both B and C.` }
+          : { title: `Card Hierarchy: class PokerHand(Hand) where Hand(Deck)`, mro: `PokerHand -> Hand -> Deck -> object`, note: `find_defining_class(hand, 'shuffle') walks MRO and finds 'shuffle' in Deck.__dict__.` };
+        return `
+          <div class="panel">
+            <h3 class="section-head"><span>C3 Method Resolution Order (MRO) Explorer</span><span class="tag tag-neutral">Ch 18 &amp; App C</span></h3>
+            <div class="mode-switch">
+              <button type="button" class="mode-tab ${layout === 'diamond' ? 'is-active' : ''}" onclick="setMroLayout('diamond')">Diamond D(B, C)</button>
+              <button type="button" class="mode-tab ${layout === 'cards' ? 'is-active' : ''}" onclick="setMroLayout('cards')">PokerHand(Hand(Deck))</button>
+            </div>
+            <div class="callout">
+              <strong>${escapeHtml(data.title)}</strong>
+              <span class="mono" style="font-size:1rem;color:var(--primary);">${escapeHtml(data.mro)}</span>
+              <span class="topic-desc">${escapeHtml(data.note)}</span>
+            </div>
+          </div>`;
+      }
+      if (type === 'bigo_sim') {
+        const n = Number(appState.vizInputs.bigON) || 500;
+        const o1 = 1;
+        const olog = Math.round(Math.log2(n));
+        const on = n;
+        const onlogn = Math.round(n * Math.log2(n));
+        const on2 = Math.round((n * (n - 1)) / 2);
+        const maxVal = Math.max(on2, 1);
+        const bars = [
+          { label: 'O(1) Dict lookup / append', val: o1, color: 'var(--data-3)' },
+          { label: 'O(log n) Bisect search', val: olog, color: 'var(--data-1)' },
+          { label: 'O(n) Linear search / append×n', val: on, color: 'var(--data-2)' },
+          { label: 'O(n log n) Timsort', val: onlogn, color: 'var(--data-4)' },
+          { label: 'O(n²) t = t + [x] copies', val: on2, color: 'var(--error)' }
+        ];
+        return `
+          <div class="panel">
+            <h3 class="section-head"><span>Asymptotic Growth &amp; Operation Cost Calculator</span><span class="tag tag-neutral">Appendix B</span></h3>
+            <div class="field-group" style="max-width:360px;">
+              <label class="field-label" for="slider-bigo">Input size n: <strong id="bigo-n-val">${n}</strong></label>
+              <input id="slider-bigo" type="range" min="50" max="2000" step="50" value="${n}" oninput="updateBigOViz(this.value)">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-sm);">
+              ${bars.map(b => {
+                const pct = Math.max(2, Math.round((Math.log10(b.val + 1) / Math.log10(maxVal + 1)) * 100));
+                return `
+                  <div style="display:grid;grid-template-columns:220px minmax(0, 1fr) 110px;gap:var(--space-sm);align-items:center;">
+                    <span style="font-size:0.8125rem;">${b.label}</span>
+                    <div style="background:var(--background);height:16px;border:var(--rule);">
+                      <div style="height:100%;width:${pct}%;background:${b.color};"></div>
+                    </div>
+                    <span class="mono" style="text-align:right;font-size:0.8125rem;">${b.val.toLocaleString()}</span>
+                  </div>`;
+              }).join('')}
+            </div>
+          </div>`;
+      }
+      // Fallback: OOP / State summary table for Ch 14-17, 19
+      return `
+        <div class="panel">
+          <h3 class="section-head"><span>Python Object &amp; Lifetime Reference Table</span><span class="tag tag-neutral">${escapeHtml(ch.code)}</span></h3>
+          <table class="carbon-table">
+            <thead><tr><th>Mechanism</th><th>Behaviour</th><th>Critical Pitfall</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">__init__(self, x=None)</td><td>Initialises attributes on instantiation</td><td>Never use mutable <code>[]</code> or <code>{}</code> as default</td></tr>
+              <tr><td class="mono">__add__ / __radd__</td><td>Dispatches binary <code>+</code> across operands</td><td><code>sum()</code> starts at <code>0</code>, requiring <code>__radd__</code></td></tr>
+              <tr><td class="mono">copy vs deepcopy</td><td>Clones outer object vs recursive tree</td><td>Shallow copy aliases embedded objects</td></tr>
+              <tr><td class="mono">Tkinter callbacks</td><td>Executes on event inside <code>mainloop</code></td><td>Calling <code>fn()</code> or loop closures late-binding</td></tr>
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    // =========================================================================
+    // RENDERING & INTERACTIONS
+    // =========================================================================
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function getFilteredCurriculum() {
+      const q = appState.searchQuery.trim().toLowerCase();
+      return CURRICULUM.filter(ch => {
+        if (appState.partFilter !== 'all' && ch.part !== appState.partFilter) return false;
+        if (!q) return true;
+        const hay = [
+          ch.code, ch.title, ch.summary, ch.pyNote,
+          ...ch.sections.map(s => s.id + ' ' + s.name + ' ' + s.detail)
+        ].join(' ').toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    function isModuleComplete(ch) {
+      const allTopics = ch.sections.every(s => appState.checkedTopics[`${ch.id}:${s.id}`]);
+      const quizDone = ch.quiz.every((_, idx) => appState.quizAnswers[`${ch.id}:${idx}`] !== undefined);
+      return allTopics || (appState.solvedChallenges[ch.id] && quizDone);
+    }
+
+    function updateKPIs() {
+      const completedMods = CURRICULUM.filter(isModuleComplete).length;
+      const totalTopics = CURRICULUM.reduce((sum, ch) => sum + ch.sections.length, 0);
+      const checkedCount = Object.values(appState.checkedTopics).filter(Boolean).length;
+      const solvedCount = Object.values(appState.solvedChallenges).filter(Boolean).length;
+
+      let answered = 0;
+      let correct = 0;
+      CURRICULUM.forEach(ch => {
+        ch.quiz.forEach((q, idx) => {
+          const picked = appState.quizAnswers[`${ch.id}:${idx}`];
+          if (picked !== undefined) {
+            answered++;
+            if (picked === q.ans) correct++;
+          }
+        });
+      });
+      const totalQ = CURRICULUM.reduce((s, c) => s + c.quiz.length, 0);
+      const activeCh = CURRICULUM.find(c => c.id === appState.activeId) || CURRICULUM[0];
+
+      const elMod = document.getElementById('kpi-modules');
+      const elSub = document.getElementById('kpi-subtopics');
+      const elCh = document.getElementById('kpi-challenges');
+      const elQz = document.getElementById('kpi-quiz');
+      const elQzCnt = document.getElementById('kpi-quiz-count');
+      const elAct = document.getElementById('kpi-active');
+      const elActName = document.getElementById('kpi-active-name');
+
+      if (elMod) elMod.textContent = `${completedMods} / ${CURRICULUM.length}`;
+      if (elSub) elSub.textContent = `${checkedCount} / ${totalTopics} sub-topics revised`;
+      if (elCh) elCh.textContent = `${solvedCount} / ${CURRICULUM.length}`;
+      if (elQz) elQz.textContent = answered ? `${Math.round((correct / answered) * 100)}%` : `0%`;
+      if (elQzCnt) elQzCnt.textContent = `${answered} / ${totalQ} chapter questions answered`;
+      if (elAct) elAct.textContent = appState.globalMode === 'gauntlet' ? 'GAUNTLET' : activeCh.code;
+      if (elActName) elActName.textContent = appState.globalMode === 'gauntlet' ? '10 Advanced Edge-Case Questions' : activeCh.title;
+    }
+
+    function renderNavList() {
+      const listEl = document.getElementById('nav-list');
+      const countEl = document.getElementById('nav-count');
+      if (!listEl) return;
+      const filtered = getFilteredCurriculum();
+      if (countEl) countEl.textContent = `${filtered.length} of 22 modules`;
+
+      if (!filtered.length) {
+        listEl.innerHTML = `<li style="padding:var(--space-md);color:var(--on-surface-variant);">No chapters match your search. Clear the filter to view all 22 modules.</li>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(ch => {
+        const active = ch.id === appState.activeId && appState.globalMode === 'chapter';
+        const done = isModuleComplete(ch);
+        const solved = appState.solvedChallenges[ch.id];
+        return `
+          <li class="nav-item">
+            <button type="button" class="nav-btn ${active ? 'is-active' : ''}" onclick="selectChapter('${ch.id}')">
+              <span class="nav-code">${ch.code}</span>
+              <span>
+                <span class="nav-part">${escapeHtml(ch.partLabel)}</span>
+                <span class="nav-title">${escapeHtml(ch.title)}</span>
+              </span>
+              <span class="status-dot ${done ? 'is-done' : ''}">${done ? 'DONE' : (solved ? 'CODE' : ch.sections.length + 'S')}</span>
+            </button>
+          </li>`;
+      }).join('');
+    }
+
+    function renderStudio() {
+      const studio = document.getElementById('studio-area');
+      if (!studio) return;
+
+      if (appState.globalMode === 'gauntlet') {
+        renderGauntlet(studio);
+        return;
+      }
+
+      const ch = CURRICULUM.find(c => c.id === appState.activeId) || CURRICULUM[0];
+      const idx = CURRICULUM.indexOf(ch);
+      const prevCh = idx > 0 ? CURRICULUM[idx - 1] : null;
+      const nextCh = idx < CURRICULUM.length - 1 ? CURRICULUM[idx + 1] : null;
+
+      const checkedInCh = ch.sections.filter(s => appState.checkedTopics[`${ch.id}:${s.id}`]).length;
+      const quizAnsweredInCh = ch.quiz.filter((_, i) => appState.quizAnswers[`${ch.id}:${i}`] !== undefined).length;
+      const solvedInCh = Boolean(appState.solvedChallenges[ch.id]);
+
+      let tabBody = '';
+      if (appState.activeTab === 'notes') {
+        tabBody = `
+          <div class="panel">
+            <h3 class="section-head">
+              <span>Comprehensive Revision Notes — All Topics &amp; Sub-Topics (${checkedInCh}/${ch.sections.length} ticked)</span>
+              <button type="button" class="btn btn-ghost" style="min-height:36px;padding:var(--space-xs) var(--space-md);" onclick="markAllTopics('${ch.id}')">Mark All Revised</button>
+            </h3>
+            <div class="topic-grid">
+              ${ch.sections.map(s => {
+                const key = `${ch.id}:${s.id}`;
+                const checked = Boolean(appState.checkedTopics[key]);
+                return `
+                  <article class="topic-card ${checked ? 'is-checked' : ''}">
+                    <div class="topic-check-row">
+                      <span class="topic-code">§ ${escapeHtml(s.id)}</span>
+                      <button type="button" class="check-toggle ${checked ? 'is-checked' : ''}" onclick="toggleTopic('${ch.id}', '${s.id}')" aria-pressed="${checked}">
+                        ${checked ? 'Revised ✓' : 'Tick off'}
+                      </button>
+                    </div>
+                    <h4 class="topic-name">${escapeHtml(s.name)}</h4>
+                    <p class="topic-desc">${escapeHtml(s.detail)}</p>
+                  </article>`;
+              }).join('')}
+            </div>
+
+            <div class="callout is-warn">
+              <span class="kpi-label">Python 2 vs Python 3 &amp; Edge-Case Watch</span>
+              <span>${escapeHtml(ch.pyNote)}</span>
+            </div>
+
+            <div>
+              <p class="kpi-label" style="margin-bottom:var(--space-xs);">Reference Pattern</p>
+              <pre class="code-pre">${escapeHtml(ch.codeExample)}</pre>
+            </div>
+          </div>
+          ${renderVisualiser(ch)}
+        `;
+      } else if (appState.activeTab === 'practice') {
+        const userCode = appState.userCode[ch.id] !== undefined ? appState.userCode[ch.id] : ch.challenge.starter;
+        tabBody = `
+          <div class="panel">
+            <h3 class="section-head">
+              <span>Interactive Coding Challenge</span>
+              <span class="tag ${solvedInCh ? '' : 'tag-neutral'}">${solvedInCh ? 'Solved ✓' : 'Unsolved'}</span>
+            </h3>
+            <p style="margin:0;">${ch.challenge.prompt}</p>
+            <div class="lab-split">
+              <div class="field-group">
+                <label class="field-label" for="code-editor">Python Practice Workspace (Tab inserts 4 spaces)</label>
+                <textarea class="code-editor" id="code-editor" spellcheck="false" onkeydown="handleEditorKey(event)">${escapeHtml(userCode)}</textarea>
+                <div style="display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-xs);">
+                  <button type="button" class="btn btn-primary" onclick="runChapterChallenge('${ch.id}')">Run &amp; Verify</button>
+                  <button type="button" class="btn btn-secondary" onclick="toggleHint()">Toggle Hint</button>
+                  <button type="button" class="btn btn-ghost" onclick="resetChallengeCode('${ch.id}')">Restore Starter</button>
+                </div>
+                <div class="callout" id="challenge-hint" hidden style="margin-top:var(--space-xs);">
+                  <span class="kpi-label">Hint</span>
+                  <span>${escapeHtml(ch.challenge.hint)}</span>
+                </div>
+              </div>
+              <div class="field-group">
+                <span class="field-label">Test Runner Output &amp; Assertions</span>
+                <div class="output-box" id="challenge-output">Press "Run &amp; Verify" to execute your solution against ${ch.challenge.tests.length} automated test case(s).</div>
+                <div class="panel-inner" style="margin-top:var(--space-xs);">
+                  <span class="kpi-label">Expected Cases</span>
+                  <ul style="margin:var(--space-xs) 0 0 0;padding-left:var(--space-md);font-size:0.8125rem;">
+                    ${ch.challenge.tests.map(t => `<li class="mono">${escapeHtml(t.desc)}</li>`).join('')}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          ${renderVisualiser(ch)}
+        `;
+      } else {
+        tabBody = renderChapterQuiz(ch);
+      }
+
+      studio.innerHTML = `
+        <div class="chapter-banner">
+          <div class="banner-top">
+            <div style="display:flex;gap:var(--space-xs);flex-wrap:wrap;align-items:center;">
+              <span class="tag">${escapeHtml(ch.code)}</span>
+              <span class="tag tag-neutral">${escapeHtml(ch.partLabel)}</span>
+            </div>
+            <div style="display:flex;gap:var(--space-xs);">
+              ${prevCh ? `<button type="button" class="btn btn-ghost" style="min-height:36px;padding:var(--space-xs) var(--space-md);" onclick="selectChapter('${prevCh.id}')">← ${prevCh.code}</button>` : ''}
+              ${nextCh ? `<button type="button" class="btn btn-ghost" style="min-height:36px;padding:var(--space-xs) var(--space-md);" onclick="selectChapter('${nextCh.id}')">${nextCh.code} →</button>` : ''}
+            </div>
+          </div>
+          <h2 class="chapter-title"><strong>${escapeHtml(ch.title)}</strong></h2>
+          <p class="chapter-summary">${escapeHtml(ch.summary)}</p>
+        </div>
+
+        <nav class="studio-tabs" aria-label="Module sections">
+          <button type="button" class="studio-tab ${appState.activeTab === 'notes' ? 'is-active' : ''}" onclick="setStudioTab('notes')">Revision Notes &amp; Visualiser (${checkedInCh}/${ch.sections.length})</button>
+          <button type="button" class="studio-tab ${appState.activeTab === 'practice' ? 'is-active' : ''}" onclick="setStudioTab('practice')">Code Challenge Lab ${solvedInCh ? '✓' : ''}</button>
+          <button type="button" class="studio-tab ${appState.activeTab === 'quiz' ? 'is-active' : ''}" onclick="setStudioTab('quiz')">Chapter Quiz (${quizAnsweredInCh}/${ch.quiz.length})</button>
+        </nav>
+
+        ${tabBody}
+      `;
+    }
+
+    function renderChapterQuiz(ch) {
+      let score = 0;
+      let answered = 0;
+      ch.quiz.forEach((q, idx) => {
+        const picked = appState.quizAnswers[`${ch.id}:${idx}`];
+        if (picked !== undefined) {
+          answered++;
+          if (picked === q.ans) score++;
+        }
+      });
+
+      return `
+        <div class="panel">
+          <h3 class="section-head">
+            <span>${ch.code} Diagnostic Quiz</span>
+            <span class="mono" style="font-size:0.875rem;">Score: ${score} / ${ch.quiz.length} (${answered} answered)</span>
+          </h3>
+          ${ch.quiz.map((q, qIdx) => {
+            const key = `${ch.id}:${qIdx}`;
+            const picked = appState.quizAnswers[key];
+            const hasAnswered = picked !== undefined;
+            const isCorrect = picked === q.ans;
+            return `
+              <div class="quiz-card">
+                <p style="margin:0;font-weight:600;"><span class="mono" style="color:var(--primary);">Q${qIdx + 1}.</span> ${escapeHtml(q.q)}</p>
+                <div class="quiz-options">
+                  ${q.opts.map((opt, oIdx) => {
+                    let cls = 'quiz-opt';
+                    if (hasAnswered) {
+                      if (oIdx === q.ans) cls += ' is-correct';
+                      else if (oIdx === picked) cls += ' is-wrong';
+                    }
+                    return `
+                      <button type="button" class="${cls}" ${hasAnswered ? 'disabled' : ''} onclick="answerQuiz('${ch.id}', ${qIdx}, ${oIdx})">
+                        <span class="mono" style="font-weight:600;">${String.fromCharCode(65 + oIdx)}.</span>
+                        <span>${escapeHtml(opt)}</span>
+                      </button>`;
+                  }).join('')}
+                </div>
+                ${hasAnswered ? `
+                  <div class="feedback-box ${isCorrect ? 'is-correct' : 'is-wrong'}">
+                    <strong>${isCorrect ? 'Correct:' : 'Incorrect:'}</strong> ${escapeHtml(q.exp)}
+                  </div>` : ''}
+              </div>`;
+          }).join('')}
+          <div style="display:flex;justify-content:flex-end;">
+            <button type="button" class="btn btn-secondary" onclick="clearChapterQuiz('${ch.id}')">Retake ${ch.code} Quiz</button>
+          </div>
+        </div>`;
+    }
+
+    function renderGauntlet(studio) {
+      let score = 0;
+      let answered = 0;
+      GAUNTLET.forEach((g, idx) => {
+        const picked = appState.gauntletAnswers[String(idx)];
+        if (picked !== undefined) {
+          answered++;
+          if (picked === g.ans) score++;
+        }
+      });
+
+      studio.innerHTML = `
+        <div class="chapter-banner">
+          <div class="banner-top">
+            <span class="tag">Cross-Chapter Advanced Gauntlet</span>
+            <span class="mono" style="font-size:0.875rem;">Score: ${score} / ${GAUNTLET.length} (${answered} answered)</span>
+          </div>
+          <h2 class="chapter-title"><strong>Tough Python Internals &amp; Edge-Case Test</strong></h2>
+          <p class="chapter-summary">Covers mutable defaults, __radd__ &amp; sum(), C3 MRO resolution, find_defining_class, quadratic list copies, UnboundLocalError, loop closures, shallow copies, and Tkinter garbage collection.</p>
+        </div>
+        <div class="panel">
+          ${GAUNTLET.map((g, idx) => {
+            const picked = appState.gauntletAnswers[String(idx)];
+            const hasAnswered = picked !== undefined;
+            const isCorrect = picked === g.ans;
+            return `
+              <div class="quiz-card">
+                <div style="display:flex;justify-content:space-between;gap:var(--space-sm);flex-wrap:wrap;">
+                  <span class="tag tag-neutral">${escapeHtml(g.tag)}</span>
+                </div>
+                <p style="margin:0;font-weight:600;"><span class="mono" style="color:var(--primary);">G${idx + 1}.</span> ${escapeHtml(g.q)}</p>
+                <div class="quiz-options">
+                  ${g.opts.map((opt, oIdx) => {
+                    let cls = 'quiz-opt';
+                    if (hasAnswered) {
+                      if (oIdx === g.ans) cls += ' is-correct';
+                      else if (oIdx === picked) cls += ' is-wrong';
+                    }
+                    return `
+                      <button type="button" class="${cls}" ${hasAnswered ? 'disabled' : ''} onclick="answerGauntlet(${idx}, ${oIdx})">
+                        <span class="mono" style="font-weight:600;">${String.fromCharCode(65 + oIdx)}.</span>
+                        <span>${escapeHtml(opt)}</span>
+                      </button>`;
+                  }).join('')}
+                </div>
+                ${hasAnswered ? `
+                  <div class="feedback-box ${isCorrect ? 'is-correct' : 'is-wrong'}">
+                    <strong>${isCorrect ? 'Correct:' : 'Incorrect:'}</strong> ${escapeHtml(g.exp)}
+                  </div>` : ''}
+              </div>`;
+          }).join('')}
+          <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--space-sm);">
+            <button type="button" class="btn btn-ghost" onclick="setGlobalMode('chapter')">← Return to Chapter Studio</button>
+            <button type="button" class="btn btn-secondary" onclick="clearGauntlet()">Reset Gauntlet Answers</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // HOISTED UI EVENT HANDLERS
+    // =========================================================================
+    function selectChapter(chId) {
+      appState.activeId = chId;
+      appState.globalMode = 'chapter';
+      updateModeButtons();
+      saveState();
+      updateKPIs();
+      renderNavList();
+      renderStudio();
+    }
+
+    function setStudioTab(tab) {
+      appState.activeTab = tab;
+      saveState();
+      renderStudio();
+    }
+
+    function setGlobalMode(mode) {
+      appState.globalMode = mode;
+      updateModeButtons();
+      saveState();
+      updateKPIs();
+      renderNavList();
+      renderStudio();
+    }
+
+    function updateModeButtons() {
+      const mCh = document.getElementById('mode-chapter');
+      const mGa = document.getElementById('mode-gauntlet');
+      if (mCh) mCh.classList.toggle('is-active', appState.globalMode === 'chapter');
+      if (mGa) mGa.classList.toggle('is-active', appState.globalMode === 'gauntlet');
+    }
+
+    function handlePartFilter(part) {
+      appState.partFilter = part;
+      const filtered = getFilteredCurriculum();
+      if (filtered.length && !filtered.some(c => c.id === appState.activeId)) {
+        appState.activeId = filtered[0].id;
+      }
+      saveState();
+      renderNavList();
+      renderStudio();
+      updateKPIs();
+    }
+
+    function handleSearch(val) {
+      appState.searchQuery = val;
+      const filtered = getFilteredCurriculum();
+      if (filtered.length && !filtered.some(c => c.id === appState.activeId)) {
+        appState.activeId = filtered[0].id;
+      }
+      renderNavList();
+      renderStudio();
+    }
+
+    function toggleTopic(chId, secId) {
+      const key = `${chId}:${secId}`;
+      appState.checkedTopics[key] = !appState.checkedTopics[key];
+      saveState();
+      updateKPIs();
+      renderNavList();
+      renderStudio();
+    }
+
+    function markAllTopics(chId) {
+      const ch = CURRICULUM.find(c => c.id === chId);
+      if (!ch) return;
+      const allDone = ch.sections.every(s => appState.checkedTopics[`${chId}:${s.id}`]);
+      ch.sections.forEach(s => {
+        appState.checkedTopics[`${chId}:${s.id}`] = !allDone;
+      });
+      saveState();
+      updateKPIs();
+      renderNavList();
+      renderStudio();
+    }
+
+    function answerQuiz(chId, qIdx, optIdx) {
+      appState.quizAnswers[`${chId}:${qIdx}`] = optIdx;
+      saveState();
+      updateKPIs();
+      renderNavList();
+      renderStudio();
+    }
+
+    function clearChapterQuiz(chId) {
+      const ch = CURRICULUM.find(c => c.id === chId);
+      if (!ch) return;
+      ch.quiz.forEach((_, idx) => { delete appState.quizAnswers[`${chId}:${idx}`]; });
+      saveState();
+      updateKPIs();
+      renderNavList();
+      renderStudio();
+    }
+
+    function answerGauntlet(idx, optIdx) {
+      appState.gauntletAnswers[String(idx)] = optIdx;
+      saveState();
+      renderStudio();
+    }
+
+    function clearGauntlet() {
+      appState.gauntletAnswers = {};
+      saveState();
+      renderStudio();
+    }
+
+    function updateStackViz(val) {
+      appState.vizInputs.stackN = Number(val);
+      saveState();
+      renderStudio();
+    }
+
+    function updateNewtonA(val) {
+      appState.vizInputs.newtonA = Number(val);
+      saveState();
+      renderStudio();
+    }
+
+    function updateNewtonX0(val) {
+      appState.vizInputs.newtonX0 = Number(val);
+      saveState();
+      renderStudio();
+    }
+
+    function setAliasMode(mode) {
+      appState.vizInputs.aliasMode = mode;
+      saveState();
+      renderStudio();
+    }
+
+    function setMroLayout(layout) {
+      appState.vizInputs.mroLayout = layout;
+      saveState();
+      renderStudio();
+    }
+
+    function updateBigOViz(val) {
+      appState.vizInputs.bigON = Number(val);
+      saveState();
+      renderStudio();
+    }
+
+    function handleEditorKey(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const el = e.target;
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        el.value = el.value.substring(0, start) + '    ' + el.value.substring(end);
+        el.selectionStart = el.selectionEnd = start + 4;
+      }
+    }
+
+    function handleResetProgress(btn) {
+      if (btn.dataset.armed !== 'true') {
+        btn.dataset.armed = 'true';
+        btn.textContent = 'Confirm Reset All?';
+        setTimeout(() => {
+          if (btn.dataset.armed === 'true') {
+            btn.dataset.armed = 'false';
+            btn.textContent = 'Reset Progress';
+          }
+        }, 4000);
+        return;
+      }
+      btn.dataset.armed = 'false';
+      btn.textContent = 'Reset Progress';
+      appState.checkedTopics = {};
+      appState.solvedChallenges = {};
+      appState.userCode = {};
+      appState.quizAnswers = {};
+      appState.gauntletAnswers = {};
+      saveState();
+      updateKPIs();
+      renderNavList();
+      renderStudio();
+    }
+
+    function exportProgress() {
+      const lines = ['Module,Title,Revised Subtopics,Challenge Solved,Quiz Score'];
+      CURRICULUM.forEach(ch => {
+        const rev = ch.sections.filter(s => appState.checkedTopics[`${ch.id}:${s.id}`]).length;
+        const solved = appState.solvedChallenges[ch.id] ? 'Yes' : 'No';
+        let qScore = 0;
+        ch.quiz.forEach((q, idx) => {
+          if (appState.quizAnswers[`${ch.id}:${idx}`] === q.ans) qScore++;
+        });
+        lines.push(`${ch.code},"${ch.title}",${rev}/${ch.sections.length},${solved},${qScore}/${ch.quiz.length}`);
+      });
+      const csv = lines.join('\n');
+      if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === 'function') {
+        window.notebookAppApi.triggerFileDownload({
+          content: csv,
+          contentType: 'text/csv',
+          encoding: 'UTF-8',
+          filename: 'think_python_progress.csv'
+        });
+      }
+    }
+
+    // =========================================================================
+    // INITIALISATION
+    // =========================================================================
+    (async function init() {
+      await loadState();
+      const pf = document.getElementById('part-filter');
+      if (pf) pf.value = appState.partFilter || 'all';
+      const si = document.getElementById('search-input');
+      if (si) si.value = appState.searchQuery || '';
+      updateModeButtons();
+      updateKPIs();
+      renderNavList();
+      renderStudio();
+      if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+        window.notebookAppApi.notifyAppReady();
+      }
+    })();
+  </script>
+</body>
+</html>
