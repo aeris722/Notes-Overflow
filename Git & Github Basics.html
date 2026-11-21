@@ -1,0 +1,3010 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="narrative">
+  <meta name="design-style" content="carbon">
+  <title>Git &amp; GitHub: Complete Interactive Course Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces (Carbon) */
+      --background: #ffffff;
+      --surface-container-low: #f4f4f4;
+      --surface-container: #f4f4f4;
+      --surface-container-high: #e0e0e0;
+
+      /* Ink */
+      --on-surface: #161616;
+      --on-surface-variant: #525252;
+
+      /* Rules */
+      --outline: #8d8d8d;
+      --outline-variant: #e0e0e0;
+
+      /* Accents */
+      --primary: #0f62fe;
+      --on-primary: #ffffff;
+      --primary-container: #d0e2ff;
+      --on-primary-container: #161616;
+      --secondary: #6f6f6f;
+      --tertiary: #198038;
+      --error: #da1e28;
+      --on-error: #ffffff;
+
+      /* Data series */
+      --data-1: #0f62fe;
+      --data-2: #6929c4;
+      --data-3: #005d5d;
+      --data-4: #9f1853;
+      --data-context: #8d8d8d;
+
+      /* Fonts */
+      --font-headline: 'IBM Plex Sans', sans-serif;
+      --font-body: 'IBM Plex Sans', sans-serif;
+      --font-label: 'IBM Plex Mono', monospace;
+
+      /* Shape */
+      --rounded: 0.125rem;
+      --rounded-lg: 0.25rem;
+      --rounded-full: 0.75rem;
+
+      /* Style effects */
+      --shadow-1: 0 2px 6px rgb(0 0 0 / 0.1);
+      --shadow-2: 0 4px 12px rgb(0 0 0 / 0.12);
+      --rule: 1px solid var(--outline-variant);
+      --field-rule: 1px solid var(--outline);
+      --indicator: 2px solid var(--primary);
+      --accent-bar: 3px solid var(--primary);
+      --positive-bar: 3px solid var(--tertiary);
+      --error-bar: 3px solid var(--error);
+      --warning-bar: 3px solid var(--warning);
+
+      /* Shared semantic tokens */
+      --positive: #198038;
+      --positive-container: #defbe6;
+      --on-positive-container: #0e4720;
+      --warning: #b28600;
+      --warning-container: #fcf4d6;
+      --on-warning-container: #4d3800;
+      --error-container: #ffd7d9;
+      --on-error-container: #750e13;
+      --focus: #0f62fe;
+
+      /* Terminal dark surface token (grounded in Carbon dark ramp) */
+      --terminal-bg: #161616;
+      --terminal-surface: #262626;
+      --terminal-text: #f4f4f4;
+      --terminal-muted: #c6c6c6;
+      --terminal-blue: #78a9ff;
+      --terminal-green: #42be65;
+      --terminal-red: #ff8389;
+
+      /* Type scale (Narrative) */
+      --display-size: clamp(2.15rem, 1.4rem + 2.8vw, 3.35rem);
+      --headline-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.125rem);
+      --subhead-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+      --body-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+      --label-size: 0.75rem;
+
+      /* Spacing scale (4pt base) */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+      --space-3xl: 6rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
+    }
+
+    /* Base reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { position: static !important; }
+
+    /* Focus rings */
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: var(--font-headline);
+      color: var(--on-surface);
+      margin: 0;
+      letter-spacing: 0;
+    }
+    p {
+      margin: 0 0 var(--space-md) 0;
+      max-width: 68ch;
+    }
+    ul, ol {
+      margin: 0 0 var(--space-md) 0;
+      padding-left: var(--space-lg);
+      max-width: 68ch;
+    }
+    li + li {
+      margin-top: var(--space-xs);
+    }
+    code {
+      font-family: var(--font-label);
+      font-size: 0.875em;
+      background: var(--surface-container);
+      color: var(--on-surface);
+      padding: 0.1em 0.35em;
+      border-radius: var(--rounded);
+    }
+    pre {
+      font-family: var(--font-label);
+      font-size: 0.85rem;
+      line-height: 1.55;
+      background: var(--terminal-bg);
+      color: var(--terminal-text);
+      padding: var(--space-md);
+      margin: var(--space-md) 0;
+      overflow-x: auto;
+      border-left: var(--accent-bar);
+    }
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+    .label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--on-surface-variant);
+      display: block;
+    }
+
+    /* Page layout */
+    .page-shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--space-lg);
+    }
+    .page-header {
+      border-bottom: var(--rule);
+      padding-bottom: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+    .headline-display {
+      font-family: var(--font-headline);
+      font-size: var(--display-size);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-top: var(--space-sm);
+      margin-bottom: var(--space-md);
+      max-width: 24ch;
+    }
+    .headline-display strong {
+      font-weight: 600;
+    }
+    .lede {
+      font-size: var(--subhead-size);
+      color: var(--on-surface-variant);
+      font-weight: 400;
+      line-height: 1.5;
+      max-width: 66ch;
+      margin-bottom: var(--space-lg);
+    }
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      align-items: center;
+      margin-bottom: var(--space-lg);
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 var(--space-sm);
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-family: var(--font-body);
+      font-size: var(--label-size);
+      font-weight: 400;
+      border-radius: var(--rounded-full);
+    }
+    .tag--neutral {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+
+    /* KPI / Progress tiles */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+    .kpi-tile {
+      background: var(--surface-container);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .kpi-tile--active {
+      border-bottom: var(--indicator);
+    }
+    .kpi-value {
+      font-family: var(--font-label);
+      font-weight: 300;
+      font-size: 1.875rem;
+      line-height: 1.1;
+      color: var(--on-surface);
+      font-variant-numeric: tabular-nums;
+    }
+    .kpi-sub {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+      align-items: center;
+    }
+
+    /* Page Grid: Sidebar + Narrative Main */
+    .page-grid {
+      display: grid;
+      grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+      gap: var(--space-xl);
+      padding: 0;
+      max-width: 1280px;
+      margin: 0 auto;
+      overflow: visible;
+    }
+    .page-grid * { min-width: 0; }
+
+    /* Side Navigation */
+    .side-nav {
+      position: sticky;
+      top: var(--space-lg);
+      align-self: start;
+      max-height: calc(100vh - 3rem);
+      overflow-y: auto;
+      padding-right: var(--space-sm);
+      border-right: var(--rule);
+    }
+    .side-nav-list {
+      list-style: none;
+      margin: var(--space-sm) 0 0 0;
+      padding: 0;
+    }
+    .side-nav-item + .side-nav-item {
+      margin-top: 2px;
+    }
+    .side-nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-xs);
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      border-left: 2px solid transparent;
+      padding: var(--space-xs) var(--space-sm);
+      font-family: var(--font-body);
+      font-size: 0.84rem;
+      line-height: 1.35;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+    }
+    .side-nav-link:hover {
+      background: var(--surface-container);
+      color: var(--on-surface);
+    }
+    .side-nav-link.is-active {
+      border-left: var(--indicator);
+      color: var(--on-surface);
+      font-weight: 600;
+      background: var(--surface-container);
+    }
+    .nav-status {
+      font-family: var(--font-label);
+      font-size: 0.7rem;
+      color: var(--on-surface-variant);
+      flex-shrink: 0;
+    }
+    .nav-status--done {
+      color: var(--tertiary);
+      font-weight: 600;
+    }
+
+    /* Mobile Jump Drawer */
+    .mobile-toc {
+      display: none;
+      background: var(--surface-container);
+      padding: var(--space-md);
+      margin-bottom: var(--space-lg);
+      border-left: var(--accent-bar);
+    }
+    .mobile-toc summary {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      cursor: pointer;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .mobile-toc-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xs);
+      margin-top: var(--space-sm);
+    }
+
+    /* Main Content & Sections */
+    .course-main {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2xl);
+      padding-bottom: var(--space-3xl);
+    }
+    .module-section {
+      scroll-margin-top: var(--space-lg);
+      padding-bottom: var(--space-xl);
+      border-bottom: var(--rule);
+    }
+    .module-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: var(--space-md);
+      border-bottom: var(--rule);
+      padding-bottom: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+    .module-title {
+      font-family: var(--font-headline);
+      font-size: var(--headline-size);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-top: var(--space-xs);
+    }
+    .module-title strong {
+      font-weight: 600;
+    }
+    .sub-heading {
+      font-family: var(--font-headline);
+      font-size: var(--subhead-size);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-sm);
+    }
+    .mini-heading {
+      font-family: var(--font-headline);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+    }
+
+    /* Carbon Flat Gray Layers */
+    .layer {
+      background: var(--surface-container);
+      padding: var(--space-md);
+      border-radius: 0;
+    }
+    .layer .layer {
+      background: var(--surface-container-high);
+    }
+    .layer--spacious {
+      padding: var(--space-lg);
+    }
+
+    /* Notifications / Callout strips */
+    .callout {
+      background: var(--surface-container);
+      padding: var(--space-md) var(--space-lg);
+      border-left: var(--accent-bar);
+      margin: var(--space-md) 0;
+    }
+    .callout--positive {
+      border-left: var(--positive-bar);
+    }
+    .callout--warning {
+      border-left: var(--warning-bar);
+    }
+    .callout--error {
+      border-left: var(--error-bar);
+    }
+    .callout-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: var(--space-xs);
+      color: var(--on-surface);
+    }
+    .callout p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Card grids */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+      gap: var(--space-md);
+      margin: var(--space-md) 0;
+    }
+    .card-grid--2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: var(--space-md);
+      margin: var(--space-md) 0;
+    }
+
+    /* Buttons (Carbon square, 40-48px) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 400;
+      border-radius: 0;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+    }
+    .btn--primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      padding-right: var(--space-xl);
+    }
+    .btn--primary:hover {
+      background: color-mix(in srgb, var(--primary), var(--on-surface) 25%);
+    }
+    .btn--secondary {
+      background: transparent;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    .btn--secondary:hover {
+      background: var(--surface-container);
+    }
+    .btn--ghost {
+      background: transparent;
+      color: var(--primary);
+    }
+    .btn--ghost:hover {
+      background: var(--surface-container);
+    }
+    .btn--neutral {
+      background: var(--surface-container);
+      color: var(--on-surface);
+      border-color: var(--outline-variant);
+    }
+    .btn--neutral:hover {
+      background: var(--surface-container-high);
+    }
+    .btn--complete {
+      background: var(--surface-container);
+      color: var(--on-surface);
+      border: 1px solid var(--outline-variant);
+      min-height: 44px;
+    }
+    .btn--complete.is-done {
+      background: var(--positive-container);
+      color: var(--on-positive-container);
+      border-color: var(--tertiary);
+      font-weight: 600;
+    }
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin: var(--space-md) 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    thead th {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-align: left;
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: 1px solid var(--outline);
+    }
+    tbody td {
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: var(--rule);
+      vertical-align: top;
+    }
+    tbody tr:nth-child(even) {
+      background: var(--surface-container-low);
+    }
+
+    /* Inputs & Controls */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    .field-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--on-surface-variant);
+    }
+    .input-text, .input-select {
+      height: 44px;
+      background: var(--surface-container);
+      color: var(--on-surface);
+      border: 0;
+      border-bottom: var(--field-rule);
+      padding: 0 var(--space-md);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      border-radius: 0;
+      width: 100%;
+    }
+    .input-select {
+      padding-right: var(--space-xl);
+    }
+    .input-text:focus, .input-select:focus {
+      outline: 2px solid var(--focus);
+      outline-offset: -2px;
+    }
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: flex-end;
+      margin: var(--space-md) 0;
+    }
+
+    /* Interactive Lab Panels */
+    .lab-panel {
+      background: var(--surface-container);
+      padding: var(--space-lg);
+      margin: var(--space-lg) 0;
+      border-top: var(--indicator);
+    }
+    .lab-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+      gap: var(--space-sm);
+      margin: var(--space-md) 0;
+    }
+    .stage-box {
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-md);
+      min-height: 155px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .stage-box--active {
+      border-top: var(--indicator);
+    }
+    .stage-file {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      background: var(--surface-container);
+      font-family: var(--font-label);
+      font-size: 0.8rem;
+    }
+    .status-pill {
+      font-family: var(--font-label);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: var(--rounded-full);
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+    .status-pill--mod { background: var(--warning-container); color: var(--on-warning-container); }
+    .status-pill--staged { background: var(--primary-container); color: var(--on-primary-container); }
+    .status-pill--commit { background: var(--positive-container); color: var(--on-positive-container); }
+    .terminal-box {
+      background: var(--terminal-bg);
+      color: var(--terminal-text);
+      font-family: var(--font-label);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+      min-height: 92px;
+    }
+    .term-cmd { color: var(--terminal-blue); }
+    .term-ok { color: var(--terminal-green); }
+    .term-err { color: var(--terminal-red); }
+    .term-dim { color: var(--terminal-muted); }
+
+    /* Diff viewer & Conflict Lab */
+    .diff-block {
+      font-family: var(--font-label);
+      font-size: 0.83rem;
+      background: var(--terminal-bg);
+      color: var(--terminal-text);
+      padding: var(--space-md);
+      overflow-x: auto;
+      margin: var(--space-md) 0;
+    }
+    .diff-line {
+      display: block;
+      padding: 1px var(--space-sm);
+      white-space: pre;
+    }
+    .diff-add {
+      background: color-mix(in srgb, var(--tertiary), var(--terminal-bg) 72%);
+      color: var(--terminal-green);
+    }
+    .diff-del {
+      background: color-mix(in srgb, var(--error), var(--terminal-bg) 72%);
+      color: var(--terminal-red);
+    }
+    .diff-marker {
+      color: var(--terminal-blue);
+      font-weight: 600;
+    }
+
+    /* SVG Graph Container */
+    .svg-stage {
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-md);
+      overflow-x: auto;
+      margin: var(--space-md) 0;
+    }
+    .dag-svg {
+      width: 100%;
+      min-width: 520px;
+      height: auto;
+      display: block;
+    }
+    .dag-line-main { stroke: var(--data-1); stroke-width: 2.5; fill: none; }
+    .dag-line-feat { stroke: var(--data-2); stroke-width: 2.5; fill: none; }
+    .dag-line-dash { stroke: var(--outline); stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; }
+    .dag-node-main { fill: var(--data-1); }
+    .dag-node-feat { fill: var(--data-2); }
+    .dag-node-merge { fill: var(--tertiary); }
+    .dag-label {
+      font-family: var(--font-label);
+      font-size: 11px;
+      fill: var(--on-surface);
+    }
+    .dag-sub {
+      font-family: var(--font-label);
+      font-size: 10px;
+      fill: var(--on-surface-variant);
+    }
+
+    /* Interactive Tabs inside GitHub Explorer */
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--outline-variant);
+      margin-bottom: var(--space-md);
+      gap: 0;
+    }
+    .tab-btn {
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+    }
+    .tab-btn:hover {
+      color: var(--on-surface);
+      background: var(--surface-container-high);
+    }
+    .tab-btn.is-active {
+      color: var(--on-surface);
+      font-weight: 600;
+      border-bottom: var(--indicator);
+    }
+
+    /* Interactive Quiz Block */
+    .quiz-panel {
+      background: var(--surface-container);
+      padding: var(--space-lg);
+      margin-top: var(--space-xl);
+      border-left: var(--accent-bar);
+    }
+    .quiz-question {
+      padding: var(--space-md) 0;
+      border-top: var(--rule);
+    }
+    .quiz-question:first-of-type {
+      border-top: 0;
+      padding-top: var(--space-sm);
+    }
+    .quiz-q-title {
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+      color: var(--on-surface);
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xs);
+    }
+    .quiz-opt {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      width: 100%;
+      text-align: left;
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out);
+    }
+    .quiz-opt:hover {
+      background: var(--surface-container-high);
+    }
+    .quiz-opt.is-selected-correct {
+      background: var(--positive-container);
+      color: var(--on-positive-container);
+      border-color: var(--tertiary);
+      font-weight: 600;
+    }
+    .quiz-opt.is-selected-wrong {
+      background: var(--error-container);
+      color: var(--on-error-container);
+      border-color: var(--error);
+      font-weight: 600;
+    }
+    .quiz-opt.is-reveal-correct {
+      border-color: var(--tertiary);
+      border-left: var(--positive-bar);
+    }
+    .quiz-feedback {
+      margin-top: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--background);
+      font-size: 0.875rem;
+      border-left: var(--accent-bar);
+    }
+    .quiz-feedback--ok { border-left: var(--positive-bar); }
+    .quiz-feedback--err { border-left: var(--error-bar); }
+
+    /* Accordion / Troubleshooting details */
+    details.trouble-item {
+      background: var(--surface-container);
+      border-bottom: var(--rule);
+    }
+    details.trouble-item summary {
+      padding: var(--space-md);
+      font-weight: 600;
+      cursor: pointer;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+    }
+    details.trouble-item summary:hover {
+      background: var(--surface-container-high);
+    }
+    .trouble-body {
+      padding: 0 var(--space-md) var(--space-md) var(--space-md);
+      border-top: var(--rule);
+      padding-top: var(--space-md);
+    }
+
+    /* Cheat Sheet */
+    .cheat-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 1.2fr) minmax(240px, 2fr) auto;
+      gap: var(--space-md);
+      align-items: center;
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: var(--rule);
+    }
+    .cheat-row:nth-child(even) {
+      background: var(--surface-container-low);
+    }
+    .cheat-cmd {
+      font-family: var(--font-label);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--on-surface);
+      word-break: break-word;
+    }
+    .cheat-desc {
+      font-size: 0.88rem;
+      color: var(--on-surface-variant);
+    }
+    .btn-copy {
+      min-height: 36px;
+      padding: var(--space-xs) var(--space-sm);
+      background: var(--background);
+      border: 1px solid var(--outline-variant);
+      color: var(--primary);
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    .btn-copy:hover {
+      background: var(--surface-container-high);
+    }
+    .btn-copy.is-copied {
+      background: var(--positive-container);
+      color: var(--on-positive-container);
+      border-color: var(--tertiary);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: var(--rule);
+      padding-top: var(--space-lg);
+      margin-top: var(--space-2xl);
+      color: var(--on-surface-variant);
+      font-size: 0.875rem;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 960px) {
+      .page-grid {
+        grid-template-columns: 1fr;
+      }
+      .side-nav {
+        display: none;
+      }
+      .mobile-toc {
+        display: block;
+      }
+    }
+    @media (max-width: 640px) {
+      .page-shell {
+        padding: var(--space-md);
+      }
+      .page-grid {
+        grid-template-columns: 1fr;
+      }
+      aside {
+        display: none;
+      }
+      .cheat-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-xs);
+      }
+      .lab-panel, .quiz-panel {
+        padding: var(--space-md);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="page-header">
+      <span class="label">Complete Course Handbook · Version Control &amp; Collaboration</span>
+      <h1 class="headline-display">Git &amp; GitHub: <strong>From Local Tracking to Collaborative Workflows</strong></h1>
+      <p class="lede">
+        Comprehensive, structured study notes for the complete Git and GitHub course by Sumit Saha. Work through every local command, terminal nuance, branching and conflict workflow, safety rollback, rebase internal, pull request review, and GitHub platform feature with interactive simulators and self-testing quizzes.
+      </p>
+      <div class="meta-strip">
+        <span class="tag">13 Core Modules</span>
+        <span class="tag tag--neutral">6 Interactive Quizzes</span>
+        <span class="tag tag--neutral">4 Hands-On Simulators</span>
+        <span class="tag tag--neutral">UK English Reference</span>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-tile kpi-tile--active">
+          <span class="label">Course Completion</span>
+          <span class="kpi-value" id="kpi-modules">0 / 13</span>
+          <span class="kpi-sub">Modules marked complete</span>
+        </div>
+        <div class="kpi-tile">
+          <span class="label">Quiz Mastery</span>
+          <span class="kpi-value" id="kpi-quiz">0 / 18</span>
+          <span class="kpi-sub">Questions answered correctly</span>
+        </div>
+        <div class="kpi-tile">
+          <span class="label">Command Reference</span>
+          <span class="kpi-value" id="kpi-commands">42</span>
+          <span class="kpi-sub">Indexed in cheat sheet</span>
+        </div>
+        <div class="kpi-tile">
+          <span class="label">GitHub Features</span>
+          <span class="kpi-value">8</span>
+          <span class="kpi-sub">Platform tools catalogued</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="btn btn--primary" onclick="jumpToSection('mod-1')">Start at Module 01</button>
+        <button type="button" class="btn btn--secondary" onclick="jumpToSection('cheat-sheet')">Jump to Cheat Sheet</button>
+        <button type="button" class="btn btn--neutral" onclick="exportCourseSummary()">Export Progress Summary</button>
+        <button type="button" class="btn btn--ghost" id="btn-reset-progress" onclick="resetCourseProgress(this)">Reset Saved Progress</button>
+        <span class="kpi-sub" id="save-status-msg" aria-live="polite"></span>
+      </div>
+    </header>
+
+    <details class="mobile-toc">
+      <summary>Course Navigation (15 Sections)</summary>
+      <div class="mobile-toc-grid" id="mobile-toc-links"></div>
+    </details>
+
+    <div class="page-grid">
+      <aside class="side-nav" aria-label="Course Sections">
+        <span class="label">Curriculum Index</span>
+        <ul class="side-nav-list" id="side-nav-list">
+          <li class="side-nav-item"><button type="button" class="side-nav-link is-active" data-target="mod-1" onclick="jumpToSection('mod-1')"><span>01 · Foundations &amp; Analogies</span><span class="nav-status" id="nav-st-mod-1">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-2" onclick="jumpToSection('mod-2')"><span>02 · Four-Stage Architecture</span><span class="nav-status" id="nav-st-mod-2">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-3" onclick="jumpToSection('mod-3')"><span>03 · Install, Shell &amp; Config</span><span class="nav-status" id="nav-st-mod-3">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-4" onclick="jumpToSection('mod-4')"><span>04 · Init, Clone &amp; .git</span><span class="nav-status" id="nav-st-mod-4">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-5" onclick="jumpToSection('mod-5')"><span>05 · Staging &amp; Committing</span><span class="nav-status" id="nav-st-mod-5">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-6" onclick="jumpToSection('mod-6')"><span>06 · File Removal &amp; Logs</span><span class="nav-status" id="nav-st-mod-6">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-7" onclick="jumpToSection('mod-7')"><span>07 · Branching &amp; Conflicts</span><span class="nav-status" id="nav-st-mod-7">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-8" onclick="jumpToSection('mod-8')"><span>08 · Time Travel &amp; HEAD</span><span class="nav-status" id="nav-st-mod-8">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-9" onclick="jumpToSection('mod-9')"><span>09 · Push, Fetch &amp; Pull</span><span class="nav-status" id="nav-st-mod-9">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-10" onclick="jumpToSection('mod-10')"><span>10 · Restore, Stash &amp; Revert</span><span class="nav-status" id="nav-st-mod-10">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-11" onclick="jumpToSection('mod-11')"><span>11 · Rebasing &amp; Linear History</span><span class="nav-status" id="nav-st-mod-11">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-12" onclick="jumpToSection('mod-12')"><span>12 · Pull Requests (PRs)</span><span class="nav-status" id="nav-st-mod-12">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="mod-13" onclick="jumpToSection('mod-13')"><span>13 · GitHub Platform Guide</span><span class="nav-status" id="nav-st-mod-13">—</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="troubleshooting" onclick="jumpToSection('troubleshooting')"><span>14 · Troubleshooting Gotchas</span><span class="nav-status">REF</span></button></li>
+          <li class="side-nav-item"><button type="button" class="side-nav-link" data-target="cheat-sheet" onclick="jumpToSection('cheat-sheet')"><span>15 · Command Cheat Sheet</span><span class="nav-status">42</span></button></li>
+        </ul>
+      </aside>
+
+      <main class="course-main">
+        <!-- MODULE 1 -->
+        <section class="module-section" id="mod-1">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 01 · Core Foundations</span>
+              <h2 class="module-title"><strong>Git vs GitHub:</strong> Version Control Principles</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-1" onclick="toggleModuleComplete('mod-1')">Mark Module Complete</button>
+          </div>
+
+          <p>
+            <strong>Git</strong> is a distributed <strong>Version Control System (VCS)</strong> created by <strong>Linus Torvalds</strong>, the creator of the Linux kernel. Unlike short-lived developer tools, Git has remained foundational across software careers because it solves a permanent problem: tracking every change made to files—<em>what</em> changed, <em>when</em> it changed, <em>who</em> changed it, and <em>which line</em> was modified—24 hours a day, 365 days a year.
+          </p>
+          <p>
+            Crucially, Git is not restricted to source code. While it is ubiquitous in JavaScript, PHP, Python, and systems programming, it can track and preserve multiple versions of text documents, configuration files, images, and even video assets.
+          </p>
+
+          <div class="callout">
+            <div class="callout-title">Real-World Scenario: Why Version Control Saves Projects</div>
+            <p>
+              Suppose you spend weeks building a client project. The client approves Version 1. A month later, they ask for substantial new features, so you overwrite the original files to build Version 2. Days later, the client says: <em>“Actually, the earlier version was better.”</em> Without version control, your original work is gone. With Git, every historical version remains safely indexed, letting you roll back to any prior state in seconds.
+            </p>
+          </div>
+
+          <h3 class="sub-heading">The Coffee &amp; Coffee Shop Analogy</h3>
+          <p>
+            Beginners frequently conflate Git and GitHub. Although they work together, they serve entirely different roles:
+          </p>
+          <div class="card-grid--2">
+            <div class="layer">
+              <span class="label">Local Engine</span>
+              <h4 class="mini-heading">Git is the Coffee</h4>
+              <p>
+                Git is the tool installed and executed locally on your own computer. It records file snapshots, tracks line-by-line history, manages branches, and operates entirely offline without needing an internet connection.
+              </p>
+            </div>
+            <div class="layer">
+              <span class="label">Cloud Collaboration Hub</span>
+              <h4 class="mini-heading">GitHub is the Coffee Shop</h4>
+              <p>
+                GitHub (owned by Microsoft) is the central cloud server where that coffee is served. When multiple teammates edit the same project on separate computers, GitHub acts as the single shared hub where everyone uploads, reviews, and merges their updates.
+              </p>
+            </div>
+          </div>
+
+          <h3 class="sub-heading">Git Hosting Platforms Compared</h3>
+          <p>
+            GitHub is the most widely adopted platform—especially across open-source ecosystems—but Git itself is platform-agnostic. Other trusted remote hosts include <strong>GitLab</strong> and <strong>Bitbucket</strong>.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Platform</th>
+                  <th>Primary Strength</th>
+                  <th>Typical Ecosystem</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>GitHub</strong></td>
+                  <td>Largest open-source community, Pull Requests, GitHub Actions, Microsoft-backed</td>
+                  <td>Open source, startups, enterprise teams</td>
+                </tr>
+                <tr>
+                  <td><strong>GitLab</strong></td>
+                  <td>Built-in end-to-end DevSecOps pipelines and self-hosting options</td>
+                  <td>Enterprise DevOps &amp; self-managed infrastructure</td>
+                </tr>
+                <tr>
+                  <td><strong>Bitbucket</strong></td>
+                  <td>Tight integration with Jira and Confluence (Atlassian suite)</td>
+                  <td>Teams already running Atlassian tooling</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- MODULE 2 -->
+        <section class="module-section" id="mod-2">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 02 · Internal Architecture</span>
+              <h2 class="module-title"><strong>The Four Stages</strong> of Git’s Workflow</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-2" onclick="toggleModuleComplete('mod-2')">Mark Module Complete</button>
+          </div>
+
+          <p>
+            Every Git command makes sense once you map it onto Git’s two-part architecture—<strong>Local</strong> (on your computer) and <strong>Remote</strong> (in the cloud)—split across four distinct stages:
+          </p>
+
+          <div class="card-grid">
+            <div class="layer">
+              <span class="label">Stage 01 · Local</span>
+              <h4 class="mini-heading">Working Directory</h4>
+              <p>Your active project folder on disk (e.g., <code>git-1</code>). Here you create new files, write code, modify existing files, or delete obsolete ones. Git observes changes here, but nothing is saved to history yet.</p>
+            </div>
+            <div class="layer">
+              <span class="label">Stage 02 · Local</span>
+              <h4 class="mini-heading">Staging Area (Index)</h4>
+              <p>An intermediate holding zone between your workspace and permanent history. Moving files here with <code>git add</code> signals: <em>“These specific changes are ready for the next snapshot.”</em></p>
+            </div>
+            <div class="layer">
+              <span class="label">Stage 03 · Local</span>
+              <h4 class="mini-heading">Local Repository</h4>
+              <p>A hidden digital cabinet (<code>.git/</code>) on your computer. Running <code>git commit</code> permanently locks staged snapshots into your project’s local timeline.</p>
+            </div>
+            <div class="layer">
+              <span class="label">Stage 04 · Cloud</span>
+              <h4 class="mini-heading">Remote Repository</h4>
+              <p>A cloud-hosted mirror on GitHub, GitLab, or Bitbucket—much like Google Drive or OneDrive for code. You <code>git push</code> commits here for backup, multi-device access, and team collaboration.</p>
+            </div>
+          </div>
+
+          <div class="lab-panel" id="pipeline-lab">
+            <div class="lab-header">
+              <div>
+                <span class="label">Interactive Simulator 01</span>
+                <h3 class="mini-heading">Four-Stage Git Workflow Pipeline</h3>
+              </div>
+              <button type="button" class="btn btn--neutral" onclick="resetPipelineLab()">Reset Simulator</button>
+            </div>
+            <p class="kpi-sub">Click the workflow actions in sequence (or test out-of-order edge cases) to observe how files travel between your working directory, staging index, local <code>.git</code> cabinet, and remote GitHub server.</p>
+            <div class="controls-row">
+              <button type="button" class="btn btn--neutral" onclick="simAction('edit')">1. Edit <code>1.txt</code> &amp; touch <code>3.txt</code></button>
+              <button type="button" class="btn btn--primary" onclick="simAction('add')">2. <code>git add .</code></button>
+              <button type="button" class="btn btn--primary" onclick="simAction('commit')">3. <code>git commit -m "Update"</code></button>
+              <button type="button" class="btn btn--secondary" onclick="simAction('reset-head')">Undo: <code>git reset HEAD~</code></button>
+              <button type="button" class="btn btn--primary" onclick="simAction('push')">4. <code>git push origin main</code></button>
+            </div>
+            <div class="pipeline-grid">
+              <div class="stage-box stage-box--active">
+                <span class="label">1. Working Directory</span>
+                <div id="sim-wd"></div>
+              </div>
+              <div class="stage-box">
+                <span class="label">2. Staging Area (Index)</span>
+                <div id="sim-stage"></div>
+              </div>
+              <div class="stage-box">
+                <span class="label">3. Local Repository (.git)</span>
+                <div id="sim-local"></div>
+              </div>
+              <div class="stage-box">
+                <span class="label">4. Remote Repo (GitHub)</span>
+                <div id="sim-remote"></div>
+              </div>
+            </div>
+            <div class="terminal-box" id="sim-terminal" aria-live="polite">
+              <span class="term-dim">$ # Ready. Start by editing files in the Working Directory.</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 3 -->
+        <section class="module-section" id="mod-3">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 03 · Environment &amp; Identity</span>
+              <h2 class="module-title"><strong>Installation, Terminal Navigation</strong> &amp; User Config</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-3" onclick="toggleModuleComplete('mod-3')">Mark Module Complete</button>
+          </div>
+
+          <h3 class="sub-heading">Installing Git Across Operating Systems</h3>
+          <p>Download the official installer from <code>git-scm.com</code> (search for the official Git downloads page) for your operating system:</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Operating System</th>
+                  <th>Installation Method</th>
+                  <th>Recommended Terminal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Windows</strong></td>
+                  <td>Choose the 32-bit or 64-bit setup installer and follow the wizard.</td>
+                  <td>Command Prompt, PowerShell, or <strong>Git Bash</strong> (bundled with Git; mimics a Linux shell for intuitive commands).</td>
+                </tr>
+                <tr>
+                  <td><strong>macOS</strong></td>
+                  <td>Follow the official Homebrew instruction: <code>brew install git</code>.</td>
+                  <td>Built-in <strong>Terminal</strong> app (or iTerm2).</td>
+                </tr>
+                <tr>
+                  <td><strong>Linux / Unix</strong></td>
+                  <td>Install via your distribution’s package manager (e.g., <code>apt</code>, <code>dnf</code>) per the official guide.</td>
+                  <td>System terminal shell (Bash / Zsh).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Confirm your installation works by running:</p>
+          <pre><code>git --version
+# Example output: git version 2.45.0</code></pre>
+
+          <h3 class="sub-heading">Essential Non-Git Terminal Commands</h3>
+          <p>Before running Git commands, you navigate folders using standard shell utilities (these are operating system commands, not Git commands):</p>
+          <ul>
+            <li><code>pwd</code> — Print working directory (shows your current folder path).</li>
+            <li><code>cd Desktop</code> — Change directory into <code>Desktop</code>; <code>cd ../</code> or <code>cd ..</code> moves one level up.</li>
+            <li><code>mkdir git-1</code> — Create a new directory named <code>git-1</code>.</li>
+            <li><code>touch 1.txt</code> — Create an empty file named <code>1.txt</code> (on Windows PowerShell, use <code>New-Item 1.txt</code> or Git Bash’s <code>touch</code>).</li>
+            <li><code>ls</code> and <code>ls -la</code> — List files; <code>-la</code> reveals hidden system directories such as <code>.git</code>.</li>
+            <li><code>open .</code> — Open the current directory (<code>.</code>) in macOS Finder (on Windows Git Bash, use <code>explorer .</code>).</li>
+          </ul>
+
+          <h3 class="sub-heading">Configuring Your Git Identity (Global vs Local)</h3>
+          <p>
+            The very first time you attempt a commit on a fresh installation, Git pauses and prints: <code>Please tell me who you are</code>. Because Git records the author on every commit in the project history, you must register a name and email address first:
+          </p>
+          <pre><code># Apply to EVERY repository on your computer (--global)
+git config --global user.name "Sumit Saha"
+git config --global user.email "sumit@example.com"
+
+# OR apply ONLY to the current project repository (--local)
+git config --local user.name "Work Profile"
+git config --local user.email "work@company.example"</code></pre>
+          <p>
+            Use <code>--global</code> for your personal machine default, and override with <code>--local</code> inside specific repositories when separating personal open-source commits from corporate accounts.
+          </p>
+
+          <!-- QUIZ 1 -->
+          <div class="quiz-panel" id="quiz-mod-1-3">
+            <span class="label">Self-Test Quiz 01 · Modules 01–03</span>
+            <h3 class="mini-heading">Check Your Foundations &amp; Setup</h3>
+            <div id="quiz-body-1"></div>
+          </div>
+        </section>
+
+        <!-- MODULE 4 -->
+        <section class="module-section" id="mod-4">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 04 · Repositories &amp; Tracking</span>
+              <h2 class="module-title"><strong>git init, git clone</strong> &amp; the Hidden <code>.git</code> Folder</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-4" onclick="toggleModuleComplete('mod-4')">Mark Module Complete</button>
+          </div>
+
+          <h3 class="sub-heading">Two Ways to Start a Git Repository</h3>
+          <p>Whether starting locally on your hard drive or pulling an existing project down from GitHub, initialisation is mandatory before Git can track changes:</p>
+
+          <div class="card-grid--2">
+            <div class="layer">
+              <span class="label">Approach A · Local First</span>
+              <h4 class="mini-heading"><code>git init</code></h4>
+              <p>Navigate into your project folder (e.g., <code>git-1</code> containing <code>1.txt</code>, <code>2.txt</code>, and <code>my-folder/3.txt</code>) and run <code>git init</code>. Terminal prints: <em>“Initialized empty Git repository.”</em></p>
+              <p>Running <code>ls -la</code> reveals a hidden <code>.git/</code> folder—Git’s internal database storing all file versions, commit metadata, authors, and branch pointers.</p>
+            </div>
+            <div class="layer">
+              <span class="label">Approach B · Cloud First</span>
+              <h4 class="mini-heading"><code>git clone &lt;https-url&gt;</code></h4>
+              <p>Create a repository on GitHub (e.g., <code>git-journey</code>, set to <strong>Public</strong>, add <code>1.txt</code> and <code>2.txt</code> via “Create a new file” and “Commit changes”). Click the <strong>Code</strong> button, copy the HTTPS link, and run <code>git clone &lt;url&gt;</code>.</p>
+              <p>Git creates the <code>git-journey/</code> directory locally, downloads all files, and automatically includes a complete <code>.git/</code> repository linked to <code>origin</code>.</p>
+            </div>
+          </div>
+
+          <h3 class="sub-heading">Inspecting Live Changes with <code>git status</code></h3>
+          <p>
+            Whenever you edit <code>1.txt</code> or <code>2.txt</code>, or create a brand-new folder <code>my-folder/</code> containing <code>3.txt</code>, running <code>git status</code> gives an immediate project summary:
+          </p>
+          <ul>
+            <li><strong>Modified (tracked):</strong> Files Git already knew about from previous commits (e.g., <code>modified: 1.txt</code>).</li>
+            <li><strong>Untracked:</strong> Newly created files or folders that Git has never committed before (e.g., <code>my-folder/</code>).</li>
+            <li><strong>Clean working tree:</strong> When all local edits match the latest commit.</li>
+          </ul>
+        </section>
+
+        <!-- MODULE 5 -->
+        <section class="module-section" id="mod-5">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 05 · Staging &amp; Commits</span>
+              <h2 class="module-title"><strong>git add Variations,</strong> Commits &amp; Rolling Back</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-5" onclick="toggleModuleComplete('mod-5')">Mark Module Complete</button>
+          </div>
+
+          <h3 class="sub-heading">The Party-Preparation Mirror Analogy</h3>
+          <p>
+            Why doesn’t Git save straight from your working directory into the repository? Think of getting dressed for a party. You do not walk straight out of the front door; you pause in front of a mirror to check your shirt, shoes, hair, and tie. If something looks wrong, you adjust it right there.
+          </p>
+          <p>
+            The <strong>staging area</strong> is that mirror. <code>git add</code> lets you review, adjust, or unstage (<code>git reset</code>) specific changes before locking them permanently into history with <code>git commit</code>.
+          </p>
+
+          <h3 class="sub-heading">Every <code>git add</code> Variation Explained</h3>
+          <p>Subtle flags on <code>git add</code> behave differently depending on your current folder and whether files were deleted:</p>
+
+          <div class="lab-panel" id="add-scope-lab">
+            <div class="lab-header">
+              <div>
+                <span class="label">Interactive Explorer 02</span>
+                <h3 class="mini-heading">Compare <code>git add</code> Flag Scopes</h3>
+              </div>
+              <span class="tag">Scenario: 1.txt modified, 2.txt deleted, 4.txt new (root), my-folder/3.txt new</span>
+            </div>
+            <div class="controls-row">
+              <button type="button" class="btn btn--primary" onclick="selectAddMode('all', this)"><code>git add --all</code> / <code>-A</code></button>
+              <button type="button" class="btn btn--neutral" onclick="selectAddMode('dot-root', this)"><code>git add .</code> (from root)</button>
+              <button type="button" class="btn btn--neutral" onclick="selectAddMode('dot-sub', this)"><code>git add .</code> (inside <code>my-folder/</code>)</button>
+              <button type="button" class="btn btn--neutral" onclick="selectAddMode('star', this)"><code>git add *</code></button>
+              <button type="button" class="btn btn--neutral" onclick="selectAddMode('ext', this)"><code>git add *.txt</code></button>
+            </div>
+            <div id="add-scope-output" class="layer"></div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>Scope</th>
+                  <th>New &amp; Modified</th>
+                  <th>Deleted Files</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>git add --all</code> / <code>git add -A</code></td>
+                  <td>Entire repository (even if run from a subfolder)</td>
+                  <td>Staged</td>
+                  <td>Staged</td>
+                </tr>
+                <tr>
+                  <td><code>git add .</code></td>
+                  <td>Current working folder and its subdirectories only</td>
+                  <td>Staged</td>
+                  <td>Staged</td>
+                </tr>
+                <tr>
+                  <td><code>git add *</code></td>
+                  <td>Current directory shell glob (skips dotfiles)</td>
+                  <td>Staged</td>
+                  <td><strong>Ignored (not staged)</strong></td>
+                </tr>
+                <tr>
+                  <td><code>git add 1.txt</code> / <code>my-folder/3.txt</code></td>
+                  <td>Single named file path only</td>
+                  <td>Staged</td>
+                  <td>Staged if named</td>
+                </tr>
+                <tr>
+                  <td><code>git add *.txt</code></td>
+                  <td>Matching <code>.txt</code> files in current root folder only</td>
+                  <td>Staged</td>
+                  <td><strong>Ignored</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="sub-heading">Unstaging, Committing &amp; Undoing the Last Commit</h3>
+          <pre><code># Unstage all files back to the working directory (keeps your file edits safe)
+git reset
+
+# Permanently commit staged changes with a clear message
+git commit -m "Add user profile validation and update 1.txt"
+
+# Undo the most recent commit and return its changes to the working directory
+git reset HEAD~</code></pre>
+
+          <div class="callout callout--positive">
+            <div class="callout-title">Commit Message Best Practices</div>
+            <p>
+              Write commit messages in the imperative mood (e.g., <em>“Add dark mode toggle”</em> rather than <em>“Added stuff”</em>), keep each commit focused on a single logical change (atomic commits), and ensure the summary clearly explains <em>why</em> the snapshot exists when browsing <code>git log</code> months later.
+            </p>
+          </div>
+        </section>
+
+        <!-- MODULE 6 -->
+        <section class="module-section" id="mod-6">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 06 · File Removal &amp; History Inspection</span>
+              <h2 class="module-title"><strong>git rm, Hard Resets,</strong> Logs &amp; <code>git diff</code></h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-6" onclick="toggleModuleComplete('mod-6')">Mark Module Complete</button>
+          </div>
+
+          <h3 class="sub-heading">File Deletion &amp; Untracking with <code>git rm</code></h3>
+          <p>
+            Manually deleting a file in Finder/Explorer requires a second <code>git add .</code> step to stage the deletion. <code>git rm</code> performs both actions together—and provides flags for special cases:
+          </p>
+          <ul>
+            <li><code>git rm 4.txt</code> — Deletes <code>4.txt</code> from disk and immediately stages the deletion for the next commit.</li>
+            <li><code>git rm -f 4.txt</code> — Force-deletes even if Git warns <em>“the following file has local modifications”</em> (uncommitted edits in the working directory).</li>
+            <li><code>git rm --cached 4.txt</code> — Removes the file from Git’s tracking/staging index while <strong>keeping the physical file intact</strong> on your hard drive as an untracked file (essential when you accidentally tracked a secret <code>.env</code> file).</li>
+            <li><code>git rm -r my-folder</code> — Recursively deletes a folder and all subfolders/files inside it, staging the removal.</li>
+          </ul>
+
+          <div class="callout callout--warning">
+            <div class="callout-title"><code>git reset</code> vs <code>git reset --hard</code> After Deletion</div>
+            <p>
+              Running plain <code>git reset</code> unstages changes, but it does <strong>not</strong> bring back files deleted from your file system. To discard uncommitted changes <em>and</em> physically restore deleted files to their last committed state, run <code>git reset --hard</code>.
+            </p>
+          </div>
+
+          <h3 class="sub-heading">Inspecting Commits &amp; Reading Diffs</h3>
+          <pre><code># Full commit history (long 40-character SHA hashes, author, date, full message)
+git log
+
+# Compact one-line summary with shortened commit IDs
+git log --oneline
+
+# Exit the terminal pager when viewing long logs
+# Press the 'q' key on your keyboard
+
+# Compare two commits (newer commit first, older commit second)
+git diff &lt;newer-commit-id&gt; &lt;older-commit-id&gt;</code></pre>
+          <p>
+            In <code>git diff</code>, placing the newer commit ID first displays additions in <span class="term-ok" style="background:var(--terminal-bg);padding:0 4px;">green (+)</span> and removals in <span class="term-err" style="background:var(--terminal-bg);padding:0 4px;">red (-)</span> from the newer snapshot’s perspective. Reversing the IDs flips the perspective.
+          </p>
+
+          <!-- QUIZ 2 -->
+          <div class="quiz-panel" id="quiz-mod-4-6">
+            <span class="label">Self-Test Quiz 02 · Modules 04–06</span>
+            <h3 class="mini-heading">Test Staging, Deletion &amp; Log Commands</h3>
+            <div id="quiz-body-2"></div>
+          </div>
+        </section>
+
+        <!-- MODULE 7 -->
+        <section class="module-section" id="mod-7">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 07 · Parallel Development</span>
+              <h2 class="module-title"><strong>Branching, Merging</strong> &amp; Resolving Conflicts</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-7" onclick="toggleModuleComplete('mod-7')">Mark Module Complete</button>
+          </div>
+
+          <p>
+            Every repository starts with a primary line of development—historically called <code>master</code>, now standardly named <strong><code>main</code></strong>. A branch is an independent, isolated line of development forked from a snapshot of your project.
+          </p>
+
+          <div class="callout">
+            <div class="callout-title">The Restaurant Kitchen Analogy</div>
+            <p>
+              Think of <code>main</code> as the restaurant’s live service kitchen preparing meals for paying guests. When a client asks for an experimental recipe, you never test it in the main kitchen—one mistake ruins service. Instead, you open a separate <strong>test kitchen</strong> (a <code>development</code> or <code>feature</code> branch), perfect and taste the dish safely, and only merge it back into the main kitchen once verified.
+            </p>
+          </div>
+
+          <h3 class="sub-heading">Branching &amp; Switching Commands</h3>
+          <pre><code># List all local branches (* marks your active branch)
+git branch
+
+# Create a new branch inheriting the current branch's state
+git branch development
+
+# Switch to a branch (classic command vs modern Git 2.23+ command)
+git checkout development
+git switch development
+
+# Create and switch in one step
+git checkout -b staging
+git switch -c staging</code></pre>
+          <p>
+            When you create and commit <code>3.txt</code> inside <code>development</code> and switch back to <code>main</code>, <code>3.txt</code> vanishes from your file explorer immediately—and reappears when you switch back to <code>development</code>. Git seamlessly rewrites your working tree to show only the commits belonging to the active branch (provided your changes were committed first).
+          </p>
+
+          <h3 class="sub-heading">Merging &amp; Resolving Merge Conflicts</h3>
+          <p>
+            To combine completed work from <code>development</code> into <code>main</code>, switch to the receiving branch and merge:
+          </p>
+          <pre><code>git checkout main
+git merge development -m "Merging main with development"</code></pre>
+          <p>
+            A <strong>merge conflict</strong> arises when two branches edit the exact same line(s) of the same file differently—for example, <code>staging</code> appends <code>44</code> to <code>4.txt</code> while <code>development</code> appends <code>444</code> on the same line. Git stops with <code>Automatic merge failed; fix conflicts and then commit the result</code> and writes conflict markers into the file.
+          </p>
+
+          <div class="lab-panel" id="conflict-lab">
+            <div class="lab-header">
+              <div>
+                <span class="label">Interactive Lab 03</span>
+                <h3 class="mini-heading">Resolve a Live Merge Conflict in <code>4.txt</code></h3>
+              </div>
+              <button type="button" class="btn btn--neutral" onclick="resetConflictLab()">Reset Conflict</button>
+            </div>
+            <p class="kpi-sub">You are on <code>development</code> (<code>HEAD</code>) and ran <code>git merge staging</code>. Choose how to resolve the markers in <code>4.txt</code>, then stage and commit the resolution.</p>
+            <div class="diff-block" id="conflict-editor"></div>
+            <div class="controls-row">
+              <button type="button" class="btn btn--neutral" onclick="resolveConflictChoice('head')">Keep Current (<code>444</code>)</button>
+              <button type="button" class="btn btn--neutral" onclick="resolveConflictChoice('incoming')">Keep Incoming (<code>44</code>)</button>
+              <button type="button" class="btn btn--neutral" onclick="resolveConflictChoice('both')">Keep Both (<code>444</code> + <code>44</code>)</button>
+              <button type="button" class="btn btn--primary" id="btn-commit-conflict" onclick="commitConflictResolution()" disabled><code>git add . &amp;&amp; git commit</code></button>
+            </div>
+            <div class="terminal-box" id="conflict-terminal" aria-live="polite">
+              <span class="term-err">CONFLICT (content): Merge conflict in 4.txt</span><br>
+              <span class="term-dim">Automatic merge failed; fix conflicts and then commit the result.</span>
+            </div>
+          </div>
+
+          <h3 class="sub-heading">Recommended Branching Strategies</h3>
+          <ul>
+            <li><strong>Feature Branching:</strong> Keep <code>main</code> always deployable; fork short-lived branches like <code>feature/auth</code> or <code>fix/header</code> and merge via Pull Requests.</li>
+            <li><strong>Main + Staging + Development:</strong> Integrate daily work in <code>development</code>, promote release candidates to <code>staging</code> for QA testing, and merge verified releases into <code>main</code>.</li>
+          </ul>
+        </section>
+
+        <!-- MODULE 8 -->
+        <section class="module-section" id="mod-8">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 08 · History Navigation</span>
+              <h2 class="module-title"><strong>Time Travel &amp; Detached HEAD</strong> State</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-8" onclick="toggleModuleComplete('mod-8')">Mark Module Complete</button>
+          </div>
+
+          <p>
+            Just as <code>git checkout &lt;branch&gt;</code> moves between branches, passing a specific commit hash lets you travel backwards in time to inspect your project exactly as it stood at that moment:
+          </p>
+          <pre><code># 1. Locate the target commit ID
+git log --oneline
+
+# 2. Check out that exact snapshot (ensure working tree is clean first)
+git checkout a1b2c3d
+
+# Terminal warns: "You are in 'detached HEAD' state."
+# 3. Return to the latest tip of main when finished inspecting
+git checkout main</code></pre>
+          <p>
+            Normally, Git’s <code>HEAD</code> pointer points to a branch name (like <code>main</code>), which moves forward automatically when you commit. In <strong>detached HEAD</strong> state, <code>HEAD</code> points directly to a historical commit instead of a branch. Inspecting files is completely safe, but if you want to keep any new commits made while detached, create a branch first with <code>git checkout -b rescue-branch</code> before returning to <code>main</code>.
+          </p>
+
+          <!-- QUIZ 3 -->
+          <div class="quiz-panel" id="quiz-mod-7-8">
+            <span class="label">Self-Test Quiz 03 · Modules 07–08</span>
+            <h3 class="mini-heading">Verify Branching, Conflicts &amp; Detached HEAD</h3>
+            <div id="quiz-body-3"></div>
+          </div>
+        </section>
+
+        <!-- MODULE 9 -->
+        <section class="module-section" id="mod-9">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 09 · Remote Synchronisation</span>
+              <h2 class="module-title"><strong>git push, git fetch</strong> &amp; <code>git pull</code></h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-9" onclick="toggleModuleComplete('mod-9')">Mark Module Complete</button>
+          </div>
+
+          <p>
+            Once commits are recorded locally, three commands handle daily synchronisation between your local repository and GitHub (conventionally named <code>origin</code>; inspect with <code>git remote -v</code>):
+          </p>
+
+          <div class="card-grid">
+            <div class="layer">
+              <span class="label">Local → Cloud</span>
+              <h4 class="mini-heading"><code>git push origin &lt;branch&gt;</code></h4>
+              <p>Uploads commits from your local branch to the remote repository. Pushing <code>main</code> only uploads <code>main</code>; you push <code>staging</code> or <code>development</code> separately to create and sync them on GitHub.</p>
+            </div>
+            <div class="layer">
+              <span class="label">Cloud → Local Repo Only</span>
+              <h4 class="mini-heading"><code>git fetch</code></h4>
+              <p>Downloads new remote commits into local repository memory so you can inspect incoming updates safely, <strong>without</strong> modifying your working directory files until you run <code>git merge</code>.</p>
+            </div>
+            <div class="layer">
+              <span class="label">Cloud → Working Directory</span>
+              <h4 class="mini-heading"><code>git pull</code></h4>
+              <p>Combines both operations in one command: <strong><code>git pull = git fetch + git merge</code></strong>. Remote updates immediately appear in your local working files.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- MODULE 10 -->
+        <section class="module-section" id="mod-10">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 10 · Undoing &amp; Safety Nets</span>
+              <h2 class="module-title"><strong>git restore, git stash</strong> &amp; <code>git revert</code> vs <code>git reset</code></h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-10" onclick="toggleModuleComplete('mod-10')">Mark Module Complete</button>
+          </div>
+
+          <h3 class="sub-heading">Discarding Local Mistakes with <code>git restore</code></h3>
+          <p>
+            Suppose you modified 10–15 files while prototyping an idea that fails, and you want to revert them cleanly to the last commit without manually editing each file:
+          </p>
+          <ul>
+            <li><code>git restore 1.txt</code> — Discards uncommitted working-directory edits in <code>1.txt</code>.</li>
+            <li><code>git restore .</code> or <code>git restore &lt;dir&gt;</code> — Restores all files in the directory/repo to the last committed snapshot.</li>
+            <li><code>git restore --staged 1.txt</code> (or <code>--staged .</code>) — Removes files from the staging area while preserving your edits in the working directory.</li>
+          </ul>
+
+          <h3 class="sub-heading">Shelving Half-Finished Work with <code>git stash</code></h3>
+          <p>
+            If you are halfway through an uncommitted feature on <code>main</code> and try to switch branches, Git blocks you: <em>“Your local changes to the following files would be overwritten by checkout.”</em> Instead of discarding your progress or making a broken commit, use the stash stack:
+          </p>
+
+          <div class="lab-panel" id="stash-lab">
+            <div class="lab-header">
+              <div>
+                <span class="label">Interactive Lab 04</span>
+                <h3 class="mini-heading"><code>git stash</code> Stack: <code>pop</code> vs <code>apply</code> vs <code>drop</code></h3>
+              </div>
+              <button type="button" class="btn btn--neutral" onclick="resetStashLab()">Reset Stash Lab</button>
+            </div>
+            <div class="controls-row">
+              <button type="button" class="btn btn--primary" onclick="stashAction('stash')"><code>git stash</code> (save work)</button>
+              <button type="button" class="btn btn--secondary" onclick="stashAction('pop')"><code>git stash pop</code> (restore &amp; remove)</button>
+              <button type="button" class="btn btn--secondary" onclick="stashAction('apply')"><code>git stash apply</code> (restore &amp; keep)</button>
+              <button type="button" class="btn btn--neutral" onclick="stashAction('drop')"><code>git stash drop</code> (delete top)</button>
+            </div>
+            <div class="card-grid--2">
+              <div class="stage-box">
+                <span class="label">Working Directory (<code>1.txt</code>)</span>
+                <div id="stash-wd-view"></div>
+              </div>
+              <div class="stage-box">
+                <span class="label"><code>git stash list</code> (Newest on top)</span>
+                <div id="stash-list-view"></div>
+              </div>
+            </div>
+            <div class="terminal-box" id="stash-terminal" aria-live="polite">
+              <span class="term-dim">$ # Edit 1.txt active in Working Directory. Try stashing before switching branches!</span>
+            </div>
+          </div>
+
+          <h3 class="sub-heading"><code>git revert</code> vs <code>git reset</code> (The Oversalted Dish Analogy)</h3>
+          <p>
+            Imagine accidentally adding too much salt while cooking. You do not throw the entire pot out (erasing history); instead, you balance the dish by adding complementary ingredients.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Dimension</th>
+                  <th><code>git reset</code> (e.g., <code>HEAD~</code> / <code>--hard</code>)</th>
+                  <th><code>git revert &lt;commit-id&gt;</code></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>How it undoes</strong></td>
+                  <td>Moves the branch pointer backwards and deletes subsequent commits from the log.</td>
+                  <td>Creates a <strong>brand-new commit</strong> that applies the exact inverse changes of the faulty commit.</td>
+                </tr>
+                <tr>
+                  <td><strong>History record</strong></td>
+                  <td>Erases evidence that the removed commits ever happened.</td>
+                  <td>Preserves full audit history (<code>Revert "hello 3"</code>, saved via <code>:wq</code> in editor).</td>
+                </tr>
+                <tr>
+                  <td><strong>Safe on shared GitHub branches?</strong></td>
+                  <td><strong>No</strong> — causes divergence errors for teammates.</td>
+                  <td><strong>Yes</strong> — non-destructive and safe for collaborative branches.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- QUIZ 4 -->
+          <div class="quiz-panel" id="quiz-mod-9-10">
+            <span class="label">Self-Test Quiz 04 · Modules 09–10</span>
+            <h3 class="mini-heading">Test Remotes, Stashing &amp; Safe Rollbacks</h3>
+            <div id="quiz-body-4"></div>
+          </div>
+        </section>
+
+        <!-- MODULE 11 -->
+        <section class="module-section" id="mod-11">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 11 · History Management</span>
+              <h2 class="module-title"><strong>git rebase vs git merge</strong> &amp; the Golden Rule</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-11" onclick="toggleModuleComplete('mod-11')">Mark Module Complete</button>
+          </div>
+
+          <p>
+            When your <code>feature</code> branch falls behind new production updates on <code>main</code>, running <code>git merge main</code> brings those updates in—but creates an extra merge commit every time, cluttering <code>git log</code>. <strong><code>git rebase main</code></strong> solves this by rewriting your feature branch onto the latest tip of <code>main</code>.
+          </p>
+
+          <h3 class="sub-heading">How <code>git rebase</code> Works Internally (4 Steps)</h3>
+          <ol>
+            <li>Git locates the most recent common ancestor commit shared between <code>feature</code> and <code>main</code>.</li>
+            <li>Git temporarily sets aside all commits unique to <code>feature</code>.</li>
+            <li>Git fast-forwards <code>feature</code> to include every new commit from <code>main</code>.</li>
+            <li>Git replays your saved <code>feature</code> commits one by one on top—creating <strong>new commit IDs</strong> and a clean linear history.</li>
+          </ol>
+
+          <div class="lab-panel" id="rebase-viz">
+            <div class="lab-header">
+              <div>
+                <span class="label">Interactive Visualiser 05</span>
+                <h3 class="mini-heading">Commit Graph: <code>git merge main</code> vs <code>git rebase main</code></h3>
+              </div>
+              <div class="controls-row" style="margin:0;">
+                <button type="button" class="btn btn--primary" id="btn-dag-merge" onclick="setDagMode('merge')">Show <code>git merge main</code></button>
+                <button type="button" class="btn btn--neutral" id="btn-dag-rebase" onclick="setDagMode('rebase')">Show <code>git rebase main</code></button>
+              </div>
+            </div>
+            <div class="svg-stage">
+              <svg id="dag-svg" class="dag-svg" viewBox="0 0 720 190" role="img" aria-label="Git commit graph comparing merge and rebase"></svg>
+            </div>
+            <p class="kpi-sub" id="dag-caption"></p>
+          </div>
+
+          <div class="callout callout--error">
+            <div class="callout-title">The Golden Rule of Rebasing</div>
+            <p>
+              <strong>Never run <code>git rebase</code> on public or shared remote branches</strong> where other developers are actively committing. Because rebase rewrites commit history and alters commit IDs, collaborators’ local copies will no longer match the rewritten history, breaking normal <code>git pull</code> syncs. Use rebase freely on your personal local feature branches before sharing.
+            </p>
+          </div>
+        </section>
+
+        <!-- MODULE 12 -->
+        <section class="module-section" id="mod-12">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 12 · Team Code Review</span>
+              <h2 class="module-title"><strong>Pull Requests (PRs)</strong> on GitHub</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-12" onclick="toggleModuleComplete('mod-12')">Mark Module Complete</button>
+          </div>
+
+          <p>
+            In team repositories, developers do not push changes directly into <code>main</code>. Instead, a <strong>Pull Request (PR)</strong> formally asks maintainers to inspect your branch, discuss changes, and merge them safely once approved.
+          </p>
+
+          <h3 class="sub-heading">Step-by-Step Pull Request Workflow</h3>
+          <ol>
+            <li>Push your feature or <code>development</code> branch to GitHub (<code>git push origin development</code>).</li>
+            <li>Open the repository on GitHub, select the <strong>Pull requests</strong> tab, and click <strong>New pull request</strong>.</li>
+            <li>Set the two dropdowns carefully: <strong>Base</strong> = destination branch (<code>main</code>) and <strong>Compare</strong> = source branch containing your updates (<code>development</code>).</li>
+            <li>Inspect the live diff preview, click <strong>Create pull request</strong>, enter a clear title (e.g., <em>“Merge development updates into main”</em>) and description, then submit.</li>
+            <li>Review across GitHub’s three PR tabs:
+              <ul>
+                <li><strong>Conversation:</strong> Team discussion, review comments, and automated checks.</li>
+                <li><strong>Commits:</strong> Complete list of individual commits included in the PR.</li>
+                <li><strong>Files changed:</strong> Line-by-line additions and deletions across modified files.</li>
+              </ul>
+            </li>
+            <li>Once approved, click <strong>Merge pull request</strong> → <strong>Confirm merge</strong>. GitHub displays: <em>“Pull request successfully merged and closed.”</em></li>
+          </ol>
+
+          <!-- QUIZ 5 -->
+          <div class="quiz-panel" id="quiz-mod-11-12">
+            <span class="label">Self-Test Quiz 05 · Modules 11–12</span>
+            <h3 class="mini-heading">Test Rebasing &amp; Pull Request Workflows</h3>
+            <div id="quiz-body-5"></div>
+          </div>
+        </section>
+
+        <!-- MODULE 13 -->
+        <section class="module-section" id="mod-13">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 13 · GitHub Platform Walkthrough</span>
+              <h2 class="module-title"><strong>Essential GitHub Features</strong> &amp; Best Practices Guide</h2>
+            </div>
+            <button type="button" class="btn btn--complete" id="btn-done-mod-13" onclick="toggleModuleComplete('mod-13')">Mark Module Complete</button>
+          </div>
+
+          <p>
+            Beyond hosting Git commits, GitHub provides an integrated suite of governance, automation, documentation, and analytics tools. Explore all eight core platform features below:
+          </p>
+
+          <div class="lab-panel" id="github-guide-panel">
+            <span class="label">Interactive Platform Walkthrough</span>
+            <h3 class="mini-heading">Explore GitHub’s 8 Core Features</h3>
+            <div class="tab-bar" role="tablist" aria-label="GitHub Features">
+              <button type="button" class="tab-btn is-active" onclick="selectGhTab('settings', this)">Settings</button>
+              <button type="button" class="tab-btn" onclick="selectGhTab('gitignore', this)">.gitignore</button>
+              <button type="button" class="tab-btn" onclick="selectGhTab('issues', this)">Issues &amp; Labels</button>
+              <button type="button" class="tab-btn" onclick="selectGhTab('pr-review', this)">PR Reviews</button>
+              <button type="button" class="tab-btn" onclick="selectGhTab('insights', this)">Insights</button>
+              <button type="button" class="tab-btn" onclick="selectGhTab('wiki', this)">Wiki</button>
+              <button type="button" class="tab-btn" onclick="selectGhTab('actions', this)">Actions CI/CD</button>
+              <button type="button" class="tab-btn" onclick="selectGhTab('releases', this)">Releases &amp; Tags</button>
+            </div>
+            <div id="gh-tab-content"></div>
+
+            <div class="layer" style="margin-top: var(--space-md);">
+              <span class="label">Interactive Pattern Tester</span>
+              <h4 class="mini-heading">Test a Filename Against Standard <code>.gitignore</code> Rules</h4>
+              <div class="controls-row">
+                <div class="field-group" style="flex:1;min-width:220px;">
+                  <label class="field-label" for="gitignore-input">File Path to Test</label>
+                  <input type="text" id="gitignore-input" class="input-text" value="node_modules/express/index.js" oninput="testGitignorePath(this.value)">
+                </div>
+                <button type="button" class="btn btn--neutral" onclick="setIgnoreSample('.env')">Test <code>.env</code></button>
+                <button type="button" class="btn btn--neutral" onclick="setIgnoreSample('.DS_Store')">Test <code>.DS_Store</code></button>
+                <button type="button" class="btn btn--neutral" onclick="setIgnoreSample('src/app.js')">Test <code>src/app.js</code></button>
+              </div>
+              <div id="gitignore-result" class="callout" style="margin-bottom:0;"></div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>GitHub Feature</th>
+                  <th>Purpose</th>
+                  <th>Key Practice</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Repository Settings</strong></td>
+                  <td>Visibility (public/private), default branch, branch protection rules, collaborator access, Danger Zone (archive/transfer/delete).</td>
+                  <td>Enable branch protection on <code>main</code> so all changes require a reviewed PR.</td>
+                </tr>
+                <tr>
+                  <td><strong><code>.gitignore</code> Rules</strong></td>
+                  <td>Prevents dependencies (<code>node_modules/</code>), secrets (<code>.env</code>), build logs, and OS artefacts (<code>.DS_Store</code>) from being tracked.</td>
+                  <td>Commit <code>.gitignore</code> early; if a file is already tracked, run <code>git rm --cached &lt;file&gt;</code>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Issues &amp; Labels</strong></td>
+                  <td>Structured task/bug tracker with assignees, milestones, and colour-coded triage labels (<code>bug</code>, <code>enhancement</code>, <code>good first issue</code>).</td>
+                  <td>Include <code>Closes #42</code> in a PR description to auto-close the linked issue on merge.</td>
+                </tr>
+                <tr>
+                  <td><strong>PRs &amp; Code Review</strong></td>
+                  <td>Inline line-by-line review comments, formal verdicts (<em>Comment</em>, <em>Approve</em>, <em>Request changes</em>), Draft PRs, and Squash/Rebase merge options.</td>
+                  <td>Keep PRs focused and small so reviewers can inspect <em>Files changed</em> thoroughly.</td>
+                </tr>
+                <tr>
+                  <td><strong>GitHub Insights</strong></td>
+                  <td>Analytics across <em>Pulse</em> (recent summary), <em>Contributors</em> (commit volume), <em>Traffic</em> (14-day views &amp; clones), and <em>Code Frequency</em>.</td>
+                  <td>Monitor Traffic and Pulse to gauge open-source adoption and release cadence.</td>
+                </tr>
+                <tr>
+                  <td><strong>Wiki</strong></td>
+                  <td>Long-form documentation space backed by its own Git repository for architecture decisions, setup guides, and API specifications.</td>
+                  <td>Use Wiki for living architectural guides; keep quick-start notes in <code>README.md</code>.</td>
+                </tr>
+                <tr>
+                  <td><strong>GitHub Actions</strong></td>
+                  <td>Event-driven CI/CD automation via <code>.github/workflows/*.yml</code> triggered on <code>push</code> or <code>pull_request</code>.</td>
+                  <td>Automatically run unit tests and linters on every PR before merging.</td>
+                </tr>
+                <tr>
+                  <td><strong>Releases &amp; Tags</strong></td>
+                  <td>Packages annotated Git tags (<code>git tag -a v1.0.0 -m "..."</code>) using Semantic Versioning (<code>MAJOR.MINOR.PATCH</code>) with release notes &amp; binaries.</td>
+                  <td>Tag production milestones rather than raw commit hashes for predictable rollbacks.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- QUIZ 6 -->
+          <div class="quiz-panel" id="quiz-mod-13">
+            <span class="label">Self-Test Quiz 06 · Module 13</span>
+            <h3 class="mini-heading">Verify GitHub Features &amp; Best Practices</h3>
+            <div id="quiz-body-6"></div>
+          </div>
+        </section>
+
+        <!-- SECTION 14: TROUBLESHOOTING -->
+        <section class="module-section" id="troubleshooting">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 14 · Practical Extras</span>
+              <h2 class="module-title"><strong>Troubleshooting</strong> Common Git Gotchas</h2>
+            </div>
+          </div>
+          <p>Quick diagnoses and exact fixes for the most frequent errors encountered by learners and working teams:</p>
+
+          <details class="trouble-item" open>
+            <summary>Error: “Please tell me who you are” when running <code>git commit</code></summary>
+            <div class="trouble-body">
+              <p><strong>Cause:</strong> Git has no configured author name or email on this machine/repo yet.</p>
+              <p><strong>Fix:</strong> Run <code>git config --global user.name "Your Name"</code> and <code>git config --global user.email "you@example.com"</code> (or use <code>--local</code> for one repo only), then re-run your commit.</p>
+            </div>
+          </details>
+
+          <details class="trouble-item">
+            <summary>Trapped inside the terminal after running <code>git log</code> or <code>git revert</code></summary>
+            <div class="trouble-body">
+              <p><strong>Cause:</strong> Long logs open in the terminal pager (<code>less</code>), while <code>git revert</code> opens the default text editor (often Vim) for the revert commit message.</p>
+              <p><strong>Fix:</strong> Press <code>q</code> to exit the log pager. Inside Vim during a revert, press <code>Esc</code>, type <code>:wq</code> (write and quit), and press <code>Enter</code>.</p>
+            </div>
+          </details>
+
+          <details class="trouble-item">
+            <summary>Added a file to <code>.gitignore</code>, yet Git keeps tracking its changes</summary>
+            <div class="trouble-body">
+              <p><strong>Cause:</strong> <code>.gitignore</code> only ignores <em>untracked</em> files. Once a file (such as <code>.env</code>) has been committed, Git continues tracking it.</p>
+              <p><strong>Fix:</strong> Run <code>git rm --cached .env</code> (or <code>git rm -r --cached node_modules</code>) to untrack it without deleting it from disk, then commit the removal.</p>
+            </div>
+          </details>
+
+          <details class="trouble-item">
+            <summary>Error: “Your local changes to the following files would be overwritten by checkout”</summary>
+            <div class="trouble-body">
+              <p><strong>Cause:</strong> You have uncommitted local edits in a file that differs on the target branch.</p>
+              <p><strong>Fix:</strong> Run <code>git stash</code> to shelter your uncommitted edits, switch branches, and later restore them with <code>git stash pop</code>.</p>
+            </div>
+          </details>
+
+          <details class="trouble-item">
+            <summary>Accidentally committed work while in Detached HEAD state</summary>
+            <div class="trouble-body">
+              <p><strong>Cause:</strong> Checking out a commit ID instead of a branch leaves <code>HEAD</code> unattached; switching back to <code>main</code> would leave new commits orphaned.</p>
+              <p><strong>Fix:</strong> Immediately run <code>git checkout -b saved-work</code> before leaving detached state so a named branch preserves your commits.</p>
+            </div>
+          </details>
+        </section>
+
+        <!-- SECTION 15: CHEAT SHEET -->
+        <section class="module-section" id="cheat-sheet" style="border-bottom:0;">
+          <div class="module-header">
+            <div>
+              <span class="label">Module 15 · Complete Command Reference</span>
+              <h2 class="module-title"><strong>Most Used Git &amp; GitHub Commands</strong> Cheat Sheet</h2>
+            </div>
+          </div>
+
+          <p>Filter by workflow category or search by command, flag, or task description. Click <strong>Copy</strong> on any row to copy the command directly.</p>
+
+          <div class="controls-row">
+            <div class="field-group" style="flex:1;min-width:240px;">
+              <label class="field-label" for="cheat-search">Search Commands or Keywords</label>
+              <input type="text" id="cheat-search" class="input-text" placeholder="Type e.g. stash, --cached, rebase, diff..." oninput="filterCheatSheet()">
+            </div>
+            <div class="field-group" style="min-width:210px;">
+              <label class="field-label" for="cheat-cat">Workflow Category</label>
+              <select id="cheat-cat" class="input-select" onchange="filterCheatSheet()">
+                <option value="all">All Categories (42)</option>
+                <option value="daily">Daily Workflow</option>
+                <option value="inspection">Inspection &amp; Logs</option>
+                <option value="undoing">Undoing Mistakes &amp; Safety</option>
+                <option value="collaboration">Branching &amp; Collaboration</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="cheat-sheet-list" class="layer" style="padding:0;"></div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <p>
+        <strong>Sources &amp; Attribution:</strong> Grounded in the complete Git &amp; GitHub video course by Sumit Saha (covering local setup, staging, commits, file management, branching, conflict resolution, remotes, stashing, reverting, rebasing, and GitHub Pull Requests) alongside standard GitHub platform documentation concepts.
+      </p>
+    </footer>
+  </div>
+
+  <api-shim></api-shim>
+  <script>
+    /* ================================================================
+       COURSE DATA (Template literals used for all strings)
+       ================================================================ */
+    const MODULE_IDS = [
+      `mod-1`, `mod-2`, `mod-3`, `mod-4`, `mod-5`, `mod-6`,
+      `mod-7`, `mod-8`, `mod-9`, `mod-10`, `mod-11`, `mod-12`, `mod-13`
+    ];
+
+    const NAV_TITLES = [
+      { id: `mod-1`, label: `01 · Foundations & Analogies` },
+      { id: `mod-2`, label: `02 · Four-Stage Architecture` },
+      { id: `mod-3`, label: `03 · Install, Shell & Config` },
+      { id: `mod-4`, label: `04 · Init, Clone & .git` },
+      { id: `mod-5`, label: `05 · Staging & Committing` },
+      { id: `mod-6`, label: `06 · File Removal & Logs` },
+      { id: `mod-7`, label: `07 · Branching & Conflicts` },
+      { id: `mod-8`, label: `08 · Time Travel & HEAD` },
+      { id: `mod-9`, label: `09 · Push, Fetch & Pull` },
+      { id: `mod-10`, label: `10 · Restore, Stash & Revert` },
+      { id: `mod-11`, label: `11 · Rebasing & Linear History` },
+      { id: `mod-12`, label: `12 · Pull Requests (PRs)` },
+      { id: `mod-13`, label: `13 · GitHub Platform Guide` },
+      { id: `troubleshooting`, label: `14 · Troubleshooting Gotchas` },
+      { id: `cheat-sheet`, label: `15 · Command Cheat Sheet` }
+    ];
+
+    const QUIZZES = {
+      1: [
+        {
+          id: `q1`,
+          prompt: `In the course’s coffee analogy, what distinguishes Git from GitHub?`,
+          options: [
+            `Git is a cloud server owned by Microsoft, whereas GitHub runs offline on your laptop.`,
+            `Git is the local version control tool ("the coffee"), while GitHub is the cloud hosting platform ("the coffee shop") for sharing repositories.`,
+            `Git only tracks JavaScript and Python files, whereas GitHub tracks images and videos.`
+          ],
+          correct: 1,
+          explain: `Git runs locally on your machine to track snapshots of almost any file type; GitHub is the central online server where teams push, view, and merge their repositories.`
+        },
+        {
+          id: `q2`,
+          prompt: `Which command verifies that Git is installed, and which non-Git command reveals the hidden .git directory?`,
+          options: [
+            `git --version and ls -la`,
+            `git status and touch .git`,
+            `git init --check and pwd`
+          ],
+          correct: 0,
+          explain: `git --version outputs the installed Git version; ls -la lists hidden directories including .git, while pwd and touch are general shell utilities.`
+        },
+        {
+          id: `q3`,
+          prompt: `You see the error "Please tell me who you are" on your first commit and want to set your email for ONLY the current project repository. Which flag should you use?`,
+          options: [
+            `git config --global user.email`,
+            `git config --local user.email`,
+            `git commit --author-only`
+          ],
+          correct: 1,
+          explain: `--global applies your identity to every repository on your computer, whereas --local restricts the setting strictly to the current repository.`
+        }
+      ],
+      2: [
+        {
+          id: `q4`,
+          prompt: `You are inside a subfolder named my-folder/ when you delete root file 2.txt and create my-folder/3.txt. What happens if you run "git add ." versus "git add -A"?`,
+          options: [
+            `Both commands stage every change across the entire repository identically.`,
+            `"git add ." only stages changes inside my-folder/, leaving root deletions unstaged; "git add -A" stages everything across the whole repository.`,
+            `"git add -A" ignores deleted files, whereas "git add ." stages them.`
+          ],
+          correct: 1,
+          explain: `The dot (.) targets only the current directory and its subdirectories. Both --all and -A operate across the entire project repository regardless of which subfolder you are in.`
+        },
+        {
+          id: `q5`,
+          prompt: `Which command removes 4.txt from Git’s staging/tracking area while keeping the actual file safely on your hard drive?`,
+          options: [
+            `git rm -f 4.txt`,
+            `git rm --cached 4.txt`,
+            `git reset --hard`
+          ],
+          correct: 1,
+          explain: `git rm --cached removes the file from Git's index and marks it untracked without deleting it from disk. -f force-deletes the file physically.`
+        },
+        {
+          id: `q6`,
+          prompt: `After viewing a long history with "git log", how do you exit the terminal pager, and how should commit IDs be ordered in "git diff"?`,
+          options: [
+            `Press Esc; place older commit ID first and newer second to see additions from the newer commit.`,
+            `Press q; place the newer commit ID first and the older commit ID second to view additions in green from the newer commit’s perspective.`,
+            `Press Ctrl+D; git diff only accepts branch names, not commit hashes.`
+          ],
+          correct: 1,
+          explain: `Pressing q exits the git log pager cleanly. Passing the newer commit ID first and the older commit ID second shows what the newer commit added (+) and removed (-) relative to the older one.`
+        }
+      ],
+      3: [
+        {
+          id: `q7`,
+          prompt: `In the restaurant kitchen analogy, why do developers create a separate branch such as "development" instead of experimenting directly on "main"?`,
+          options: [
+            `Because Git limits main to ten commits total.`,
+            `To isolate experimental changes in a safe "test kitchen" so the stable main branch never breaks while features are being built and verified.`,
+            `Because git status does not work on the main branch.`
+          ],
+          correct: 1,
+          explain: `Branching provides an isolated workspace to test and commit updates without risking stability on main until the branch is ready to merge.`
+        },
+        {
+          id: `q8`,
+          prompt: `When Git halts with "Automatic merge failed; fix conflicts and then commit the result", what must you do after editing the file to keep your chosen lines?`,
+          options: [
+            `Delete all conflict markers (<<<<<<<, =======, >>>>>>>), save the file, run "git add .", and commit the resolution.`,
+            `Run "git init" again to rebuild the .git database.`,
+            `Leave the conflict markers in place so GitHub resolves them later.`
+          ],
+          correct: 0,
+          explain: `You must manually choose the desired content, delete every conflict marker, stage the resolved file with git add, and record a resolution commit.`
+        },
+        {
+          id: `q9`,
+          prompt: `After running "git checkout <commit-id>" to inspect an older snapshot, the terminal displays "HEAD detached at <commit-id>". How do you return to the latest state of your project?`,
+          options: [
+            `Run git checkout main (or git switch main).`,
+            `Run git rm --cached HEAD.`,
+            `Run git reset --hard HEAD~.`
+          ],
+          correct: 0,
+          explain: `Checking out the branch name (git checkout main) re-attaches HEAD to the tip of your branch.`
+        }
+      ],
+      4: [
+        {
+          id: `q10`,
+          prompt: `What is the exact relationship between "git fetch" and "git pull"?`,
+          options: [
+            `git fetch pushes local commits to GitHub, while git pull downloads them.`,
+            `git fetch downloads remote commits into local repo memory without changing your working files; git pull equals git fetch + git merge.`,
+            `git pull only updates hidden .git metadata and never edits working directory files.`
+          ],
+          correct: 1,
+          explain: `git fetch safely retrieves remote changes into your local repository without touching working files; git pull fetches and immediately merges them into your active branch.`
+        },
+        {
+          id: `q11`,
+          prompt: `What is the difference between "git stash pop" and "git stash apply"?`,
+          options: [
+            `pop restores the stashed changes AND removes the entry from the stash list; apply restores the changes while keeping the entry in the stash list for reuse.`,
+            `apply deletes the stash entry permanently, whereas pop duplicates it.`,
+            `pop works only on deleted files, while apply works only on new branches.`
+          ],
+          correct: 0,
+          explain: `Think of pop as cut-and-paste (restores and deletes from stash@{0}) and apply as copy-and-paste (restores while preserving the stash entry).`
+        },
+        {
+          id: `q12`,
+          prompt: `Why is "git revert <commit-id>" preferred over "git reset" when undoing a buggy commit already pushed to a shared GitHub branch?`,
+          options: [
+            `git revert deletes the entire remote repository history cleanly.`,
+            `git revert creates a new inverse commit that preserves full traceable history for collaborators, whereas git reset erases commits and rewrites history.`,
+            `git reset cannot undo commits that contain text files.`
+          ],
+          correct: 1,
+          explain: `Like balancing oversalted food instead of throwing the pot away, git revert records a new corrective commit without rewriting shared history.`
+        }
+      ],
+      5: [
+        {
+          id: `q13`,
+          prompt: `What happens internally when you stand on a "feature" branch and run "git rebase main"?`,
+          options: [
+            `Git deletes the main branch and renames feature to main.`,
+            `Git finds the common ancestor, sets feature commits aside, applies new commits from main, and replays feature commits on top with new commit IDs.`,
+            `Git creates an extra diamond merge commit linking both branch tips.`
+          ],
+          correct: 1,
+          explain: `Rebase replays your branch’s commits onto the updated tip of main, generating new commit hashes and producing a clean, linear log without extra merge commits.`
+        },
+        {
+          id: `q14`,
+          prompt: `Why does the Golden Rule of Rebasing warn against running "git rebase" on public/shared branches?`,
+          options: [
+            `Because rebase rewrites commit history and changes commit IDs, causing collaborators’ local copies to fall out of sync.`,
+            `Because GitHub blocks all rebased branches from opening Pull Requests.`,
+            `Because rebase deletes uncommitted files in the stash list.`
+          ],
+          correct: 0,
+          explain: `Rewriting commit hashes on a shared remote branch breaks history alignment for teammates trying to pull or push.`
+        },
+        {
+          id: `q15`,
+          prompt: `When opening a Pull Request on GitHub to bring changes from "development" into "main", how must you configure Base and Compare?`,
+          options: [
+            `Base: development · Compare: main`,
+            `Base: main · Compare: development`,
+            `Base: origin · Compare: HEAD~`
+          ],
+          correct: 1,
+          explain: `Base is the target receiving branch (main), and Compare is the source branch carrying your updates (development).`
+        }
+      ],
+      6: [
+        {
+          id: `q16`,
+          prompt: `A developer adds ".env" to .gitignore, yet Git still includes changes to ".env" in commits. Why?`,
+          options: [
+            `.gitignore only stops untracked files from being staged; because .env was already tracked prior to updating .gitignore, you must run "git rm --cached .env".`,
+            `.gitignore files only work on Linux and macOS, not Windows.`,
+            `Hidden filenames starting with a dot cannot be listed in .gitignore.`
+          ],
+          correct: 0,
+          explain: `.gitignore never untracks files already committed to the repository. Running git rm --cached .env untracks it while keeping the file on disk.`
+        },
+        {
+          id: `q17`,
+          prompt: `Which GitHub Pull Request tab lets reviewers inspect exact green additions and red deletions line by line?`,
+          options: [
+            `Conversation`,
+            `Commits`,
+            `Files changed`
+          ],
+          correct: 2,
+          explain: `A GitHub PR displays three tabs: Conversation (discussion), Commits (commit list), and Files changed (line-by-line diffs).`
+        },
+        {
+          id: `q18`,
+          prompt: `Which GitHub platform feature automates running tests and linters whenever a commit is pushed or a Pull Request is opened?`,
+          options: [
+            `GitHub Insights (Traffic)`,
+            `GitHub Actions (.github/workflows/*.yml)`,
+            `GitHub Wiki`
+          ],
+          correct: 1,
+          explain: `GitHub Actions runs event-driven CI/CD workflows defined in YAML files inside .github/workflows/, triggered by events such as push and pull_request.`
+        }
+      ]
+    };
+
+    const CHEAT_COMMANDS = [
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git --version`, desc: `Check installed Git version` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git config --global user.name "Your Name"`, desc: `Set author name globally across machine` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git config --global user.email "you@example.com"`, desc: `Set author email globally across machine` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git config --local user.email "work@example.com"`, desc: `Override author email for current repository only` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git init`, desc: `Initialise a new local Git repository (.git folder)` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git clone <https-url>`, desc: `Clone an existing remote repository onto your machine` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git status`, desc: `Check modified, untracked, and staged files` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git add --all`, desc: `Stage all new, modified, and deleted files across entire repo` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git add -A`, desc: `Shorthand identical to git add --all` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git add .`, desc: `Stage new, modified, and deleted files in current folder & subfolders` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git add *`, desc: `Stage new & modified files in current folder (excludes deletions)` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git add <file>`, desc: `Stage a single specific file path` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git add *.txt`, desc: `Stage matching extension files in current root folder (no deletions)` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git commit -m "Message"`, desc: `Permanently record staged snapshot to local repository` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git rm <file>`, desc: `Delete file from disk and stage the deletion together` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git rm -f <file>`, desc: `Force-delete a file that has uncommitted local edits` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git rm --cached <file>`, desc: `Untrack/unstage file while keeping physical copy on disk` },
+      { cat: `daily`, label: `Daily Workflow`, cmd: `git rm -r <folder>`, desc: `Recursively delete folder and all contents, staging deletion` },
+
+      { cat: `inspection`, label: `Inspection & Logs`, cmd: `git log`, desc: `View complete commit history with full hashes & messages (q to exit)` },
+      { cat: `inspection`, label: `Inspection & Logs`, cmd: `git log --oneline`, desc: `View compact one-line commit log with shortened IDs` },
+      { cat: `inspection`, label: `Inspection & Logs`, cmd: `git diff <newer-id> <older-id>`, desc: `Inspect line-by-line additions/deletions between two commits` },
+      { cat: `inspection`, label: `Inspection & Logs`, cmd: `git checkout <commit-id>`, desc: `Inspect an older commit snapshot (enters Detached HEAD state)` },
+      { cat: `inspection`, label: `Inspection & Logs`, cmd: `git remote -v`, desc: `List configured remote repository URLs (e.g. origin)` },
+
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git reset`, desc: `Unstage all staged changes back to working directory (keeps edits)` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git reset HEAD~`, desc: `Undo last commit and return changes to working directory` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git reset --hard`, desc: `Discard uncommitted edits AND restore manually deleted files` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git restore <file>`, desc: `Discard local uncommitted edits in a file (or use . for all)` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git restore --staged <file>`, desc: `Unstage file without modifying working directory edits` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git stash`, desc: `Temporarily shelf uncommitted work so you can switch branches` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git stash list`, desc: `View ordered list of saved stashes (stash@{0} newest)` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git stash pop`, desc: `Restore most recent stash and remove it from the stash list` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git stash apply`, desc: `Restore most recent stash while keeping it in the stash list` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git stash drop`, desc: `Delete the top stash entry from the stash list` },
+      { cat: `undoing`, label: `Undoing & Safety`, cmd: `git revert <commit-id>`, desc: `Create a new inverse commit safely undoing an earlier commit` },
+
+      { cat: `collaboration`, label: `Branching & Collab`, cmd: `git branch`, desc: `List local branches (* marks active branch)` },
+      { cat: `collaboration`, label: `Branching & Collab`, cmd: `git branch <name>`, desc: `Create a new branch from the current branch snapshot` },
+      { cat: `collaboration`, label: `Branching & Collab`, cmd: `git checkout <branch>`, desc: `Switch to target branch (or use modern: git switch <branch>)` },
+      { cat: `collaboration`, label: `Branching & Collab`, cmd: `git merge <branch>`, desc: `Merge commits from named branch into your current branch` },
+      { cat: `collaboration`, label: `Branching & Collab`, cmd: `git rebase main`, desc: `Replay current personal branch commits linearly onto main` },
+      { cat: `collaboration`, label: `Branching & Collab`, cmd: `git push origin <branch>`, desc: `Upload local branch commits to remote origin on GitHub` },
+      { cat: `collaboration`, label: `Branching & Collab`, cmd: `git fetch`, desc: `Download remote changes to local repo without altering working files` },
+      { cat: `collaboration`, label: `Branching & Collab`, cmd: `git pull`, desc: `Fetch remote changes and immediately merge (fetch + merge)` }
+    ];
+
+    const GH_FEATURE_TABS = {
+      settings: {
+        title: `Repository Settings & Branch Protection`,
+        body: `Under the repository <strong>Settings</strong> tab, maintainers manage visibility (Public vs Private), rename or swap the default branch (<code>main</code>), invite collaborators with granular read/write roles, and configure <strong>Branch Protection Rules</strong>—requiring Pull Request approvals and passing checks before anyone can merge into <code>main</code>. At the bottom sits the <em>Danger Zone</em> for transferring ownership, archiving read-only projects, or deleting a repository.`
+      },
+      gitignore: {
+        title: `.gitignore Rules & Best Practices`,
+        body: `A plain-text <code>.gitignore</code> file in your repository root lists patterns for files Git should never stage or commit: dependency folders (<code>node_modules/</code>), environment secrets (<code>.env</code>), compiled build directories (<code>dist/</code>), and OS metadata (<code>.DS_Store</code>, <code>Thumbs.db</code>). Always commit <code>.gitignore</code> <em>before</em> staging project files; if a sensitive file is already tracked, untrack it with <code>git rm --cached &lt;file&gt;</code>.`
+      },
+      issues: {
+        title: `GitHub Issues, Labels & Linking`,
+        body: `<strong>Issues</strong> act as your repository’s collaborative backlog for bug reports, feature requests, and technical discussions. Each issue supports assignees, milestones, and colour-coded triage labels such as <code>bug</code>, <code>enhancement</code>, <code>documentation</code>, and <code>good first issue</code>. Writing keywords like <code>Closes #42</code> or <code>Fixes #42</code> inside a Pull Request description automatically closes the referenced issue when the PR merges.`
+      },
+      'pr-review': {
+        title: `Pull Requests & Line-by-Line Code Review`,
+        body: `Reviewers open the <strong>Files changed</strong> tab in a PR to leave comments on specific lines of code, suggest direct edits, or submit an overall verdict: <em>Comment</em>, <em>Approve</em>, or <em>Request changes</em>. Teams can also open <strong>Draft PRs</strong> for early architectural feedback and choose between standard Merge Commits, <em>Squash and merge</em> (condensing feature commits into one), or <em>Rebase and merge</em>.`
+      },
+      insights: {
+        title: `GitHub Insights & Repository Analytics`,
+        body: `The <strong>Insights</strong> tab visualises project health and momentum: <strong>Pulse</strong> summarises open/merged PRs and issues over a chosen window; <strong>Contributors</strong> ranks commit counts and line changes per author; <strong>Traffic</strong> tracks unique visitors, views, and <code>git clone</code> counts over the last 14 days; and <strong>Commit / Code Frequency</strong> charts weekly additions and deletions.`
+      },
+      wiki: {
+        title: `GitHub Wiki for Long-Form Documentation`,
+        body: `Each repository includes an optional <strong>Wiki</strong>—itself backed by a separate clonable Git repository—designed for multi-page technical documentation, onboarding runbooks, architecture diagrams, and API guides that would bloat a single <code>README.md</code>.`
+      },
+      actions: {
+        title: `GitHub Actions: Automated CI/CD Workflows`,
+        body: `<strong>GitHub Actions</strong> runs automated checks inside cloud runners whenever an event fires (such as <code>push</code> or <code>pull_request</code>). Workflows live as YAML files under <code>.github/workflows/ci.yml</code> and typically install dependencies, run test suites, and verify linting before a Pull Request is allowed to merge.`
+      },
+      releases: {
+        title: `Releases & Annotated Semantic Tags`,
+        body: `While commits track daily micro-changes, <strong>Releases</strong> package stable milestones using Git tags (e.g., <code>git tag -a v1.0.0 -m "Initial release"</code>) following Semantic Versioning (<code>MAJOR.MINOR.PATCH</code>). Each GitHub Release publishes human-readable changelogs alongside auto-generated <code>.zip</code> / <code>.tar.gz</code> source archives and compiled binaries.`
+      }
+    };
+
+    /* ================================================================
+       PERSISTED APP STATE
+       ================================================================ */
+    let appState = {
+      completedModules: [],
+      quizAnswers: {}
+    };
+
+    async function saveAppState() {
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+          await window.notebookAppApi.setAppState({
+            completedModules: appState.completedModules,
+            quizAnswers: appState.quizAnswers
+          });
+        }
+        const msg = document.getElementById('save-status-msg');
+        if (msg) msg.textContent = `Progress saved`;
+      } catch (err) {
+        const msg = document.getElementById('save-status-msg');
+        if (msg) msg.textContent = `Working in local session`;
+      }
+    }
+
+    /* ================================================================
+       NAVIGATION & PROGRESS TRACKING
+       ================================================================ */
+    function jumpToSection(targetId) {
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      document.querySelectorAll('.side-nav-link').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.target === targetId);
+      });
+    }
+
+    function buildMobileToc() {
+      const wrap = document.getElementById('mobile-toc-links');
+      if (!wrap) return;
+      wrap.innerHTML = NAV_TITLES.map(item => `
+        <button type="button" class="side-nav-link" onclick="jumpToSection('${item.id}')">${item.label}</button>
+      `).join('');
+    }
+
+    function toggleModuleComplete(modId) {
+      const idx = appState.completedModules.indexOf(modId);
+      if (idx === -1) {
+        appState.completedModules.push(modId);
+      } else {
+        appState.completedModules.splice(idx, 1);
+      }
+      updateProgressUI();
+      saveAppState();
+    }
+
+    function updateProgressUI() {
+      const completedCount = appState.completedModules.length;
+      const kpiMod = document.getElementById('kpi-modules');
+      if (kpiMod) kpiMod.textContent = `${completedCount} / ${MODULE_IDS.length}`;
+
+      MODULE_IDS.forEach(id => {
+        const isDone = appState.completedModules.includes(id);
+        const btn = document.getElementById(`btn-done-${id}`);
+        if (btn) {
+          btn.classList.toggle('is-done', isDone);
+          btn.textContent = isDone ? `Completed` : `Mark Module Complete`;
+        }
+        const navSt = document.getElementById(`nav-st-${id}`);
+        if (navSt) {
+          navSt.textContent = isDone ? `DONE` : `—`;
+          navSt.classList.toggle('nav-status--done', isDone);
+        }
+      });
+
+      let correctCount = 0;
+      let totalQuestions = 0;
+      Object.values(QUIZZES).forEach(qList => {
+        qList.forEach(q => {
+          totalQuestions += 1;
+          if (appState.quizAnswers[q.id] === q.correct) {
+            correctCount += 1;
+          }
+        });
+      });
+      const kpiQuiz = document.getElementById('kpi-quiz');
+      if (kpiQuiz) kpiQuiz.textContent = `${correctCount} / ${totalQuestions}`;
+    }
+
+    function resetCourseProgress(btn) {
+      if (!btn) return;
+      if (btn.dataset.armed !== 'true') {
+        btn.dataset.armed = 'true';
+        btn.textContent = `Click again to confirm reset`;
+        setTimeout(() => {
+          if (btn.dataset.armed === 'true') {
+            btn.dataset.armed = 'false';
+            btn.textContent = `Reset Saved Progress`;
+          }
+        }, 4000);
+        return;
+      }
+      btn.dataset.armed = 'false';
+      btn.textContent = `Reset Saved Progress`;
+      appState = { completedModules: [], quizAnswers: {} };
+      renderAllQuizzes();
+      updateProgressUI();
+      saveAppState();
+    }
+
+    function exportCourseSummary() {
+      const completed = appState.completedModules.length;
+      let score = 0;
+      let total = 0;
+      Object.values(QUIZZES).forEach(list => list.forEach(q => {
+        total += 1;
+        if (appState.quizAnswers[q.id] === q.correct) score += 1;
+      }));
+      const lines = [
+        `GIT & GITHUB COMPLETE COURSE NOTES — PROGRESS SUMMARY`,
+        `====================================================`,
+        `Modules completed: ${completed} / ${MODULE_IDS.length}`,
+        `Quiz score: ${score} / ${total}`,
+        ``,
+        `ESSENTIAL WORKFLOW COMMANDS:`,
+        ...CHEAT_COMMANDS.map(c => `- ${c.cmd}  ::  ${c.desc}`)
+      ];
+      const text = lines.join('\n');
+      if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === 'function') {
+        window.notebookAppApi.triggerFileDownload({
+          content: text,
+          contentType: `text/plain`,
+          encoding: `UTF-8`,
+          filename: `git-github-course-notes-summary.txt`
+        });
+      }
+    }
+
+    /* ================================================================
+       INTERACTIVE LAB 1: FOUR-STAGE PIPELINE SIMULATOR
+       ================================================================ */
+    let pipeState = {
+      wd: [{ name: `1.txt`, state: `clean` }, { name: `2.txt`, state: `clean` }],
+      stage: [],
+      local: [{ id: `c1a2b3c`, msg: `Initial commit (1.txt, 2.txt)` }],
+      remote: [{ id: `c1a2b3c`, msg: `Initial commit (1.txt, 2.txt)` }],
+      log: `$ # Ready. Start by editing files in the Working Directory.`
+    };
+
+    function resetPipelineLab() {
+      pipeState = {
+        wd: [{ name: `1.txt`, state: `clean` }, { name: `2.txt`, state: `clean` }],
+        stage: [],
+        local: [{ id: `c1a2b3c`, msg: `Initial commit (1.txt, 2.txt)` }],
+        remote: [{ id: `c1a2b3c`, msg: `Initial commit (1.txt, 2.txt)` }],
+        log: `$ # Simulator reset to clean repository state.`
+      };
+      renderPipelineLab();
+    }
+
+    function simAction(action) {
+      if (action === 'edit') {
+        pipeState.wd = [
+          { name: `1.txt`, state: `modified` },
+          { name: `2.txt`, state: `clean` },
+          { name: `3.txt`, state: `untracked` }
+        ];
+        pipeState.log = `<span class="term-cmd">$ echo "1" &gt;&gt; 1.txt &amp;&amp; touch 3.txt</span><br><span class="term-dim">git status: modified 1.txt, untracked 3.txt</span>`;
+      } else if (action === 'add') {
+        const pending = pipeState.wd.filter(f => f.state !== `clean`);
+        if (pending.length === 0) {
+          pipeState.log = `<span class="term-cmd">$ git add .</span><br><span class="term-dim">Working tree clean — nothing new to stage. Try step 1 first.</span>`;
+        } else {
+          pipeState.stage = pending.map(f => ({ name: f.name, state: `staged` }));
+          pipeState.wd = pipeState.wd.map(f => ({ name: f.name, state: `clean` }));
+          pipeState.log = `<span class="term-cmd">$ git add .</span><br><span class="term-ok">Staged ${pending.map(p => p.name).join(', ')} into Index (Staging Area).</span>`;
+        }
+      } else if (action === 'commit') {
+        if (pipeState.stage.length === 0) {
+          pipeState.log = `<span class="term-cmd">$ git commit -m "Update"</span><br><span class="term-err">Nothing to commit — stage changes with "git add ." first!</span>`;
+        } else {
+          const newId = `d4e5f6a`;
+          pipeState.local.unshift({ id: newId, msg: `Update (${pipeState.stage.map(s => s.name).join(', ')})` });
+          pipeState.stage = [];
+          pipeState.log = `<span class="term-cmd">$ git commit -m "Update"</span><br><span class="term-ok">[main ${newId}] Update recorded permanently in local .git repository.</span>`;
+        }
+      } else if (action === 'reset-head') {
+        if (pipeState.local.length <= 1) {
+          pipeState.log = `<span class="term-cmd">$ git reset HEAD~</span><br><span class="term-dim">At initial commit; nothing further back to undo.</span>`;
+        } else {
+          const undone = pipeState.local.shift();
+          pipeState.wd = [
+            { name: `1.txt`, state: `modified` },
+            { name: `2.txt`, state: `clean` },
+            { name: `3.txt`, state: `untracked` }
+          ];
+          pipeState.log = `<span class="term-cmd">$ git reset HEAD~</span><br><span class="term-ok">Undid commit ${undone.id}; changes returned to Working Directory.</span>`;
+        }
+      } else if (action === 'push') {
+        if (pipeState.local.length === pipeState.remote.length) {
+          pipeState.log = `<span class="term-cmd">$ git push origin main</span><br><span class="term-dim">Everything up-to-date with remote GitHub main branch.</span>`;
+        } else {
+          pipeState.remote = pipeState.local.map(c => ({ ...c }));
+          pipeState.log = `<span class="term-cmd">$ git push origin main</span><br><span class="term-ok">Pushed ${pipeState.local[0].id} to github.com/user/git-journey (main).</span>`;
+        }
+      }
+      renderPipelineLab();
+    }
+
+    function renderPipelineLab() {
+      const wdEl = document.getElementById('sim-wd');
+      const stEl = document.getElementById('sim-stage');
+      const loEl = document.getElementById('sim-local');
+      const reEl = document.getElementById('sim-remote');
+      const termEl = document.getElementById('sim-terminal');
+
+      if (wdEl) {
+        wdEl.innerHTML = pipeState.wd.map(f => {
+          const cls = f.state === `modified` ? `status-pill--mod` : (f.state === `untracked` ? `status-pill--mod` : ``);
+          return `<div class="stage-file"><span>${f.name}</span><span class="status-pill ${cls}">${f.state}</span></div>`;
+        }).join('');
+      }
+      if (stEl) {
+        stEl.innerHTML = pipeState.stage.length
+          ? pipeState.stage.map(f => `<div class="stage-file"><span>${f.name}</span><span class="status-pill status-pill--staged">staged</span></div>`).join('')
+          : `<span class="kpi-sub">Empty staging index</span>`;
+      }
+      if (loEl) {
+        loEl.innerHTML = pipeState.local.map(c => `<div class="stage-file"><span>${c.id}</span><span class="status-pill status-pill--commit">local</span></div>`).join('');
+      }
+      if (reEl) {
+        reEl.innerHTML = pipeState.remote.map(c => `<div class="stage-file"><span>${c.id}</span><span class="status-pill status-pill--commit">GitHub</span></div>`).join('');
+      }
+      if (termEl) {
+        termEl.innerHTML = pipeState.log;
+      }
+    }
+
+    /* ================================================================
+       INTERACTIVE EXPLORER 2: GIT ADD SCOPE
+       ================================================================ */
+    const ADD_MODES = {
+      all: {
+        cmd: `git add --all  (or git add -A)`,
+        note: `Stages every change across the entire repository—including modified 1.txt, deleted 2.txt, new 4.txt, and nested my-folder/3.txt—regardless of your current subfolder.`,
+        files: [
+          { name: `1.txt (modified, root)`, staged: true },
+          { name: `2.txt (deleted, root)`, staged: true },
+          { name: `4.txt (new, root)`, staged: true },
+          { name: `my-folder/3.txt (new, subfolder)`, staged: true }
+        ]
+      },
+      'dot-root': {
+        cmd: `git add .  (run from repository root)`,
+        note: `From the root folder, dot (.) includes the root and all nested subdirectories—staging modified, new, and deleted files identically to --all.`,
+        files: [
+          { name: `1.txt (modified, root)`, staged: true },
+          { name: `2.txt (deleted, root)`, staged: true },
+          { name: `4.txt (new, root)`, staged: true },
+          { name: `my-folder/3.txt (new, subfolder)`, staged: true }
+        ]
+      },
+      'dot-sub': {
+        cmd: `cd my-folder && git add .`,
+        note: `Critical difference: running "git add ." inside my-folder/ ONLY stages files inside my-folder/ and its subfolders. Root changes remain unstaged!`,
+        files: [
+          { name: `1.txt (modified, root)`, staged: false },
+          { name: `2.txt (deleted, root)`, staged: false },
+          { name: `4.txt (new, root)`, staged: false },
+          { name: `my-folder/3.txt (new, subfolder)`, staged: true }
+        ]
+      },
+      star: {
+        cmd: `git add *  (run from repository root)`,
+        note: `The wildcard * stages new and modified visible files in the current folder, but does NOT stage deleted files (2.txt remains unstaged).`,
+        files: [
+          { name: `1.txt (modified, root)`, staged: true },
+          { name: `2.txt (deleted, root)`, staged: false },
+          { name: `4.txt (new, root)`, staged: true },
+          { name: `my-folder/3.txt (new, subfolder)`, staged: true }
+        ]
+      },
+      ext: {
+        cmd: `git add *.txt  (run from repository root)`,
+        note: `Stages matching .txt files in the root directory only—skipping deleted files (2.txt) and files inside subfolders (my-folder/3.txt).`,
+        files: [
+          { name: `1.txt (modified, root)`, staged: true },
+          { name: `2.txt (deleted, root)`, staged: false },
+          { name: `4.txt (new, root)`, staged: true },
+          { name: `my-folder/3.txt (new, subfolder)`, staged: false }
+        ]
+      }
+    };
+
+    function selectAddMode(mode, btn) {
+      const parent = btn ? btn.parentElement : null;
+      if (parent) {
+        parent.querySelectorAll('button').forEach(b => {
+          b.className = `btn btn--neutral`;
+        });
+        btn.className = `btn btn--primary`;
+      }
+      const data = ADD_MODES[mode];
+      const out = document.getElementById('add-scope-output');
+      if (!data || !out) return;
+      out.innerHTML = `
+        <p style="margin-bottom:var(--space-sm);"><strong>Command:</strong> <code>${data.cmd}</code></p>
+        <p style="margin-bottom:var(--space-md);">${data.note}</p>
+        <div class="card-grid" style="margin:0;">
+          ${data.files.map(f => `
+            <div class="stage-file" style="background:var(--background);border:1px solid var(--outline-variant);">
+              <span>${f.name}</span>
+              <span class="status-pill ${f.staged ? 'status-pill--commit' : 'status-pill--mod'}">${f.staged ? 'STAGED' : 'UNSTAGED'}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    /* ================================================================
+       INTERACTIVE LAB 3: MERGE CONFLICT RESOLVER
+       ================================================================ */
+    let conflictState = { choice: null, committed: false };
+
+    function resetConflictLab() {
+      conflictState = { choice: null, committed: false };
+      const btn = document.getElementById('btn-commit-conflict');
+      if (btn) btn.disabled = true;
+      renderConflictLab();
+    }
+
+    function resolveConflictChoice(choice) {
+      conflictState.choice = choice;
+      conflictState.committed = false;
+      const btn = document.getElementById('btn-commit-conflict');
+      if (btn) btn.disabled = false;
+      renderConflictLab();
+    }
+
+    function commitConflictResolution() {
+      if (!conflictState.choice) return;
+      conflictState.committed = true;
+      renderConflictLab();
+    }
+
+    function renderConflictLab() {
+      const ed = document.getElementById('conflict-editor');
+      const term = document.getElementById('conflict-terminal');
+      if (!ed || !term) return;
+
+      if (!conflictState.choice) {
+        ed.innerHTML = `
+          <span class="diff-line">4</span>
+          <span class="diff-line diff-marker">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (development)</span>
+          <span class="diff-line diff-add">444</span>
+          <span class="diff-line diff-marker">=======</span>
+          <span class="diff-line diff-del">44</span>
+          <span class="diff-line diff-marker">&gt;&gt;&gt;&gt;&gt;&gt;&gt; staging</span>
+        `;
+        term.innerHTML = `<span class="term-err">CONFLICT (content): Merge conflict in 4.txt</span><br><span class="term-dim">Choose which version to keep, removing all conflict markers.</span>`;
+      } else {
+        const content = conflictState.choice === 'head'
+          ? `4\n444`
+          : (conflictState.choice === 'incoming' ? `4\n44` : `4\n444\n44`);
+        ed.innerHTML = content.split('\n').map(l => `<span class="diff-line diff-add">${l}</span>`).join('');
+        if (conflictState.committed) {
+          term.innerHTML = `<span class="term-cmd">$ git add . &amp;&amp; git commit -m "Merge conflict solved"</span><br><span class="term-ok">[development 9f8e7d6] Merge conflict solved. Working tree clean!</span>`;
+        } else {
+          term.innerHTML = `<span class="term-ok">Markers removed in 4.txt.</span><br><span class="term-dim">Now click "git add . &amp;&amp; git commit" to complete the merge.</span>`;
+        }
+      }
+    }
+
+    /* ================================================================
+       INTERACTIVE LAB 4: STASH STACK SIMULATOR
+       ================================================================ */
+    let stashState = {
+      wdDirty: true,
+      stack: [],
+      log: `$ # Uncommitted edit in 1.txt ("another feature"). Try stashing it.`
+    };
+
+    function resetStashLab() {
+      stashState = {
+        wdDirty: true,
+        stack: [],
+        log: `$ # Reset: uncommitted edit active in 1.txt ("another feature").`
+      };
+      renderStashLab();
+    }
+
+    function stashAction(act) {
+      if (act === 'stash') {
+        if (!stashState.wdDirty) {
+          stashState.log = `<span class="term-cmd">$ git stash</span><br><span class="term-dim">No local changes to save.</span>`;
+        } else {
+          const n = stashState.stack.length + 1;
+          stashState.stack.unshift(`WIP on main: edit #${n} in 1.txt`);
+          stashState.wdDirty = false;
+          stashState.log = `<span class="term-cmd">$ git stash</span><br><span class="term-ok">Saved working directory state to stash@{0}. Safe to switch branches!</span>`;
+        }
+      } else if (act === 'pop') {
+        if (stashState.stack.length === 0) {
+          stashState.log = `<span class="term-cmd">$ git stash pop</span><br><span class="term-err">No stash entries found.</span>`;
+        } else {
+          const item = stashState.stack.shift();
+          stashState.wdDirty = true;
+          stashState.log = `<span class="term-cmd">$ git stash pop</span><br><span class="term-ok">Restored "${item}" AND removed it from stash list.</span>`;
+        }
+      } else if (act === 'apply') {
+        if (stashState.stack.length === 0) {
+          stashState.log = `<span class="term-cmd">$ git stash apply</span><br><span class="term-err">No stash entries found.</span>`;
+        } else {
+          const item = stashState.stack[0];
+          stashState.wdDirty = true;
+          stashState.log = `<span class="term-cmd">$ git stash apply</span><br><span class="term-ok">Restored "${item}" — entry KEPT in stash@{0} for future reuse!</span>`;
+        }
+      } else if (act === 'drop') {
+        if (stashState.stack.length === 0) {
+          stashState.log = `<span class="term-cmd">$ git stash drop</span><br><span class="term-err">Stash list is already empty.</span>`;
+        } else {
+          const removed = stashState.stack.shift();
+          stashState.log = `<span class="term-cmd">$ git stash drop</span><br><span class="term-dim">Dropped stash@{0} (${removed}).</span>`;
+        }
+      }
+      renderStashLab();
+    }
+
+    function renderStashLab() {
+      const wd = document.getElementById('stash-wd-view');
+      const list = document.getElementById('stash-list-view');
+      const term = document.getElementById('stash-terminal');
+      if (wd) {
+        wd.innerHTML = stashState.wdDirty
+          ? `<div class="stage-file"><span>1.txt ("another feature")</span><span class="status-pill status-pill--mod">uncommitted</span></div>`
+          : `<div class="stage-file"><span>1.txt</span><span class="status-pill status-pill--commit">clean (safe to checkout)</span></div>`;
+      }
+      if (list) {
+        list.innerHTML = stashState.stack.length
+          ? stashState.stack.map((s, i) => `<div class="stage-file"><span>stash@{${i}}</span><span class="kpi-sub">${s}</span></div>`).join('')
+          : `<span class="kpi-sub">Stash list is empty</span>`;
+      }
+      if (term) term.innerHTML = stashState.log;
+    }
+
+    /* ================================================================
+       INTERACTIVE VISUALISER 5: MERGE VS REBASE COMMIT DAG
+       ================================================================ */
+    function setDagMode(mode) {
+      const svg = document.getElementById('dag-svg');
+      const cap = document.getElementById('dag-caption');
+      const btnM = document.getElementById('btn-dag-merge');
+      const btnR = document.getElementById('btn-dag-rebase');
+      if (!svg || !cap) return;
+
+      if (btnM && btnR) {
+        btnM.className = mode === 'merge' ? `btn btn--primary` : `btn btn--neutral`;
+        btnR.className = mode === 'rebase' ? `btn btn--primary` : `btn btn--neutral`;
+      }
+
+      if (mode === 'merge') {
+        svg.innerHTML = `
+          <line x1="70" y1="60" x2="350" y2="60" class="dag-line-main"/>
+          <path d="M 190 60 C 225 60, 225 130, 260 130 L 380 130 C 420 130, 440 130, 480 130" class="dag-line-feat"/>
+          <path d="M 350 60 C 415 60, 435 130, 480 130" class="dag-line-dash"/>
+          <circle cx="70" cy="60" r="14" class="dag-node-main"/>
+          <circle cx="190" cy="60" r="14" class="dag-node-main"/>
+          <circle cx="350" cy="60" r="14" class="dag-node-main"/>
+          <circle cx="270" cy="130" r="14" class="dag-node-feat"/>
+          <circle cx="380" cy="130" r="14" class="dag-node-feat"/>
+          <circle cx="480" cy="130" r="15" class="dag-node-merge"/>
+          <text x="70" y="34" text-anchor="middle" class="dag-label">C1 (main)</text>
+          <text x="190" y="34" text-anchor="middle" class="dag-label">C2 (common)</text>
+          <text x="350" y="34" text-anchor="middle" class="dag-label">C3 (Dark UI)</text>
+          <text x="270" y="164" text-anchor="middle" class="dag-label">F1 (Dark logic)</text>
+          <text x="380" y="164" text-anchor="middle" class="dag-label">F2 (tests)</text>
+          <text x="505" y="134" class="dag-label">M1 (Merge commit)</text>
+          <text x="505" y="150" class="dag-sub">History branches &amp; rejoins</text>
+        `;
+        cap.textContent = `git merge main preserves parallel branch history and records an extra diamond merge commit (M1) tying C3 and F2 together.`;
+      } else {
+        svg.innerHTML = `
+          <line x1="70" y1="60" x2="310" y2="60" class="dag-line-main"/>
+          <line x1="310" y1="60" x2="550" y2="60" class="dag-line-feat"/>
+          <path d="M 190 60 C 215 60, 215 130, 250 130 L 340 130" class="dag-line-dash"/>
+          <circle cx="70" cy="60" r="14" class="dag-node-main"/>
+          <circle cx="190" cy="60" r="14" class="dag-node-main"/>
+          <circle cx="310" cy="60" r="14" class="dag-node-main"/>
+          <circle cx="430" cy="60" r="14" class="dag-node-feat"/>
+          <circle cx="550" cy="60" r="14" class="dag-node-feat"/>
+          <circle cx="250" cy="130" r="10" fill="none" stroke="var(--outline)" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <circle cx="340" cy="130" r="10" fill="none" stroke="var(--outline)" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="70" y="34" text-anchor="middle" class="dag-label">C1</text>
+          <text x="190" y="34" text-anchor="middle" class="dag-label">C2</text>
+          <text x="310" y="34" text-anchor="middle" class="dag-label">C3 (Dark UI)</text>
+          <text x="430" y="34" text-anchor="middle" class="dag-label">F1' (new ID)</text>
+          <text x="550" y="34" text-anchor="middle" class="dag-label">F2' (new ID)</text>
+          <text x="295" y="156" text-anchor="middle" class="dag-sub">Original F1 &amp; F2 replaced cleanly</text>
+        `;
+        cap.textContent = `git rebase main moves the base of feature onto C3 and replays F1' and F2' in a single linear chain—no merge commit, but brand-new commit hashes!`;
+      }
+    }
+
+    /* ================================================================
+       GITHUB FEATURES TABS & .GITIGNORE TESTER
+       ================================================================ */
+    function selectGhTab(key, btn) {
+      const parent = btn ? btn.parentElement : null;
+      if (parent) {
+        parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+      }
+      const data = GH_FEATURE_TABS[key];
+      const box = document.getElementById('gh-tab-content');
+      if (!data || !box) return;
+      box.innerHTML = `
+        <h4 class="mini-heading">${data.title}</h4>
+        <p style="margin-bottom:0;">${data.body}</p>
+      `;
+    }
+
+    function setIgnoreSample(val) {
+      const inp = document.getElementById('gitignore-input');
+      if (inp) {
+        inp.value = val;
+        testGitignorePath(val);
+      }
+    }
+
+    function testGitignorePath(pathStr) {
+      const out = document.getElementById('gitignore-result');
+      if (!out) return;
+      const p = (pathStr || '').trim();
+      if (!p) {
+        out.className = `callout`;
+        out.innerHTML = `<p>Enter a filename such as <code>.env</code>, <code>node_modules/pkg/index.js</code>, or <code>src/app.js</code>.</p>`;
+        return;
+      }
+      let matchedRule = null;
+      if (p.startsWith('node_modules/') || p === 'node_modules') matchedRule = `node_modules/`;
+      else if (p === '.env' || p.endsWith('/.env') || p.startsWith('.env.')) matchedRule = `.env*`;
+      else if (p.endsWith('.DS_Store') || p === 'Thumbs.db') matchedRule = `.DS_Store / Thumbs.db`;
+      else if (p.startsWith('dist/') || p.startsWith('build/')) matchedRule = `dist/ or build/`;
+      else if (p.endsWith('.log')) matchedRule = `*.log`;
+
+      if (matchedRule) {
+        out.className = `callout callout--positive`;
+        out.innerHTML = `<div class="callout-title">Ignored by rule: <code>${matchedRule}</code></div><p><code>${p}</code> stays untracked and will not be staged by <code>git add .</code> (unless previously committed).</p>`;
+      } else {
+        out.className = `callout`;
+        out.innerHTML = `<div class="callout-title">Tracked by Git (Not Ignored)</div><p><code>${p}</code> does not match standard ignore patterns and will be tracked normally.</p>`;
+      }
+    }
+
+    /* ================================================================
+       QUIZZES
+       ================================================================ */
+    function renderAllQuizzes() {
+      Object.keys(QUIZZES).forEach(num => {
+        const container = document.getElementById(`quiz-body-${num}`);
+        if (!container) return;
+        const list = QUIZZES[num];
+        container.innerHTML = list.map((q, qi) => {
+          const picked = appState.quizAnswers[q.id];
+          const hasPicked = typeof picked === 'number';
+          const isCorrect = picked === q.correct;
+          return `
+            <div class="quiz-question">
+              <div class="quiz-q-title">Q${qi + 1}. ${q.prompt}</div>
+              <div class="quiz-options">
+                ${q.options.map((opt, oi) => {
+                  let cls = ``;
+                  if (hasPicked) {
+                    if (oi === picked && isCorrect) cls = `is-selected-correct`;
+                    else if (oi === picked && !isCorrect) cls = `is-selected-wrong`;
+                    else if (oi === q.correct) cls = `is-reveal-correct`;
+                  }
+                  return `<button type="button" class="quiz-opt ${cls}" onclick="answerQuiz('${q.id}', ${oi})">${opt}</button>`;
+                }).join('')}
+              </div>
+              ${hasPicked ? `
+                <div class="quiz-feedback ${isCorrect ? 'quiz-feedback--ok' : 'quiz-feedback--err'}">
+                  <strong>${isCorrect ? 'Correct:' : 'Not quite:'}</strong> ${q.explain}
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+      });
+    }
+
+    function answerQuiz(qId, optionIdx) {
+      appState.quizAnswers[qId] = optionIdx;
+      renderAllQuizzes();
+      updateProgressUI();
+      saveAppState();
+    }
+
+    /* ================================================================
+       CHEAT SHEET FILTER & COPY
+       ================================================================ */
+    function filterCheatSheet() {
+      const searchEl = document.getElementById('cheat-search');
+      const catEl = document.getElementById('cheat-cat');
+      const listEl = document.getElementById('cheat-sheet-list');
+      if (!listEl) return;
+
+      const query = searchEl ? searchEl.value.trim().toLowerCase() : '';
+      const cat = catEl ? catEl.value : 'all';
+
+      const filtered = CHEAT_COMMANDS.filter(item => {
+        const matchCat = cat === 'all' || item.cat === cat;
+        const matchText = !query || item.cmd.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query) || item.label.toLowerCase().includes(query);
+        return matchCat && matchText;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="layer"><p style="margin:0;">No commands matched <code>${query}</code>. Clear the search box or switch category to All.</p></div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map((item, idx) => `
+        <div class="cheat-row">
+          <div class="cheat-cmd">${escapeHtml(item.cmd)}</div>
+          <div class="cheat-desc"><span class="tag tag--neutral" style="margin-right:var(--space-xs);">${item.label}</span>${escapeHtml(item.desc)}</div>
+          <button type="button" class="btn-copy" onclick="copyCheatCmd(${idx}, this)" data-cmd="${escapeHtml(item.cmd)}">Copy</button>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function copyCheatCmd(idx, btn) {
+      if (!btn) return;
+      const cmd = btn.getAttribute('data-cmd') || '';
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(cmd).catch(() => {});
+      }
+      btn.classList.add('is-copied');
+      btn.textContent = `Copied`;
+      setTimeout(() => {
+        btn.classList.remove('is-copied');
+        btn.textContent = `Copy`;
+      }, 1500);
+    }
+
+    /* ================================================================
+       INIT & NOTEBOOK SHIM LIFECYCLE
+       ================================================================ */
+    async function initApp() {
+      buildMobileToc();
+      renderPipelineLab();
+      selectAddMode('all', null);
+      renderConflictLab();
+      renderStashLab();
+      setDagMode('merge');
+      selectGhTab('settings', null);
+      testGitignorePath('node_modules/express/index.js');
+      filterCheatSheet();
+
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+          const saved = await window.notebookAppApi.getAppState();
+          if (saved && typeof saved === 'object') {
+            if (Array.isArray(saved.completedModules)) {
+              appState.completedModules = saved.completedModules;
+            }
+            if (saved.quizAnswers && typeof saved.quizAnswers === 'object') {
+              appState.quizAnswers = saved.quizAnswers;
+            }
+          }
+        }
+      } catch (err) {
+        // Proceed gracefully with default empty state
+      }
+
+      renderAllQuizzes();
+      updateProgressUI();
+
+      // Active scroll spy for left curriculum index
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              document.querySelectorAll('.side-nav-link').forEach(link => {
+                link.classList.toggle('is-active', link.dataset.target === id);
+              });
+            }
+          });
+        }, { rootMargin: '-15% 0px -70% 0px', threshold: 0.05 });
+
+        document.querySelectorAll('.module-section').forEach(sec => observer.observe(sec));
+      }
+
+      if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+        window.notebookAppApi.notifyAppReady();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
